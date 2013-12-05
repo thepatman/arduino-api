@@ -2,80 +2,168 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_ethernet.h"
+#include <stdlib.h>
 
 plotly::plotly(){
-	VERBOSE = true;
+    width_ = 8;
+    prec_ = 6;
+    DEBUG = false;
+    VERBOSE = true;
+    DRY_RUN = true;
+    maxStringLength = 0;
+    layout = "{}";
 }
 
-void plotly::open_stream(int N, String filename, String username, String api_key){
-	ni_ = 0; // number of integers transmitted
-    N_ = N;  // number of integers in a burst
+void plotly::open_stream(int N, int M, char *filename, char *username, char *api_key){
+    //s_[max(maxStringLength,width_+prec_+1)];
+    Serial.println("open_stream");
+    ni_ = 0; // number of integers transmitted
+    mi_ = 0; 
+    N_ = N;  // number sets of data sent
+    M_ = M*2; // number of traces
     nChar_ = 0; // number of characters transmitted
-    if(VERBOSE) Serial.println("connecting to plotly's servers");
-	char server[] = "plot.ly";
-	while ( !client.connect(server, 80) ) {
-			if(VERBOSE) Serial.println("couldn\'t connect to server. trying again.");
-			delay(1000);
-		}
+    //if(VERBOSE) Serial.println("connecting to plotly's servers");
+    delay(1000);
+    if(DRY_RUN) Serial.println("This is a dry run, we are not connecting to plotly's servers...");
+    else{
+        if(VERBOSE) Serial.println("Attempting to connect to plotly's servers...");
+        char server[] = "plot.ly";
+        while ( !client.connect(server, 80) ) {
+                if(VERBOSE) Serial.println("Couldn\'t connect to servers.... trying again!");
+                delay(1000);
+            }
+        if(VERBOSE) Serial.println("Connected to plotly's servers");
 
-    if(VERBOSE) Serial.println("connected to plotly's servers");
-
+    }
+    if(VERBOSE) Serial.println("\n== Sending HTTP Post to plotly ==");
     // HTTP Meta
-    client.println("POST /clientresp HTTP/1.1");
-    client.println("Host: 107.21.214.199"); 
-    client.println("User-Agent: Arduino/1.0");
+    if(VERBOSE){ Serial.println("POST /clientresp HTTP/1.1"); }
+    if(!DRY_RUN) { client.println("POST /clientresp HTTP/1.1"); }
+    if(VERBOSE){ Serial.println("Host: 107.21.214.199");  }
+    if(!DRY_RUN) { client.println("Host: 107.21.214.199");  }
+    if(VERBOSE){ Serial.println("User-Agent: Arduino/2.0"); }
+    if(!DRY_RUN) { client.println("User-Agent: Arduino/2.0"); }
 
-    // start the post string    
-    header = "version=0.2&origin=plot&platform=arduino&un=";
-    header += username;
-    header += "&key=";
-    header += api_key;
-    header += "&kwargs={\"filename\": \"";
-    header += filename;
-    header += "\", \"fileopt\": \"extend\"}&args=[{\"y\": [" ;
+    // start the post string
+    String querystring = "version=0.2&origin=plot&platform=arduino&un=";
+    querystring += username;
+    querystring += "&key=";
+    querystring += api_key;
+    querystring += "&kwargs={\"filename\": \"";
+    querystring += filename;
+    querystring += "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ";
+    querystring += layout;
+    querystring += "}&args=";
+    /*
+        [[x1, y1, x2, y2],
+         [x1, y1, x2, y2],
+         [x1, y1, x2, y2]]
+    */
+
 
     // compute an upper bound on the post body size
-   	upper_ = header.length() + N*2 + N*6 + 3 - 2; // header length + 2-chars for comma and space for each number  + 6 chars for the largest int (-32767) + 3 for termination chars: ]}] - 2 since the last number doesnt have a comma
-	
-	s = "Content-Length: "; 
-	s += upper_;
-    client.println(s);
+    upper_ = querystring.length() // querystring length ...
+        + (N_*M_-1)*2   // + 2-chars for comma and space for all but the last numbers ... 
+        + (N_-1)*4  // + 4-chars for square brackets, comma, space for n-1 set of points [], 
+        + 2         // + 2-chars for start 'n finish square braces
+        + 0         // + [6-chars for the largest int (-32767)] * each int ...
+        + max(56,maxStringLength)*N_*M_  // + [(48-chars for largest float integer left of the decimal (-3.4028235E+38) )+(1 decimal pt)+(7 digits of precision right of the decimal)=56-chars]*each float
+        + 0;         // + n-chars for upper bound of String * each string ...
+    String s = "Content-Length: ";
+    s += upper_;
 
     // send the header to plotly
-    client.println();
-    client.print(header);
-    nChar_ += header.length();
+    if(VERBOSE){ Serial.println(s); }
+    if(!DRY_RUN) { client.println(s); }
+    if(VERBOSE){ Serial.println(""); }
+    if(!DRY_RUN) { client.println(""); }
+    if(VERBOSE) {Serial.print(querystring);}
+    if(!DRY_RUN) {client.print(querystring);}
+    nChar_ += querystring.length();    
 }
 
-void plotly::post(int data){
-    ni_ += 1;				// number of data elements
-    if(ni_ == N_){			// i.e. the last number
-    	close_stream(data);
+void plotly::send_(String s){
+  if(DEBUG){ Serial.print("in send_: "); Serial.println(s); }
+ // prints [x1, y1, x2, y2, ...] N x M
+  mi_ += 1;
+  if(mi_ == 1){
+      ni_ += 1;
+      if(ni_==1){
+          s = "[["+s;
+          s = s+", ";
+      } else{
+          s = "["+s;
+          s = s+", ";
+      }
+  } else if(mi_ == M_ && ni_ < N_){
+      s = s+"], ";
+      mi_ = 0;
+  } else if(mi_ == M_ && ni_ == N_){
+      s = s+"]]";
+  } else{
+      s = s+", ";
+  }
+  nChar_ += s.length();
+  if(VERBOSE) Serial.print(s);
+  if(!DRY_RUN) client.print(s);
+  if(DEBUG){ Serial.print("\nout send_: "); Serial.println(s); }
+  if(mi_ == M_ && ni_ == N_){ 
+      close_stream(); 
+  }
+}
+
+
+void plotly::sendString_(String s){
+  if(DEBUG){ Serial.print("in sendString_: "); Serial.println(s); }
+
+  s = "\""+s;
+  s = s+"\"";
+
+  if(DEBUG){ Serial.print("out sendString_: "); Serial.println(s); }
+  send_(s);
+}
+void plotly::sendString_(float d){
+    dtostrf(d,width_,prec_,s_);
+    send_(String(s_)); 
+}
+void plotly::sendString_(int d){ 
+  send_(String(d)); 
+}
+
+
+void plotly::post(int x, int y){        sendString_(x); sendString_(y); }
+void plotly::post(int x, float y){      sendString_(x); sendString_(y); }
+void plotly::post(float x, int y){      sendString_(x); sendString_(y); }
+void plotly::post(float x, float y){    sendString_(x); sendString_(y); }
+void plotly::post(String x, int y){     
+  if(DEBUG){ Serial.print("\n\n\nin post: "); Serial.println(x); }
+  sendString_(x); sendString_(y); 
+}
+
+void plotly::post(String x, float y){   
+  if(DEBUG){ Serial.print("\n\n\nin post: "); Serial.println(x); }
+  sendString_(x); sendString_(y); 
+}
+
+
+void plotly::close_stream(){
+    // fill the remainder of the post with white space
+    for(int i=nChar_; i<upper_; i++){
+        if(!DRY_RUN) client.print(" ");
     }
-    else{
-		s = "";
-	    s = s + data + ", ";
-	    nChar_ += s.length();	// number of chars
-	    client.print(s);
-    }
+    // final newline to terminate the post
+    if(VERBOSE){ Serial.println(""); }
+    if(!DEBUG) { client.println(""); }
+    if(VERBOSE) Serial.println("== Sent message, waiting for plotly's response ==");
+    if(!DRY_RUN && VERBOSE){
+        while(client.connected()){
+            if(client.available()){
+                char c = client.read();
+                Serial.print(c);            
+            }
+        }
+        client.stop();
+    }    
     return;
 }
 
-
-void plotly::close_stream(int data){
-	s = "";
-	s = s + data + "]}]";
-	client.print(s);
-
-	nChar_ += s.length();
-
-	// fill the remainder of the post with white space
-	for(i=nChar_; i<upper_; i++){
-		client.print(" ");
-	}
-	// final newline to terminate the post
-	client.println();
-	client.stop();
-	if(VERBOSE) Serial.println("closed connection with plotly's servers");
-	return;
-}
