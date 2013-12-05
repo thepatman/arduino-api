@@ -30,6 +30,8 @@ class plotly
 		void sendString_(float d);
 		void sendString_(String d);
 		void send_(String s);
+		//char *dtostrf(double val, signed char width, unsigned char prec, char *sout);
+
 		// void println_(String s);
 		// void print_(String s);
 		int M_;	 	// number of traces * 2
@@ -40,7 +42,7 @@ class plotly
 		int upper_; 
 		unsigned char prec_;
 		signed char width_;
-		char s_[30];
+		char s_[20];
 };
 
 #endif

@@ -2,7 +2,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_ethernet.h"
-#include <stdlib.h>
+#include <avr/dtostrf.h>
 
 plotly::plotly(){
     width_ = 8;
@@ -16,7 +16,6 @@ plotly::plotly(){
 
 void plotly::open_stream(int N, int M, char *filename, char *username, char *api_key){
     //s_[max(maxStringLength,width_+prec_+1)];
-    Serial.println("open_stream");
     ni_ = 0; // number of integers transmitted
     mi_ = 0; 
     N_ = N;  // number sets of data sent
@@ -144,7 +143,6 @@ void plotly::post(String x, float y){
   if(DEBUG){ Serial.print("\n\n\nin post: "); Serial.println(x); }
   sendString_(x); sendString_(y); 
 }
-
 
 void plotly::close_stream(){
     // fill the remainder of the post with white space
