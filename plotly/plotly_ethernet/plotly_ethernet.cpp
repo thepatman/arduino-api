@@ -12,9 +12,11 @@ plotly::plotly(){
     DRY_RUN = true;
     maxStringLength = 0;
     layout = "{}";
+    timestamp = false;
+    timezone = "UTC";
 }
 
-void plotly::open_stream(int N, int M, char *filename, char *username, char *api_key){
+void plotly::open_stream(int N, int M, String filename, char *username, char *api_key){
     //s_[max(maxStringLength,width_+prec_+1)];
     ni_ = 0; // number of integers transmitted
     mi_ = 0; 
@@ -22,11 +24,13 @@ void plotly::open_stream(int N, int M, char *filename, char *username, char *api
     M_ = M*2; // number of traces
     nChar_ = 0; // number of characters transmitted
     //if(VERBOSE) Serial.println("connecting to plotly's servers");
+    filename_=filename;
     delay(1000);
     if(DRY_RUN) Serial.println("This is a dry run, we are not connecting to plotly's servers...");
     else{
         if(VERBOSE) Serial.println("Attempting to connect to plotly's servers...");
-        char server[] = "plot.ly";
+        // char server[] = "plot.ly";
+        byte server[] = { 54, 227, 53, 246 }; // plotly dev
         while ( !client.connect(server, 80) ) {
                 if(VERBOSE) Serial.println("Couldn\'t connect to servers.... trying again!");
                 delay(1000);
@@ -48,20 +52,30 @@ void plotly::open_stream(int N, int M, char *filename, char *username, char *api
     querystring += username;
     querystring += "&key=";
     querystring += api_key;
-    querystring += "&kwargs={\"filename\": \"";
-    querystring += filename;
-    querystring += "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ";
-    querystring += layout;
-    querystring += "}&args=";
+    querystring += "&args=";
     /*
         [[x1, y1, x2, y2],
          [x1, y1, x2, y2],
          [x1, y1, x2, y2]]
     */
-
+    /*
+    kwargs_ = "&kwargs={\"filename\": \"";
+    kwargs_ += filename;
+    kwargs_ += "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ";
+    kwargs_ += layout;
+    if(timestamp){
+      kwargs_ += ", \"convertTimestamp\": true";
+      kwargs_ += ", \"timezone\": \"";
+      kwargs_ += timezone;
+      kwargs_ += "\"";
+      kwargs_ += ", \"sentTime\": ";
+    } else{
+      kwargs_ += "}";
+    }
+    */
 
     // compute an upper bound on the post body size
-    upper_ = querystring.length() // querystring length ...
+    upper_ = querystring.length()+200 // querystring length + an upper bound on kwargs...
         + (N_*M_-1)*2   // + 2-chars for comma and space for all but the last numbers ... 
         + (N_-1)*4  // + 4-chars for square brackets, comma, space for n-1 set of points [], 
         + 2         // + 2-chars for start 'n finish square braces
@@ -145,7 +159,64 @@ void plotly::post(String x, float y){
 }
 
 void plotly::close_stream(){
+    Serial.print( "&kwargs={\"filename\": \"" );
+    client.print( "&kwargs={\"filename\": \"" );
+    nChar_+=22;
+    
+    Serial.print(filename_);
+    client.print(filename_);
+    nChar_+=filename_.length();
+    
+    Serial.print("\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ");
+    client.print("\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ");
+    nChar_+=53;
+    
+    Serial.print(layout);
+    client.print(layout);
+    nChar_+=String(layout).length();
+
+    if(timestamp){
+      Serial.print(", \"convertTimestamp\": true");
+      client.print(", \"convertTimestamp\": true");
+      nChar_+=26;
+      
+      Serial.print(", \"timezone\": \"");
+      client.print(", \"timezone\": \"");
+      nChar_+=15;
+      
+      Serial.print(timezone);
+      client.print(timezone);
+      nChar_+=String(timezone).length();
+      
+      Serial.print("\"");
+      client.print("\"");
+      nChar_+=1;
+      
+      Serial.print(", \"sentTime\": ");
+      client.print(", \"sentTime\": ");
+      nChar_+=13;
+
+      String sT = String((int)millis());
+      Serial.print(sT);
+      client.print(sT);
+      nChar_+=sT.length();
+
+      Serial.print("}");
+      client.print("}");
+      nChar_+=1;      
+    } else{
+      Serial.print("}");
+      client.print("}");
+      nChar_+=1;
+    }
+
+    if(VERBOSE){ Serial.println(kwargs_); }
+    if(!DEBUG) { client.println(kwargs_); }
     // fill the remainder of the post with white space
+    if(nChar_>=upper_){ 
+      Serial.println("upperbound was wrong!");
+      Serial.println(nChar_); Serial.println(upper_);
+    }
     for(int i=nChar_; i<upper_; i++){
         if(!DRY_RUN) client.print(" ");
     }
