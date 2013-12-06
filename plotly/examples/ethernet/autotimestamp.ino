@@ -37,7 +37,7 @@ void setup() {
   int nPoints=10; // number of points to transmit for a single trace
   char filename[] = "arduino - millisecond timestamp example - with tsend!";
   char username[] = "public_arduino";
-  char api_key[] = "m0fq5dwfni";
+  char api_key[] = "4z1r78yx9a";
   
   plotly.open_stream(nPoints, nTraces, filename, username, api_key);
   
