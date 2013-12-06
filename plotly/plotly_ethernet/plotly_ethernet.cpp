@@ -29,8 +29,8 @@ void plotly::open_stream(int N, int M, String filename, char *username, char *ap
     if(DRY_RUN) Serial.println("This is a dry run, we are not connecting to plotly's servers...");
     else{
         if(VERBOSE) Serial.println("Attempting to connect to plotly's servers...");
-        // char server[] = "plot.ly";
-        byte server[] = { 54, 227, 53, 246 }; // plotly dev
+        char server[] = "plot.ly";
+        
         while ( !client.connect(server, 80) ) {
                 if(VERBOSE) Serial.println("Couldn\'t connect to servers.... trying again!");
                 delay(1000);
