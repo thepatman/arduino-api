@@ -6,6 +6,12 @@ Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for 
 
 [![Plotly-Arduino library graph](readme_images/gridview.png)](https://plot.ly/9/~flann321/data)
 
+### In the wild
+* [Local Space Weather](http://homepage.lnu.se/staff/pkumsi/GPS_Monitor.html)
+* [PiTemp](https://github.com/plotly/User-Projects/tree/master/PiTemp)
+* [Temperature logging with RaspPi, Arduino, NEST, and Wunderground](https://plot.ly/~flann321/9)
+
+
 ### Built-in, simplified date support
 Logging time-stamped data is as simple as
 
