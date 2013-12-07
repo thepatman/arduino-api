@@ -1,4 +1,4 @@
-Plotly+Arduino <3
+Plotly+Arduino
 ==
 ### Log, graph, share. 
 Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for real-time, interactive data logging and graphing.
@@ -32,6 +32,7 @@ So if you want a different interface, jump in and submit a pull request. You mig
 
 Tutorial
 ==
+Check out the example folder for full, complete working examples. This section contains illustrative partials.
 
 ###Setup
 
