@@ -1,6 +1,12 @@
-About
---------
-The Plotly-Arduino library provides Arduino users with an interface to their Plotly account. Through this interface, an internet connected Arduino (with either WiFi or Ethernet) can send data to Plotly servers and a graph of the data can be viewed inside their Plotly account inside their browser.
+Plotly+Arduino <3
+==
+Log, graph, share. Plotly+Arduino is a lightweight library for online data-logging and graphing from web-connected Arduinos. 
+
+
+The graphs
+==
+
+
 
 
 Contents
