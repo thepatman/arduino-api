@@ -5,9 +5,8 @@
 #include <avr/dtostrf.h>
 
 plotly::plotly(){
-    width_ = 8;
-    prec_ = 6;
-    DEBUG = false;
+    width_ = 10;
+    prec_ = 5;
     VERBOSE = true;
     DRY_RUN = true;
     maxStringLength = 0;
@@ -16,7 +15,7 @@ plotly::plotly(){
     timezone = "America/Montreal";
 }
 
-void plotly::open_stream(int N, int M, String filename_, String username, String api_key){
+void plotly::open_stream(int N, int M, char *filename_, char *layout){
     //s_[max(maxStringLength,width_+prec_+1)];
     ni_ = 0; // number of integers transmitted
     mi_ = 0; 
@@ -27,24 +26,14 @@ void plotly::open_stream(int N, int M, String filename_, String username, String
     delay(1000);
     if(DRY_RUN){ Serial.println("This is a dry run, we are not connecting to plotly's servers..."); }
     else{
-      int try_connect = 0;
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
-      byte plotly_ip[] = { 107, 21, 214, 199 };
-      while ( !client.connect(plotly_ip, 80) && try_connect < 20) {
+      char server[] = "plot.ly";
+      while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);
-        try_connect += 1;
       }
-      if(try_connect==20){
-        if(VERBOSE){ Serial.println("Attempting to connect via IP, instead"); }
-        char server[] = "plot.ly";
-        while ( !client.connect(server, 80) ){
-          if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!");}
-          delay(1000);
-        }          
-      }
-      if(VERBOSE) Serial.println("Connected to plotly's servers");
     }
+    if(VERBOSE) Serial.println("Connected to plotly's servers");
     if(VERBOSE) Serial.println("\n== Sending HTTP Post to plotly ==");
 
     // HTTP Meta
@@ -53,7 +42,7 @@ void plotly::open_stream(int N, int M, String filename_, String username, String
     println_("User-Agent: Arduino/2.0", 0);
 
     // compute an upper bound on the post body size
-    upper_ = 273+layout.length()+((N_*M_-1)*2)+((N_-1)*4)+(max(20,maxStringLength)*N_*M_);
+    upper_ = 273+strlen(layout)+((N_*M_-1)*2)+((N_-1)*4)+(max(20,maxStringLength)*N_*M_);
       /* Computation composition: 
         44 // First part of querystring below
         + 30 // Upper limit on username length
@@ -84,7 +73,7 @@ void plotly::open_stream(int N, int M, String filename_, String username, String
 
     // send the header to plotly
     print_("Content-Length: ", 0);
-    println_(String(upper_), 0);
+    println_(upper_, 0);
     println_("", 0);
 
     // start the post string
@@ -131,7 +120,7 @@ void plotly::close_stream(){
     print_( filename );
     print_( "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ", 53);    
 
-    print_( layout, layout.length() );
+    print_( layout );
 
     if(timestamp){
       print_( ", \"convertTimestamp\": true", 26 );
@@ -139,7 +128,7 @@ void plotly::close_stream(){
       print_(timezone);
       print_("\"", 1);
       print_( ", \"sentTime\": ", 14 );
-      String sT = String((int)millis());
+      String sT = String(millis());
       print_( sT );
       print_( "}", 1 );
     } else{
@@ -150,7 +139,7 @@ void plotly::close_stream(){
     if(nChar_>=upper_){ 
       Serial.print("Error: Content-Length upper bound is too small. Upper bound was: ");
       Serial.print(upper_); Serial.print(", and we printed "); Serial.print(nChar_); Serial.println(" characters.");
-      Serial.println("Message will not transmit");
+      Serial.println("Message will not transmit, report bug to chris at chris@plot.ly.");
     }
     for(int i=nChar_; i<upper_; i++){
         if(!DRY_RUN) client.print(" ");
@@ -172,23 +161,38 @@ void plotly::close_stream(){
 
 void plotly::post(int x, int y){     sendString_(x); sendString_(y); }
 void plotly::post(int x, float y){   sendString_(x); sendString_(y); }
+void plotly::post(unsigned long x, int y){     sendString_(x); sendString_(y); }
+void plotly::post(unsigned long x, float y){   sendString_(x); sendString_(y); }
 void plotly::post(float x, int y){   sendString_(x); sendString_(y); }
 void plotly::post(float x, float y){ sendString_(x); sendString_(y); }
+void plotly::post(char *x, int y){   sendString_(x); sendString_(y); }
+void plotly::post(char *x, float y){ sendString_(x); sendString_(y); }
 void plotly::post(String x, int y){  sendString_(x); sendString_(y); }
 void plotly::post(String x, float y){sendString_(x); sendString_(y); }
 
-void plotly::sendString_(String s){
+void plotly::sendString_(String d){
   send_prepad_();
-  print_("\"",1); print_(s); print_("\"",1);
+  print_("\"",1); print_(d); print_("\"",1);
+  send_postpad_();
+}
+void plotly::sendString_(char *d){
+  send_prepad_();
+  print_("\"",1); print_(d); print_("\"",1);
   send_postpad_();
 }
 void plotly::sendString_(float d){
     send_prepad_();
+    char s_[width_];
     dtostrf(d,width_,prec_,s_);
-    print_(String(s_));  // TODO: anyway to print all 20 characters always? that way we can get rid of this String casting
+    print_(s_,width_);
     send_postpad_();
 }
 void plotly::sendString_(int d){
+  send_prepad_();
+  print_(d); 
+  send_postpad_();
+}
+void plotly::sendString_(unsigned long d){
   send_prepad_();
   print_(String(d)); 
   send_postpad_();
@@ -198,6 +202,11 @@ void plotly::print_(char *s, int nChar){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
   nChar_ += nChar;
+}
+void plotly::print_(char *s){
+  if(VERBOSE){ Serial.print(s); }
+  if(!DRY_RUN) { client.print(s); }
+  nChar_ += strlen(s);
 }
 void plotly::print_(String s, int nChar){
   if(VERBOSE){ Serial.print(s); }
@@ -209,18 +218,25 @@ void plotly::print_(String s){
   if(!DRY_RUN) { client.print(s); }
   nChar_ += s.length();
 }
+void plotly::print_(int s){
+  if(VERBOSE){ Serial.print(s); }
+  if(!DRY_RUN) { client.print(s); }
+  nChar_ += intlen_(s);  
+}
 void plotly::println_(char *s, int nChar){
   if(VERBOSE){ Serial.println(s); }
   if(!DRY_RUN) { client.println(s); }
   nChar_ += nChar;
 }
-void plotly::println_(String s, int nChar){
-  if(VERBOSE){ Serial.println(s); }
-  if(!DRY_RUN) { client.println(s); }  
-  nChar_ += nChar;
-}
-void plotly::println_(String s){
+void plotly::println_(unsigned long int s, int nChar){
   if(VERBOSE){ Serial.println(s); }
   if(!DRY_RUN) { client.println(s); }
-  nChar_ += s.length();
+  nChar_ += nChar;
+}
+int plotly::intlen_(int i){
+  if(i > 9999) return 5;
+  else if(i > 999) return 4;
+  else if(i > 99) return 3;
+  else if(i > 9) return 2;
+  else return 1;
 }
