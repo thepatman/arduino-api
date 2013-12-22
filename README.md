@@ -11,7 +11,6 @@ Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for 
 * [PiTemp](https://github.com/plotly/User-Projects/tree/master/PiTemp)
 * [Temperature logging with RaspPi, Arduino, NEST, and Wunderground](https://plot.ly/~flann321/9)
 
-
 ### Built-in, simplified date support
 Logging time-stamped data is as simple as
 
@@ -30,11 +29,18 @@ It's real lightweight. We tell plotly how many points we want to log, open up ou
 ### It's just a lightweight wrapper around plotly's [REST API](https://plot.ly/api)
 So if you want a different interface, jump in and submit a pull request. You might wanna check out the format of our JSON objects [here](https://plot.ly/api/rest).
 
+Setup
+==
+###Step 1
+Download and uncompress the latest [release](https://github.com/plotly/arduino-api/releases)
+
+###Step 2 - Add to Library Folder
+Place the plotly folder inside your local Arduino libaries folder, e.g. /Users/chris/Documents/Arduino/libraries. This folder is inside your default Sketchbook location which can be found inside the Arduino preferences. If the plotly folder is in the right place, then you should be able to select the plotly library from the Import Library...  option in the Arduino IDE (you may need to restart the IDE).
+
 Tutorial
 ==
 Check out the example folder for full, complete working examples. This section contains illustrative partials.
 
-###Setup
 
 ```Arduino
 #include <SPI.h>
