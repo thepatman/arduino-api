@@ -44,6 +44,7 @@ Tutorial
 ==
 Check out the example folder for full, complete working examples. This section contains illustrative partials.
 
+### Initialization
 
 ```Arduino
 #include <SPI.h>
