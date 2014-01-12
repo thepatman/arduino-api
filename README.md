@@ -7,6 +7,9 @@ Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for 
 [![Plotly-Arduino library graph](readme_images/gridview.png)](https://plot.ly/9/~flann321/data)
 
 ### In the wild
+* [Plotly + Arduino Data Visualization Instructables](http://www.instructables.com/id/Plotly-Arduino-Data-Visualization/)
+* [Arduino Blog](http://blog.arduino.cc/2013/11/04/create-interactive-graphs-logging-arduino-data-with-plotly/)
+* 
 * [Local Space Weather](http://homepage.lnu.se/staff/pkumsi/GPS_Monitor.html)
 * [PiTemp](https://github.com/plotly/User-Projects/tree/master/PiTemp)
 * [Temperature logging with RaspPi, Arduino, NEST, and Wunderground](https://plot.ly/~flann321/9)
@@ -162,7 +165,7 @@ You can also edit the style of graph inside the online tool. The data that is st
 
 ### Limitations
 * Graphs are currently limited in graphing 20,000 points.
-* This library exposes a subset of the features available through the REST protocol. If you want a new interface, submit a pull request! 
+* This library exposes a subset of the features available through the REST protocol. If you want a new interface, submit a pull request!
 
 Contact
 ==
