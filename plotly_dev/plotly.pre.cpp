@@ -36,6 +36,9 @@ plotly::plotly(){
 plotly::plotly()
   : cc3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,SPI_CLOCK_DIV2){
 #endif
+#ifdef GSM
+plotly::plotly(){
+#endif
     width_ = 10;
     prec_ = 5;
     VERBOSE = true;
