@@ -1,7 +1,7 @@
 Plotly+Arduino
 ==
 ### Log, graph, share. 
-Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for real-time, interactive data logging and graphing.
+Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for real-time, interactive data logging and graphing. It's free for public use!
 [![Plotly-Arduino library graph](readme_images/flann321.png)](https://plot.ly/~flann321/9)
 
 [![Plotly-Arduino library graph](readme_images/gridview.png)](https://plot.ly/9/~flann321/data)
