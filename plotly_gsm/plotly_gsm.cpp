@@ -1,10 +1,8 @@
 #include "Arduino.h"
-#include <WiFi.h>
-#include "plotly_wifi.h"
+#include <GSM.h>
 
 #include <avr/dtostrf.h>
 
-plotly::plotly(){
     width_ = 10;
     prec_ = 5;
     VERBOSE = true;
@@ -26,7 +24,8 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
     if(DRY_RUN){ Serial.println("This is a dry run, we are not connecting to plotly's servers..."); }
     else{
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
-      char server[] = "plot.ly";
+
+                        char server[] = "plot.ly";
       while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);

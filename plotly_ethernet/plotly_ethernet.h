@@ -2,15 +2,15 @@
 #define plotly_ethernet_h
 
 #include "Arduino.h"
+
 #include <SPI.h>
 #include <Ethernet.h>
-
 
 class plotly
 {
 	public:
 		plotly();
-        EthernetClient client;
+		EthernetClient client;
         void open_stream(int N, int M, char *filename, char* layout);
 		void post(int x, int y);
 		void post(int x, float y);

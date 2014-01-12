@@ -1,20 +1,15 @@
-#ifndef plotly_cc3000_h
-#define plotly_cc3000_h
+#ifndef plotly_GSM_h
+#define plotly_GSM_h
 
 #include "Arduino.h"
 
-#include <Adafruit_CC3000.h>
-#include <ccspi.h>
-#include <SPI.h>
-#include <string.h>
-#include "utility/debug.h"
+#include <GSM.h>
 
 class plotly
 {
 	public:
 		plotly();
-		Adafruit_CC3000 cc3000;
-        Adafruit_CC3000_Client client;
+		GSMClient client;
 		void open_stream(int N, int M, char *filename, char* layout);
 		void post(int x, int y);
 		void post(int x, float y);

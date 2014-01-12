@@ -1,10 +1,41 @@
 #include "Arduino.h"
+#ifdef ETHERNET
+#include <SPI.h>
+#include <Ethernet.h>
+#include "plotly_ethernet.h"
+#endif
+#ifdef WIFI
 #include <WiFi.h>
 #include "plotly_wifi.h"
+#endif
+#ifdef CC3000
+#include <Adafruit_CC3000.h>
+#include <ccspi.h>
+#include <SPI.h>
+#include <string.h>
+#include "utility/debug.h"
+#define ADAFRUIT_CC3000_IRQ   3
+#define ADAFRUIT_CC3000_VBAT  5
+#define ADAFRUIT_CC3000_CS    10
+#include "plotly_cc3000.h"
+#endif
+#ifdef GSM
+#include <GSM.h>
+#include "plotly_gsm.h"
+#endif
 
 #include <avr/dtostrf.h>
 
+#ifdef ETHERNET
 plotly::plotly(){
+#endif
+#ifdef WIFI
+plotly::plotly(){
+#endif
+#ifdef CC3000
+plotly::plotly()
+  : cc3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,SPI_CLOCK_DIV2){
+#endif
     width_ = 10;
     prec_ = 5;
     VERBOSE = true;
@@ -26,11 +57,47 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
     if(DRY_RUN){ Serial.println("This is a dry run, we are not connecting to plotly's servers..."); }
     else{
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
+
+      #ifdef WIFI
       char server[] = "plot.ly";
       while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);
       }
+      #endif
+      #ifdef ETHERNET
+      char server[] = "plot.ly";
+      while ( !client.connect(server, 80) ) {
+        if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
+        delay(1000);
+      }
+      #endif
+      #ifdef GSM
+      char server[] = "plot.ly";
+      while ( !client.connect(server, 80) ) {
+        if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
+        delay(1000);
+      }
+      #endif
+      #ifdef CC3000
+      #define WEBSITE "plot.ly"
+      uint32_t ip = 0;
+      
+      // Try looking up the website's IP address
+      Serial.print(WEBSITE); Serial.print(F(" -> "));
+      while (ip == 0) {
+      if (! cc3000.getHostByName(WEBSITE, &ip)) {
+        Serial.println(F("Couldn't resolve!"));
+      }
+      delay(500);
+      }
+
+      client = cc3000.connectTCP(ip, 80);
+      while ( !client.connected() ) {
+        if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
+        delay(1000);
+      }
+      #endif
     }
     if(VERBOSE) Serial.println("Connected to plotly's servers");
     if(VERBOSE) Serial.println("\n== Sending HTTP Post to plotly ==");
@@ -122,8 +189,19 @@ void plotly::close_stream(){
                 Serial.print(c);            
             }
         }
+        #ifdef WIFI
         client.stop();
-    }    
+        #endif
+        #ifdef ETHERNET
+        client.stop();
+        #endif
+        #ifdef CC3000
+        client.close();
+        #endif
+        #ifdef GSM
+        client.close();
+        #endif        
+    }
     return;
 }
 

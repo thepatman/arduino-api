@@ -1,0 +1,1 @@
+Interested in contributing? Contribute to the *.pre.* files and automatically generate the libraries for each client type by running `$ python preprocess.py`. Python file preprocess.py automatically generates the different client libraries (wifi, ethernet, cc3000, gsm) by filtering out #ifdef preprocessor blocks

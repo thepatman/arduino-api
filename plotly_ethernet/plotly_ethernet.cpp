@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_ethernet.h"
+
 #include <avr/dtostrf.h>
 
 plotly::plotly(){
@@ -16,17 +17,17 @@ plotly::plotly(){
 }
 
 void plotly::open_stream(int N, int M, char *filename_, char *layout){
-    //s_[max(maxStringLength,width_+prec_+1)];
-    ni_ = 0; // number of integers transmitted
-    mi_ = 0; 
-    N_ = N;  // number sets of data sent = number of rows in plotly-json data matrix
-    M_ = (M*2); // number of traces * 2 = number of columns in plotly-json data matrix
+    N_ = N;  // total sets of data sent = number of rows in plotly-json data matrix
+    M_ = (M*2); // total number of traces * 2 = number of columns in plotly-json data matrix
+    ni_ = 0; // counter of number of sets of data set (number of rows in the plotly-json data matrix) transmitted
+    mi_ = 0; // counter of points sent in each row of data
     nChar_ = 0; // counter of number of characters transmitted
     filename=filename_;
     delay(1000);
     if(DRY_RUN){ Serial.println("This is a dry run, we are not connecting to plotly's servers..."); }
     else{
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
+
       char server[] = "plot.ly";
       while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
@@ -84,37 +85,6 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
     print_("&args=", 6);
 }
 
-void plotly::send_prepad_(){
-  mi_ += 1;
-  if(mi_ == 1){
-      ni_ += 1;
-      if(ni_==1){
-          print_("[[",2);
-      } else{
-          print_("[",1);
-      }
-  }
-}
-void plotly::send_postpad_(){
-  if(mi_ == 1){
-      if(ni_==1){
-          print_(", ", 2);
-      } else{
-          print_(", ", 2);
-      }
-  } else if(mi_ == M_ && ni_ < N_){
-      print_("], ", 3);
-      mi_ = 0;
-  } else if(mi_ == M_ && ni_ == N_){
-      print_("]]", 2);
-  } else{
-      print_(", ", 2);
-  }
-  if(mi_ == M_ && ni_ == N_){ 
-      close_stream(); 
-  }
-}
-
 void plotly::close_stream(){
     print_( "&kwargs={\"filename\": \"", 22 );
     print_( filename );
@@ -159,6 +129,7 @@ void plotly::close_stream(){
     return;
 }
 
+// overloaded functions that print pairs of data to the client
 void plotly::post(int x, int y){     sendString_(x); sendString_(y); }
 void plotly::post(int x, float y){   sendString_(x); sendString_(y); }
 void plotly::post(unsigned long x, int y){     sendString_(x); sendString_(y); }
@@ -170,6 +141,7 @@ void plotly::post(char *x, float y){ sendString_(x); sendString_(y); }
 void plotly::post(String x, int y){  sendString_(x); sendString_(y); }
 void plotly::post(String x, float y){sendString_(x); sendString_(y); }
 
+// overloaded functions that print data to the client as per JSON format
 void plotly::sendString_(String d){
   send_prepad_();
   print_("\"",1); print_(d); print_("\"",1);
@@ -197,7 +169,6 @@ void plotly::sendString_(unsigned long d){
   print_(String(d)); 
   send_postpad_();
 }
-
 void plotly::print_(char *s, int nChar){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
@@ -239,4 +210,36 @@ int plotly::intlen_(int i){
   else if(i > 99) return 3;
   else if(i > 9) return 2;
   else return 1;
+}
+void plotly::send_prepad_(){
+  // print [[ or [ to the client if the start of the matrix or row 
+  mi_ += 1;
+  if(mi_ == 1){
+      ni_ += 1;
+      if(ni_==1){
+          print_("[[",2);
+      } else{
+          print_("[",1);
+      }
+  }
+}
+void plotly::send_postpad_(){
+  // print ", ", ", ]", "], ", "]]" depending on the value of the mi_, ni_ counters
+  if(mi_ == 1){
+      if(ni_==1){
+          print_(", ", 2);
+      } else{
+          print_(", ", 2);
+      }
+  } else if(mi_ == M_ && ni_ < N_){
+      print_("], ", 3);
+      mi_ = 0;
+  } else if(mi_ == M_ && ni_ == N_){
+      print_("]]", 2);
+  } else{
+      print_(", ", 2);
+  }
+  if(mi_ == M_ && ni_ == N_){ 
+      close_stream(); 
+  }
 }
