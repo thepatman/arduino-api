@@ -10,6 +10,7 @@ Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for 
 * [Plotly + Arduino Data Visualization Instructables](http://www.instructables.com/id/Plotly-Arduino-Data-Visualization/)
 * [Arduino Blog](http://blog.arduino.cc/2013/11/04/create-interactive-graphs-logging-arduino-data-with-plotly/)
 * [Local Space Weather](http://homepage.lnu.se/staff/pkumsi/GPS_Monitor.html)
+* [Arduino Solar Monitor](http://plot.ly/~MarcoSmits/30/)
 * [PiTemp](https://github.com/plotly/User-Projects/tree/master/PiTemp)
 * [Temperature logging with RaspPi, Arduino, NEST, and Wunderground](https://plot.ly/~flann321/9)
 
