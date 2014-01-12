@@ -108,6 +108,7 @@ filename = "arduino data log";
 layout = "{}";
 int counter = 0;
 void loop(){
+  plotly.open_stream(nPoints, nTraces, filename, layout);
   for(int i=0; i<nPoints; i++){
     plotly.post( (counter*nPoints)+i, analogRead(2) ); // Log a (x,y) point on trace 0
     plotly.post( (counter*nPoints)+i, (float) analogRead(3) ); // Log a (x, y) point on trace 1
