@@ -17,7 +17,7 @@ Plotly+Arduino connects Arduinos to plotly's beautiful online graphing tool for 
 ### Built-in, simplified date support
 Logging time-stamped data is as simple as
 
-```Arduino
+```C++
 void loop(){
     plotly.post(millis(), analogRead(3));
     delay(500);
@@ -46,7 +46,7 @@ Check out the example folder for full, complete working examples. This section c
 
 ### Initialization
 
-```Arduino
+```C++
 #include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_ethernet.h"
@@ -84,7 +84,7 @@ void setup() {
 
 ### Log data
 [![Plotly-Arduino library graph](readme_images/logdata.png)](https://plot.ly/~chris/1727)
-```Arduino
+```C++
 int nTraces = 3;    // Assign data to 3 different plot traces
 int nPoints = 100;  // Send 100 points to each of these traces in each message to plotly
 plotly.open_stream(nPoints, nTraces, filename, layout);
@@ -101,7 +101,7 @@ After `plotly.post` is called `nTraces*nPoints` number of times, the connection 
 
 To transmit multiple chunks of data, just use the same filename. Plotly will automatically extend the existing traces with the new chunk of data.
 
-```Arduino
+```C++
 int nTraces = 2;
 int nPoints = 500;
 filename = "arduino data log";
@@ -126,7 +126,7 @@ void loop(){
 [![Plotly-Arduino library graph](readme_images/mslogdata.png)](https://plot.ly/~chris/1729)
 Graph timeseries of your data by attaching a `millis()` value to your data points. Also toggle `plotly.timestamp` to `true` and provide your `timezone`.
 
-```Arduino
+```C++
 void setup(){
   ...
   plotly.timestamp = true;
@@ -148,7 +148,7 @@ void loop(){
 **By providing a date-time formatted String or char array**
 
 Plotly date-time strings must be in the format `YYYY-MM-DD hh:mm:ss`, e.g. `"2013-12-04 14:05:50"`.
-```Arduino
+```C++
   [...]
   plotly.post("2013-12-04 14:05:50", analogRead(2));
   plotly.post("2013-12-04 14:15:50", analogRead(2));
@@ -159,7 +159,7 @@ Plotly date-time strings must be in the format `YYYY-MM-DD hh:mm:ss`, e.g. `"201
 Assign a plotly formatted JSON string to the `layout` argument of `plotly.openstream` to add a title, annotations, and  axes information. The JSON format of the `layout` argument can be found [here](https://plot.ly/api/rest).
 
 Here are some common options:
-```
+```C++
     char layout[] = "{\"title\": \"Home Temperature\"\}"; // add a title named Home Temperature
     char layout[] = "{\"xaxis\": {\"title\": \"Time\"}, \"yaxis\": {\"title\": \"Voltage\"}}"; // label the x-axis "Time" and the y-axis "Voltage"
 ```
