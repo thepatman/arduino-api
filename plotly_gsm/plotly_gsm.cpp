@@ -3,7 +3,7 @@
 
 #include <avr/dtostrf.h>
 #include plotly_gsm.h
-void plotly::plotly(){
+plotly::plotly(){
     width_ = 10;
     prec_ = 5;
     VERBOSE = true;
