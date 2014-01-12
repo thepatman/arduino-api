@@ -1,4 +1,6 @@
-// http://plot.ly/~public_arduino/14/
+// This example generates this graph: http://plot.ly/~public_arduino/14/
+// The Arduino IDE 1.0.5 library is known to have some problems with the <WiFi.h> library. 
+// Its recommended that you use the Arduino IDE 1.0.3 which you can download from here: http://arduino.cc/en/Main/OldSoftwareReleases
 
 #include <WiFi.h>
 #include <plotly_wifi.h>
