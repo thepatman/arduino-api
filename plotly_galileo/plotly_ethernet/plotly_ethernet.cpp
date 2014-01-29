@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include <SPI.h>
 #include <Ethernet.h>
-#include "plotly_galileo.h"
+#include "plotly_ethernet.h"
 
 #include <dtostrf.h>
 

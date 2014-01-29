@@ -9,7 +9,8 @@
 // Chris Parmer
 // chris@plot.ly
 // January 2014
-
+#ifndef dtostrf_h
+#define dtostrf_h
 #include <stdlib.h>
 
 void dtostrf(float value, int minwidth, int places, char * outstr) {    
@@ -102,3 +103,4 @@ void dtostrf(float value, int minwidth, int places, char * outstr) {
 
     outstr[c++] = '\0';
 }
+#endif
