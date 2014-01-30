@@ -98,8 +98,7 @@ void plotly::close_stream(){
       print_(timezone);
       print_("\"", 1);
       print_( ", \"sentTime\": ", 14 );
-      String sT = String(millis());
-      print_( sT );
+      print_( millis() );
       print_( "}", 1 );
     } else{
       print_( "}", 1);
@@ -166,9 +165,10 @@ void plotly::sendString_(int d){
 }
 void plotly::sendString_(unsigned long d){
   send_prepad_();
-  print_(String(d)); 
+  print_(d); 
   send_postpad_();
 }
+
 void plotly::print_(char *s, int nChar){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
@@ -192,7 +192,12 @@ void plotly::print_(String s){
 void plotly::print_(int s){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
-  nChar_ += intlen_(s);  
+  nChar_ += len_(s);  
+}
+void plotly::print_(unsigned long s){
+  if(VERBOSE){ Serial.print(s); }
+  if(!DRY_RUN) { client.print(s); }
+  nChar_ += len_(s);  
 }
 void plotly::println_(char *s, int nChar){
   if(VERBOSE){ Serial.println(s); }
@@ -204,13 +209,27 @@ void plotly::println_(unsigned long int s, int nChar){
   if(!DRY_RUN) { client.println(s); }
   nChar_ += nChar;
 }
-int plotly::intlen_(int i){
+int plotly::len_(int i){
   if(i > 9999) return 5;
   else if(i > 999) return 4;
   else if(i > 99) return 3;
   else if(i > 9) return 2;
   else return 1;
 }
+
+int plotly::len_(unsigned long i){
+  if(i > 999999999) return 10;
+  else if(i > 99999999) return 9;
+  else if(i > 9999999) return 8;
+  else if(i > 999999) return 7;
+  else if(i > 99999) return 6;
+  else if(i > 9999) return 5;
+  else if(i > 999) return 4;
+  else if(i > 99) return 3;
+  else if(i > 9) return 2;
+  else return 1;
+}
+
 void plotly::send_prepad_(){
   // print [[ or [ to the client if the start of the matrix or row 
   mi_ += 1;

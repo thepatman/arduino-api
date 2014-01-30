@@ -54,9 +54,12 @@ class plotly
 		void print_(String s, int nChar);
 		void print_(String s);
 		void print_(int s);
+		void print_(unsigned long s);
 
 		void println_(char *s, int nChar); 
 		void println_(unsigned int long, int nChar);
-		int intlen_(int i);
+
+		int len_(int i);
+		int len_(unsigned long i);		
 };
 #endif
