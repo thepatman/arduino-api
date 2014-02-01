@@ -25,6 +25,7 @@ class plotly
 		int maxStringLength;
 		bool VERBOSE;
 		bool DRY_RUN;
+		bool world_readable;		
 		bool timestamp;
 		char *timezone;
 		char *username;

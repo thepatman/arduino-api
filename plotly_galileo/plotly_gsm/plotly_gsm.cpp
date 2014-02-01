@@ -9,6 +9,7 @@
     DRY_RUN = true;
     maxStringLength = 0;
     layout = "{}";
+    world_readable = true;
     timestamp = false;
     timezone = "America/Montreal";
 }
@@ -25,7 +26,7 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
     else{
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
 
-                        char server[] = "plot.ly";
+      char server[] = "plot.ly";
       while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);
@@ -88,6 +89,10 @@ void plotly::close_stream(){
     print_( "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ", 53);    
 
     print_( layout );
+
+    if(!world_readable){
+        print_( ", \"world_readable\": false", 25);
+    }
 
     if(timestamp){
       print_( ", \"convertTimestamp\": true", 26 );

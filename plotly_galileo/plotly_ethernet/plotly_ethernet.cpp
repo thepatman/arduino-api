@@ -12,6 +12,7 @@ plotly::plotly(){
     DRY_RUN = true;
     maxStringLength = 0;
     layout = "{}";
+    world_readable = false;
     timestamp = false;
     timezone = "America/Montreal";
 }
@@ -91,6 +92,10 @@ void plotly::close_stream(){
     print_( "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ", 53);    
 
     print_( layout );
+
+    if(!world_readable){
+        print_( ", \"world_readable\": false", 25);
+    }
 
     if(timestamp){
       print_( ", \"convertTimestamp\": true", 26 );

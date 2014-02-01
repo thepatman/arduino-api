@@ -31,6 +31,7 @@ class plotly
 		bool VERBOSE;
 		bool DRY_RUN;
 		bool timestamp;
+		bool world_readable;
 		char *timezone;
 		char *username;
 		char *api_key;

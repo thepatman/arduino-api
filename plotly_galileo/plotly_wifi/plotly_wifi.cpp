@@ -13,6 +13,7 @@ plotly::plotly(){
     layout = "{}";
     timestamp = false;
     timezone = "America/Montreal";
+    world_readable = true;
 }
 
 void plotly::open_stream(int N, int M, char *filename_, char *layout){
@@ -89,6 +90,10 @@ void plotly::close_stream(){
     print_( "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ", 53);    
 
     print_( layout );
+
+    if(!world_readable){
+        print_( ", \"world_readable\": false", 25);
+    }
 
     if(timestamp){
       print_( ", \"convertTimestamp\": true", 26 );
