@@ -30,7 +30,7 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
 
       char server[] = "plot.ly";
-      while ( !client.connect(server, 80) ) {
+      while ( !client.connect(server, 443) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);
       }
