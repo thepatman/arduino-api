@@ -165,8 +165,7 @@ Here are some common options:
 ```
 You can also edit the style of graph inside the online tool. The data that is streamed should not affect the style of the graph. 
 
-### Limitations
-* Graphs are currently limited in graphing 20,000 points.
+### Contributing
 * This library exposes a subset of the features available through the REST protocol. If you want a new interface, submit a pull request!
 
 Contact
