@@ -168,6 +168,9 @@ You can also edit the style of graph inside the online tool. The data that is st
 ### Contributing
 * This library exposes a subset of the features available through the REST protocol. If you want a new interface, submit a pull request!
 
+### Troubleshooting
+* I found that Arduino's WiFi library doesn't work with the Arduino IDE 1.0.4 or 1.0.5. I use the Arduino IDE 1.0.3 with the WiFi library, downloaded here: [http://arduino.cc/en/Main/OldSoftwareReleases](http://arduino.cc/en/Main/OldSoftwareReleases)
+
 Contact
 ==
 - <chris@plot.ly>
