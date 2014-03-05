@@ -14,15 +14,11 @@ void setup() {
 
 }
 
-int i = 0;
-int y;
 void loop() {
 
-  y = analogRead(A0);
-  logger.plot(millis(), y);
+  logger.plot(millis(), analogRead(A0));
   delay(2000);
-  i++;
-
+  
 }
 
 
