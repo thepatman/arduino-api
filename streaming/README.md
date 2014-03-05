@@ -1,6 +1,6 @@
 ## super easy!
 
-```
+```C
 #include <plotly_wifi_streaming.h>
 
 void setup() {
@@ -12,7 +12,7 @@ void setup() {
   }
   wifi_connect();       // connect to wifi
 
-  logger.begin("seeetd4j75");
+  logger.begin("stream_token");
 
 }
 
