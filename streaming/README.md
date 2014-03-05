@@ -12,7 +12,7 @@ void setup() {
   wifi_connect();
 
   // initialize stream!
-  logger.begin(50); // 50: max number of points in plot
+  logger.begin(50); // 50: number of points to show in plot
 }
 
 void loop() {
