@@ -86,7 +86,7 @@ void plotly::begin(unsigned long maxpoints){
      * TODO: search for "All Streams Go!"
     */
 
-    Serial.print("\nConnecting to plotly's servers...");
+    if(VERBOSE) Serial.print("\nConnecting to plotly's servers...");
     char server[] = "stream.plot.ly"; //"10.0.1.116"; 
     int port = 80; // 8080;
     while ( !client.connect(server, port) ) {
