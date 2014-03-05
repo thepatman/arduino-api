@@ -14,8 +14,8 @@ plotly::plotly(){
 void plotly::begin(char *stream_token){
 
     Serial.print("Connecting to plotly's servers...");
-    char server[] = "10.0.1.116"; // "stream.plot.ly";
-    int port = 8080; // 80;
+    char server[] = "stream.plot.ly"; //"10.0.1.116"; 
+    int port = 80; // 8080;
     while ( !client.connect(server, port) ) {
         Serial.println("Couldn\'t connect to servers.... trying again!");
         delay(1000);
