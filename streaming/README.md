@@ -3,7 +3,7 @@
 ```C
 #include <plotly_wifi_streaming.h>
 
-plotly logger(username, api_key, stream_token, filename)
+plotly logger(username, api_key, stream_token, filename);
 
 void setup() {
 
