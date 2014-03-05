@@ -3,28 +3,24 @@
 ```
 #include <plotly_wifi_streaming.h>
 
+plotly logger(username, api_key, stream_token, filename)
+
 void setup() {
 
-  // Open serial communications and wait for port to open:
   Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
-  wifi_connect();       // connect to wifi
 
-  logger.begin("seeetd4j75");
+  wifi_connect();
+
+  // initialize stream!
+  logger.begin(50); // 50: max number of points in plot
 
 }
 
-int i = 0;
-int y;
+int x, y;
 void loop() {
-
-  y = analogRead(A0);
-  logger.plot(millis(), y);
-  delay(2000);
-  i++;
-
+  // giddyup!
+  logger.plot(millis(), analogRead(A0));
+  delay(100);
 }
 
 

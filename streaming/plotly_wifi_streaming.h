@@ -8,9 +8,9 @@
 class plotly
 {
     public:
-        plotly();
+        plotly(char *username, char *api_key, char *stream_token, char *filename);
         WiFiClient client;
-        void begin(char *stream_token);
+        void begin(unsigned long maxpoints);
         void stop();
         void jsonStart(int i);
         void jsonMiddle();
@@ -34,6 +34,11 @@ class plotly
         unsigned char floatPrec_;
         signed char floatWidth_;
 
+        char *username_;
+        char *api_key_;
+        char *stream_token_;
+        char *filename_;
+
         void print_(int d);
         void print_(float d);
         void print_(String d);
@@ -45,7 +50,6 @@ class plotly
         int len_(float i);
         int len_(char *i);
         int len_(String i);
-
 
 };
 #endif

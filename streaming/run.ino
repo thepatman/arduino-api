@@ -21,7 +21,8 @@ void wifi_connect(){
     }
 }
 
-plotly logger;
+// arguments: username, api key, streaming token, filename
+plotly logger("Streaming-Demos", "3yyglqsi85", "seeetd4j75", "mah file");
 
 void setup() {
 
@@ -32,17 +33,14 @@ void setup() {
   }
   wifi_connect();       // connect to wifi
 
-  logger.begin("seeetd4j75");
+  logger.begin(10);
 
 }
 
-int i = 0;
-int y;
+int x, y;
 void loop() {
-
+  x = millis();
   y = analogRead(A0);
-  logger.plot(millis(), y);
+  logger.plot(x, y);
   delay(2000);
-  i++;
-
 }
