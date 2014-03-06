@@ -1,5 +1,7 @@
-#include <WiFi.h>
+## Super easy!
 
+```C
+#include <WiFi.h>
 #include <plotly_wifi_streaming.h>
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -28,3 +30,4 @@ void loop() {
   logger.plot(x, y);
   delay(500);
 }
+```
