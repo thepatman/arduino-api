@@ -4,10 +4,6 @@
 #include <WiFi.h>
 #include <plotly_wifi_streaming.h>
 
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char ssid[] = ""; //  your network SSID (name) 
-char pass[] = ""; // // your network password
-
 // arguments: username, api key, streaming token, filename
 plotly logger(username, api_key, streaming_token, filename);
 
