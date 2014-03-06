@@ -21,9 +21,10 @@ void setup() {
 unsigned long x;
 int y;
 void loop() {
+  // now let's stream to plotly, giddyup!
   x = millis();
   y = analogRead(A0);
-  logger.plot(x, y);
+  logger.plot(x, y);    // plot (x, y) values
   delay(500);
 }
 ```
