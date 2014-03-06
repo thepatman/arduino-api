@@ -1,25 +1,30 @@
-## super easy!
+#include <WiFi.h>
 
-```C
 #include <plotly_wifi_streaming.h>
+
+int status = WL_IDLE_STATUS;     // the Wifi radio's status
+char ssid[] = ""; //  your network SSID (name) 
+char pass[] = ""; // // your network password
+
+// arguments: username, api key, streaming token, filename
+plotly logger(username, api_key, streaming_token, filename);
 
 void setup() {
 
-  // Open serial communications and wait for port to open:
   Serial.begin(9600);
 
-  wifi_connect();       // connect to wifi
+  wifi_connect();
 
-  logger.begin("stream_token");
+  // start connection to plotly's servers
+  logger.begin(50);     // show 50 points in the plot
 
 }
 
+unsigned long x;
+int y;
 void loop() {
-
-  logger.plot(millis(), analogRead(A0));
-  delay(2000);
-  
+  x = millis();
+  y = analogRead(A0);
+  logger.plot(x, y);
+  delay(500);
 }
-
-
-```
