@@ -3,21 +3,23 @@
 ```C
 #include <plotly_wifi_streaming.h>
 
-plotly logger(username, api_key, stream_token, filename)
-
 void setup() {
 
+  // Open serial communications and wait for port to open:
   Serial.begin(9600);
 
-  wifi_connect();
+  wifi_connect();       // connect to wifi
 
-  // initialize stream!
-  logger.begin(50); // 50: max number of points in plot
+  logger.begin("stream_token");
+
 }
 
 void loop() {
-  // giddyup!
+
   logger.plot(millis(), analogRead(A0));
-  delay(100);
+  delay(2000);
+  
 }
+
+
 ```

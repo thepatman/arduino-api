@@ -25,7 +25,7 @@ class plotly
         void plot(char *x, float y);
         void plot(String x, int y);
         void plot(String x, float y);
-        bool VERBOSE;
+        int LOG_LEVEL;
         bool DRY_RUN;
 
 

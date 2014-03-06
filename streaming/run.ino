@@ -3,21 +3,21 @@
 #include <plotly_wifi_streaming.h>
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char ssid[] = "StationC"; //  your network SSID (name) 
-char pass[] = "stationcgaspe"; // // your network password
+char ssid[] = ""; //  your network SSID (name) 
+char pass[] = ""; // // your network password
 
 void wifi_connect(){
     // attempt to connect using WPA2 encryption:
-    Serial.println("Attempting to connect to WPA network...");
+    Serial.println("... Attempting to connect to WPA network...");
     status = WiFi.begin(ssid, pass);
     // if you're not connected, stop here:
     if ( status != WL_CONNECTED) { 
-      Serial.println("Couldn't get a WiFi connection, trying again");
+      Serial.println("... Couldn't get a WiFi connection, trying again");
       wifi_connect();
     } 
     // if you are connected, print out info about the connection:
     else {
-      Serial.println("Connected to network");
+      Serial.println("... Connected to network");
     }
 }
 
@@ -33,14 +33,15 @@ void setup() {
   }
   wifi_connect();       // connect to wifi
 
-  logger.begin(10);
+  logger.begin(50);     // show 50 points in the plot
 
 }
 
-int x, y;
+unsigned long x;
+int y;
 void loop() {
   x = millis();
   y = analogRead(A0);
   logger.plot(x, y);
-  delay(2000);
+  delay(500);
 }
