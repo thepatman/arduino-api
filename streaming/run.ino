@@ -22,7 +22,7 @@ void wifi_connect(){
 }
 
 // arguments: username, api key, streaming token, filename
-plotly logger("Streaming-Demos", "3yyglqsi85", "seeetd4j75", "mah file");
+plotly logger(username, api key, streaming token, filename);
 
 void setup() {
 
