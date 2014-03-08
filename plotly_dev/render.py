@@ -5,18 +5,28 @@ import os
 
 destination_parent = '..'
 libs = ["wifi", "ethernet", "gsm", "cc3000"]
-files = ['./plotly.pre.cpp', './plotly.pre.h']
 
-for fn in files:
+meta = [
+    {'src': './plotly.pre.cpp', 'destination': '..', 'folder_prefix': 'plotly_'},
+    {'src': './plotly.pre.h', 'destination': '..', 'folder_prefix': 'plotly_'},
+    {'src': './simple.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
+    {'src': './date_strings.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
+    {'src': './auto_timestamp.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
+    {'src': './plotly_streaming.pre.cpp', 'destination': '../streaming', 'folder_prefix': 'plotly_'},
+    {'src': './plotly_streaming.pre.h', 'destination': '../streaming', 'folder_prefix': 'plotly_'},
+    {'src': './run_streaming.pre.ino', 'destination': '../streaming/examples', 'folder_prefix': ''},    
+]
+
+for m in meta:
     for lib in libs:
-        fout = ""
+        src = m['src']
         # Write file to a destination folder
-        directory = destination_parent+'/plotly_'+lib.lower()
+        directory = m['destination']+'/'+m['folder_prefix']+lib.lower()
         if not os.path.exists(directory):
             os.makedirs(directory)
-        fout = open(directory+'/'+fn.replace('.pre', '_'+lib.lower()), 'w')
+        fout = open(directory+'/'+src.replace('.pre', '_'+lib.lower()), 'w')
 
-        mytemplate = Template(filename=fn)
+        mytemplate = Template(filename=src)
         ctx = Context(fout, lib=lib)
         mytemplate.render_context(ctx)
         fout.close()

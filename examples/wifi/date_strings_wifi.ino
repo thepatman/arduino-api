@@ -1,12 +1,11 @@
 // An example of how to format strings to be interpreted as dates.
 // This example generated this graph: http://plot.ly/~public_arduino/16/
 
-// Note: 
 // The Arduino IDE 1.0.5 library is known to have some problems with the <WiFi.h> library. 
-// Its recommended that you use the Arduino IDE 1.0.3 which you can download from here: http://arduino.cc/en/Main/OldSoftwareReleases
+// It's recommended that you use the Arduino IDE 1.0.3 which you can download from here: http://arduino.cc/en/Main/OldSoftwareReleases
 
 #include <WiFi.h>
-#include <plotly_wifi.h>
+#include "plotly_wifi.h"
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 char ssid[] = "wifi_network_name"; //  your network SSID (name) 
@@ -34,8 +33,8 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
-  wifi_connect();       // connect to wifi
-  
+  wifi_connect();
+
   plotly plotly;
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers

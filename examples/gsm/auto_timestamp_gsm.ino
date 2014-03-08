@@ -4,33 +4,23 @@
 // into a human-readable date-formatted graph
 // This example made this graph: http://plot.ly/~public_arduino/18/
 
-#include <SPI.h>
-#include <Ethernet.h>
-#include "plotly_ethernet.h"
 
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // doesn't really matter
-byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
+#include <GSM.h>
+#include "plotly_gsm.h"
 
-void startEthernet(){
-    Serial.println("Initializing ethernet");
-    if(Ethernet.begin(mac) == 0){
-        Serial.println("Failed to configure Ethernet using DHCP");
-        // no point in carrying on, so do nothing forevermore:
-        // try to congifure using IP address instead of DHCP:
-        Ethernet.begin(mac, my_ip);
-    }
-    Serial.println("Done initializing ethernet");
-    delay(1000);
+void gsm_connect(){
+  // ...
 }
 
 void setup() {
+
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
-  startEthernet();    // initialize ethernet
-  
+  gsm_connect();
+
   plotly plotly; // initialize a plotly object, named plotly
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers
@@ -58,6 +48,7 @@ void setup() {
   // after sending nPoints, the call to plotly is implicitly finished,
   // your data is saved and rendered as a graph in your plotly account and at a unique url
   while(true) { ; }
+
 }
 
 void loop() {

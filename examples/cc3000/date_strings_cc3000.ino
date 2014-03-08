@@ -1,32 +1,55 @@
-// http://plot.ly/~public_arduino/16/
+// An example of how to format strings to be interpreted as dates.
+// This example generated this graph: http://plot.ly/~public_arduino/16/
 
+
+#include <Adafruit_CC3000.h>
+#include <ccspi.h>
 #include <SPI.h>
-#include <Ethernet.h>
-#include "plotly_ethernet.h"
+#include <string.h>
+#include "utility/debug.h"
+#include <plotly_cc3000.h>
 
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // doesn't really matter
-byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
+#define WLAN_SSID       "yourSSID"
+#define WLAN_PASS       "yourPassword"
+#define WLAN_SECURITY   WLAN_SEC_WPA2
 
-void startEthernet(){
-    Serial.println("Initializing ethernet");
-    if(Ethernet.begin(mac) == 0){
-        Serial.println("Failed to configure Ethernet using DHCP");
-        // no point in carrying on, so do nothing forevermore:
-        // try to congifure using IP address instead of DHCP:
-        Ethernet.begin(mac, my_ip);
-    }
-    Serial.println("Done initializing ethernet");
-    delay(1000);
+void wifi_connect(){
+  /* Initialise the module */
+  Serial.println(F("\nInitializing..."));
+  if (!plotly.cc3000.begin())
+  {
+    Serial.println(F("Couldn't begin()! Check your wiring?"));
+    while(1);
+  }
+  
+  // Optional SSID scan
+  // listSSIDResults();
+  
+  if (!plotly.cc3000.connectToAP(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
+    Serial.println(F("Failed!"));
+    while(1);
+  }
+   
+  Serial.println(F("Connected!"));
+  
+  /* Wait for DHCP to complete */
+  Serial.println(F("Request DHCP"));
+  while (!plotly.cc3000.checkDHCP())
+  {
+    delay(100); // ToDo: Insert a DHCP timeout!
+  }
 }
 
+
 void setup() {
+
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
-  startEthernet();    // initialize ethernet
-  
+  wifi_connect();
+
   plotly plotly;
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers

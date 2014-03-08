@@ -4,31 +4,26 @@
 // into a human-readable date-formatted graph
 // This example made this graph: http://plot.ly/~public_arduino/18/
 
-// The Arduino IDE 1.0.5 library is known to have some problems with the <WiFi.h> library. 
-// Its recommended that you use the Arduino IDE 1.0.3 which you can download from here: http://arduino.cc/en/Main/OldSoftwareReleases
 
+#include <SPI.h>
+#include <Ethernet.h>
+#include "plotly_ethernet.h"
 
-#include <WiFi.h>
-#include <plotly_wifi.h>
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
 
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char ssid[] = "wifi_network_name"; //  your network SSID (name) 
-char pass[] = "wifi_password"; // // your network password
-
-void wifi_connect(){
-    // attempt to connect using WPA2 encryption:
-    Serial.println("Attempting to connect to WPA network...");
-    status = WiFi.begin(ssid, pass);
-    // if you're not connected, stop here:
-    if ( status != WL_CONNECTED) { 
-      Serial.println("Couldn't get a WiFi connection");
-      while(true);
-    } 
-    // if you are connected, print out info about the connection:
-    else {
-      Serial.println("Connected to network");
+void startEthernet(){
+    Serial.println("Initializing ethernet");
+    if(Ethernet.begin(mac) == 0){
+        Serial.println("Failed to configure Ethernet using DHCP");
+        // no point in carrying on, so do nothing forevermore:
+        // try to congifure using IP address instead of DHCP:
+        Ethernet.begin(mac, my_ip);
     }
+    Serial.println("Done initializing ethernet");
+    delay(1000);
 }
+
 
 void setup() {
 
@@ -37,8 +32,8 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
-  wifi_connect();       // connect to wifi
-  
+  startEthernet();
+
   plotly plotly; // initialize a plotly object, named plotly
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers
@@ -66,6 +61,7 @@ void setup() {
   // after sending nPoints, the call to plotly is implicitly finished,
   // your data is saved and rendered as a graph in your plotly account and at a unique url
   while(true) { ; }
+
 }
 
 void loop() {
