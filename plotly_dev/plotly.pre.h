@@ -1,61 +1,48 @@
-#ifdef ETHERNET
+% if lib=="ethernet":
 #ifndef plotly_ethernet_h
 #define plotly_ethernet_h
-#endif
-#ifdef WIFI
+% elif lib=="wifi":
 #ifndef plotly_wifi_h
 #define plotly_wifi_h
-#endif
-#ifdef CC3000
+% elif lib=="cc3000":
 #ifndef plotly_cc3000_h
 #define plotly_cc3000_h
-#endif
-#ifdef GSM
+% elif lib=="gsm":
 #ifndef plotly_GSM_h
 #define plotly_GSM_h
-#endif
+% endif
 
 #include "Arduino.h"
 
-#ifdef ETHERNET
+% if lib=="ethernet":
 #include <SPI.h>
 #include <Ethernet.h>
-#include "plotly_ethernet.h"
-#endif
-#ifdef WIFI
+% elif lib=="wifi":
 #include <WiFi.h>
-#include "plotly_wifi.h"
-#endif
-#ifdef CC3000
+% elif lib=="cc3000":
 #include <Adafruit_CC3000.h>
 #include <ccspi.h>
 #include <SPI.h>
 #include <string.h>
 #include "utility/debug.h"
-#include "plotly_cc3300.h"
-#endif
-#ifdef GSM
+% elif lib=="gsm":
 #include <GSM.h>
-#include "plotly_gsm.h"
-#endif
+% endif
 
 class plotly
 {
 	public:
 		plotly();
-		#ifdef ETHERNET
+		% if lib=="ethernet":
         EthernetClient client;
-        #endif
-        #ifdef WIFI
+		% elif lib=="wifi":
 		WiFiClient client;
-		#endif
-		#ifdef CC3000
+		% elif lib=="cc3000":
         Adafruit_CC3000 cc3000;
         Adafruit_CC3000_Client client;
-        #endif
-        #ifdef GSM
+		% elif lib=="gsm":
         GSMClient client;
-        #endif
+        % endif
 		void open_stream(int N, int M, char *filename, char* layout);
 		void post(int x, int y);
 		void post(int x, float y);
@@ -78,6 +65,7 @@ class plotly
 		char *api_key;
 		char *layout;
 		char *filename;
+
 	private:
 		int M_;	 	// number of traces * 2
 		int mi_; 	// counter of M_
@@ -100,9 +88,11 @@ class plotly
 		void print_(String s, int nChar);
 		void print_(String s);
 		void print_(int s);
+		void print_(unsigned long s);
 
 		void println_(char *s, int nChar); 
 		void println_(unsigned int long, int nChar);
-		int intlen_(int i);
+		int len_(int i);
+		int len_(unsigned long i);		
 };
 #endif

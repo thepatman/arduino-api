@@ -11,6 +11,7 @@ plotly::plotly(){
     DRY_RUN = true;
     maxStringLength = 0;
     layout = "{}";
+    world_readable = true;
     timestamp = false;
     timezone = "America/Montreal";
 }
@@ -26,6 +27,7 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
     if(DRY_RUN){ Serial.println("This is a dry run, we are not connecting to plotly's servers..."); }
     else{
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
+
       char server[] = "plot.ly";
       while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
@@ -90,14 +92,17 @@ void plotly::close_stream(){
 
     print_( layout );
 
+    if(!world_readable){
+        print_( ", \"world_readable\": false", 25);
+    }
+
     if(timestamp){
       print_( ", \"convertTimestamp\": true", 26 );
       print_( ", \"timezone\": \"", 15 );
       print_(timezone);
       print_("\"", 1);
       print_( ", \"sentTime\": ", 14 );
-      String sT = String(millis());
-      print_( sT );
+      print_( millis() );
       print_( "}", 1 );
     } else{
       print_( "}", 1);
@@ -123,7 +128,7 @@ void plotly::close_stream(){
             }
         }
         client.stop();
-    }    
+    }
     return;
 }
 
@@ -164,7 +169,7 @@ void plotly::sendString_(int d){
 }
 void plotly::sendString_(unsigned long d){
   send_prepad_();
-  print_(String(d)); 
+  print_(d); 
   send_postpad_();
 }
 void plotly::print_(char *s, int nChar){
@@ -190,7 +195,12 @@ void plotly::print_(String s){
 void plotly::print_(int s){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
-  nChar_ += intlen_(s);  
+  nChar_ += len_(s);  
+}
+void plotly::print_(unsigned long s){
+  if(VERBOSE){ Serial.print(s); }
+  if(!DRY_RUN) { client.print(s); }
+  nChar_ += len_(s);
 }
 void plotly::println_(char *s, int nChar){
   if(VERBOSE){ Serial.println(s); }
@@ -202,8 +212,20 @@ void plotly::println_(unsigned long int s, int nChar){
   if(!DRY_RUN) { client.println(s); }
   nChar_ += nChar;
 }
-int plotly::intlen_(int i){
+int plotly::len_(int i){
   if(i > 9999) return 5;
+  else if(i > 999) return 4;
+  else if(i > 99) return 3;
+  else if(i > 9) return 2;
+  else return 1;
+}
+int plotly::len_(unsigned long i){
+  if(i > 999999999) return 10;
+  else if(i > 99999999) return 9;
+  else if(i > 9999999) return 8;
+  else if(i > 999999) return 7;
+  else if(i > 99999) return 6;
+  else if(i > 9999) return 5;
   else if(i > 999) return 4;
   else if(i > 99) return 3;
   else if(i > 9) return 2;

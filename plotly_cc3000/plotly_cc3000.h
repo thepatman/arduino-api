@@ -13,7 +13,7 @@ class plotly
 {
 	public:
 		plotly();
-		Adafruit_CC3000 cc3000;
+        Adafruit_CC3000 cc3000;
         Adafruit_CC3000_Client client;
 		void open_stream(int N, int M, char *filename, char* layout);
 		void post(int x, int y);
@@ -30,13 +30,14 @@ class plotly
 		int maxStringLength;
 		bool VERBOSE;
 		bool DRY_RUN;
-		bool timestamp;
 		bool world_readable;
+		bool timestamp;
 		char *timezone;
 		char *username;
 		char *api_key;
 		char *layout;
 		char *filename;
+
 	private:
 		int M_;	 	// number of traces * 2
 		int mi_; 	// counter of M_
@@ -59,9 +60,11 @@ class plotly
 		void print_(String s, int nChar);
 		void print_(String s);
 		void print_(int s);
+		void print_(unsigned long s);
 
 		void println_(char *s, int nChar); 
 		void println_(unsigned int long, int nChar);
-		int intlen_(int i);
+		int len_(int i);
+		int len_(unsigned long i);		
 };
 #endif

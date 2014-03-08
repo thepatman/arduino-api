@@ -1,14 +1,12 @@
 #include "Arduino.h"
-#ifdef ETHERNET
+% if lib=="ethernet":
 #include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_ethernet.h"
-#endif
-#ifdef WIFI
+% elif lib=="wifi":
 #include <WiFi.h>
 #include "plotly_wifi.h"
-#endif
-#ifdef CC3000
+% elif lib=="cc3000":
 #include <Adafruit_CC3000.h>
 #include <ccspi.h>
 #include <SPI.h>
@@ -18,34 +16,26 @@
 #define ADAFRUIT_CC3000_VBAT  5
 #define ADAFRUIT_CC3000_CS    10
 #include "plotly_cc3000.h"
-#endif
-#ifdef GSM
+% elif lib=="gsm":
 #include <GSM.h>
 #include "plotly_gsm.h"
-#endif
+% endif
 
 #include <avr/dtostrf.h>
 
-#ifdef ETHERNET
+% if lib !="cc3000":
 plotly::plotly(){
-#endif
-#ifdef WIFI
-plotly::plotly(){
-#endif
-#ifdef CC3000
+% else:
 plotly::plotly()
   : cc3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,SPI_CLOCK_DIV2){
-#endif
-#ifdef GSM
-plotly::plotly(){
-#endif
+% endif
     width_ = 10;
     prec_ = 5;
     VERBOSE = true;
     DRY_RUN = true;
     maxStringLength = 0;
     layout = "{}";
-    world_readable = false;
+    world_readable = true;
     timestamp = false;
     timezone = "America/Montreal";
 }
@@ -62,28 +52,13 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
     else{
       if(VERBOSE) { Serial.println("Attempting to connect to plotly's servers..."); }
 
-      #ifdef WIFI
+      % if lib!="cc3000":
       char server[] = "plot.ly";
       while ( !client.connect(server, 80) ) {
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);
       }
-      #endif
-      #ifdef ETHERNET
-      char server[] = "plot.ly";
-      while ( !client.connect(server, 80) ) {
-        if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
-        delay(1000);
-      }
-      #endif
-      #ifdef GSM
-      char server[] = "plot.ly";
-      while ( !client.connect(server, 80) ) {
-        if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
-        delay(1000);
-      }
-      #endif
-      #ifdef CC3000
+      % else:
       #define WEBSITE "plot.ly"
       uint32_t ip = 0;
       
@@ -101,7 +76,7 @@ void plotly::open_stream(int N, int M, char *filename_, char *layout){
         if(VERBOSE){ Serial.println("Couldn\'t connect to servers.... trying again!"); }
         delay(1000);
       }
-      #endif
+      % endif
     }
     if(VERBOSE) Serial.println("Connected to plotly's servers");
     if(VERBOSE) Serial.println("\n== Sending HTTP Post to plotly ==");
@@ -171,8 +146,7 @@ void plotly::close_stream(){
       print_(timezone);
       print_("\"", 1);
       print_( ", \"sentTime\": ", 14 );
-      String sT = String(millis());
-      print_( sT );
+      print_( millis() );
       print_( "}", 1 );
     } else{
       print_( "}", 1);
@@ -197,18 +171,11 @@ void plotly::close_stream(){
                 Serial.print(c);            
             }
         }
-        #ifdef WIFI
+        % if lib != "cc3000":
         client.stop();
-        #endif
-        #ifdef ETHERNET
-        client.stop();
-        #endif
-        #ifdef CC3000
+        % else:
         client.close();
-        #endif
-        #ifdef GSM
-        client.close();
-        #endif        
+        % endif
     }
     return;
 }
@@ -250,7 +217,7 @@ void plotly::sendString_(int d){
 }
 void plotly::sendString_(unsigned long d){
   send_prepad_();
-  print_(String(d)); 
+  print_(d); 
   send_postpad_();
 }
 void plotly::print_(char *s, int nChar){
@@ -276,7 +243,12 @@ void plotly::print_(String s){
 void plotly::print_(int s){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
-  nChar_ += intlen_(s);  
+  nChar_ += len_(s);  
+}
+void plotly::print_(unsigned long s){
+  if(VERBOSE){ Serial.print(s); }
+  if(!DRY_RUN) { client.print(s); }
+  nChar_ += len_(s);
 }
 void plotly::println_(char *s, int nChar){
   if(VERBOSE){ Serial.println(s); }
@@ -288,8 +260,20 @@ void plotly::println_(unsigned long int s, int nChar){
   if(!DRY_RUN) { client.println(s); }
   nChar_ += nChar;
 }
-int plotly::intlen_(int i){
+int plotly::len_(int i){
   if(i > 9999) return 5;
+  else if(i > 999) return 4;
+  else if(i > 99) return 3;
+  else if(i > 9) return 2;
+  else return 1;
+}
+int plotly::len_(unsigned long i){
+  if(i > 999999999) return 10;
+  else if(i > 99999999) return 9;
+  else if(i > 9999999) return 8;
+  else if(i > 999999) return 7;
+  else if(i > 99999) return 6;
+  else if(i > 9999) return 5;
   else if(i > 999) return 4;
   else if(i > 99) return 3;
   else if(i > 9) return 2;

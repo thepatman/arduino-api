@@ -92,7 +92,7 @@ void plotly::close_stream(){
     print_( "\", \"fileopt\": \"extend\", \"transpose\": true, \"layout\": ", 53);    
 
     print_( layout );
-    
+
     if(!world_readable){
         print_( ", \"world_readable\": false", 25);
     }
@@ -129,7 +129,7 @@ void plotly::close_stream(){
             }
         }
         client.stop();
-    }    
+    }
     return;
 }
 
@@ -173,7 +173,6 @@ void plotly::sendString_(unsigned long d){
   print_(d); 
   send_postpad_();
 }
-
 void plotly::print_(char *s, int nChar){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
@@ -202,7 +201,7 @@ void plotly::print_(int s){
 void plotly::print_(unsigned long s){
   if(VERBOSE){ Serial.print(s); }
   if(!DRY_RUN) { client.print(s); }
-  nChar_ += len_(s);  
+  nChar_ += len_(s);
 }
 void plotly::println_(char *s, int nChar){
   if(VERBOSE){ Serial.println(s); }
@@ -221,7 +220,6 @@ int plotly::len_(int i){
   else if(i > 9) return 2;
   else return 1;
 }
-
 int plotly::len_(unsigned long i){
   if(i > 999999999) return 10;
   else if(i > 99999999) return 9;
@@ -234,7 +232,6 @@ int plotly::len_(unsigned long i){
   else if(i > 9) return 2;
   else return 1;
 }
-
 void plotly::send_prepad_(){
   // print [[ or [ to the client if the start of the matrix or row 
   mi_ += 1;

@@ -10,8 +10,8 @@ class plotly
 {
 	public:
 		plotly();
-		EthernetClient client;
-        void open_stream(int N, int M, char *filename, char* layout);
+        EthernetClient client;
+		void open_stream(int N, int M, char *filename, char* layout);
 		void post(int x, int y);
 		void post(int x, float y);
 		void post(unsigned long x, int y);
@@ -33,6 +33,7 @@ class plotly
 		char *api_key;
 		char *layout;
 		char *filename;
+
 	private:
 		int M_;	 	// number of traces * 2
 		int mi_; 	// counter of M_
@@ -59,7 +60,6 @@ class plotly
 
 		void println_(char *s, int nChar); 
 		void println_(unsigned int long, int nChar);
-
 		int len_(int i);
 		int len_(unsigned long i);		
 };
