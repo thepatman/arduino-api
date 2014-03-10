@@ -1,3 +1,6 @@
+[![Mock Signal Data](readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
+
+
 # Setup
 
 #### Connect your Yún to wifi
