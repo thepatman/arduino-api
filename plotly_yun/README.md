@@ -1,5 +1,8 @@
 [![Mock Signal Data](https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
 
+# Status
+Basic functionality, through the setup below, works! I'm just cleaning up the interface, setting up some better error handling, setting it up as a reliable background process.
+
 
 # Setup
 
