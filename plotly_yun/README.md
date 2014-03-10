@@ -10,11 +10,19 @@ You know the drill:
  - Your *case-sensitive* network name is correct
 4. Connect to your old network, go to `arduino.local` in your browser. If your browser can't find it, go back to step 1!
 
-#### Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
-1. Load up run.ino from this folder
-2. Make sure that your IDE has selected `Arduino Yun` and the remote port:
-![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
-3. Freeze
+#### Update the `config.json` file with your plotly credentials
+1. Download this folder
+2. Sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu)
+3. Find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings)
+4. Open up `config.json` from this folder and add your username, API key, and stream token to the file. It'll look something like:
+```
+{
+  "plotly_username": "anna.lyst",
+  "plotly_api_key": "ab4kftunvd",
+  "plotly_streaming_tokens": ["ab4kf5nfdn"]
+}
+```
+(those are fake keys and tokens, so don't try to use them, they won't work!)
 
 #### Copy a ton of files over to the Linino
 1. Download this folder
@@ -31,6 +39,7 @@ YunMessenger		run.ino			run_background.py
 $ scp -r * root@arduino.local:/root/
 ```
 a TON of stuff will print out, don't worry!
+
 #### Cruise into the Linino, install some stuff, start listening for the Arduino
 1. SSH into your Linino:
 ```bash
@@ -59,7 +68,13 @@ Configuring python-openssl.
 root@Arduino:~# python run.py
 ```
 
-#### Run the Arduino program, and watch your graph update in real time!
+#### Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
+1. Load up run.ino from this folder
+2. Make sure that your IDE has selected `Arduino Yun` and the remote port:
+![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
+3. Upload the program!
+4. Check out the Linino terminal that you ssh'd into for status updates and error messages
+5. Watch your plotly graph update in real-time!
 
 # How does it work?
 
