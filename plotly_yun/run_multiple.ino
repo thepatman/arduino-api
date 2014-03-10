@@ -21,6 +21,7 @@ void setup() {
 
 void loop() { 
 
+    // Write to the plotly_0 subscriber, analogRead(A0)
     Console.print(char(29));
     Console.print("plotly_0");
     Console.print(char(30));
@@ -31,9 +32,8 @@ void loop() {
     Console.print("}");
     Console.print(char(31));
     Console.flush();
-    delay(100);
-    
-    
+
+    // Write to the plotly_1 subscriber, analogRead(A1)
     Console.print(char(29));
     Console.print("plotly_1");
     Console.print(char(30));
