@@ -1,4 +1,4 @@
-[![Mock Signal Data](readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
+[![Mock Signal Data](https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
 
 
 # Setup
