@@ -20,9 +20,9 @@ You know the drill:
 4. Open up `config.json` from this folder and add your username, API key, and stream token to the file. It'll look something like:
  ```
  {
-   "plotly_username": "anna.lyst",
-   "plotly_api_key": "ab4kftunvd",
-   "plotly_streaming_tokens": ["ab4kf5nfdn"]
+    "plotly_username": "anna.lyst",
+    "plotly_api_key": "ab4kftunvd",
+    "plotly_streaming_tokens": ["ab4kf5nfdn"]
  }
  ```
 
