@@ -47,7 +47,7 @@ while (!Console) {
 }
 
 Console.print(char(29)); // indicate the start of the subscriber name
-Console.print('plotly'); // the name of the subscriber
+Console.print("plotly"); // the name of the subscriber
 Console.print(char(30)); // indicates the start of the message
 Console.print("{\"x\": 1, \"y\": 10}"); // the message (in this case a plotly formatted JSON object)
 Console.print(char(31)); // indicates the end of the message
