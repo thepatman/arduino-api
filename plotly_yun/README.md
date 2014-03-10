@@ -81,6 +81,7 @@ You know the drill:
    ```bash
    root@Arduino:~# python run.py
    ```
+
 5. Check out the Linino terminal that you ssh'd into for status updates and error messages
 6. Watch your plotly graph update in real-time!
 
