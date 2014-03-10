@@ -38,8 +38,8 @@ $ ssh root@arduino.local
 ```
 2. Install `python-openssl` so that you can chat to plotly securely:
 ```bash
-# opkg update
-# opkg install python-openssl
+root@Arduino:~# opkg update
+root@Arduino:~# opkg install python-openssl
 ```
 with outputs, it'll look like:
 ```bash
@@ -56,7 +56,7 @@ Configuring python-openssl.
 ```
 3. Run the python program `run.py` and wait
 ```bash
-# python run.py
+root@Arduino:~# python run.py
 ```
 
 #### Run the Arduino program, and watch your graph update in real time!
