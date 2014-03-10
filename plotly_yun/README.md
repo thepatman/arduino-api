@@ -53,9 +53,7 @@ Console.print("{\"x\": 1, \"y\": 10}"); // the message (in this case a plotly fo
 Console.print(char(31)); // indicates the end of the message
 ```
 
-On the Linino, it's abstracted to:
-
-One of these subscribers is a socket to plotly's streaming servers, at `stream.plot.ly`:
+One of these subscribers is a socket to plotly's streaming servers, at `stream.plot.ly`. On the Linino side, the YunMessenger abstracts handling this communication to something like:
 
 ```python
 from YunMessenger import Console
