@@ -25,8 +25,7 @@ You know the drill:
 (those are fake keys and tokens, so don't try to use them, they won't work!)
 
 #### Copy a ton of files over to the Linino
-1. Download this folder
-2. Open up your computer's terminal and move to where you downloaded this folder:
+1. Open up your computer's terminal and move to where you downloaded this folder:
 ```bash
 $ cd ~/Downloads/plotly_yun
 $ ls
@@ -34,7 +33,7 @@ Arduino			plotly			run.py
 README.md		requests		run2.ino
 YunMessenger		run.ino			run_background.py
 ```
-3. Copy all of these files onto your arduino
+2. Copy all of these files onto your arduino
 ```bash
 $ scp -r * root@arduino.local:/root/
 ```
