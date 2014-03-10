@@ -1,23 +1,47 @@
-### In progress!
+# Setup
 
+#### Connect your Yún to wifi
+You know the drill:
 
-### Setup
+1. Reset the WiFi chip: hold down the WLAN button for like 10 seconds (probably multiple times) until Arduin Yun-XXXX comes up as a network
+2. Connect to that network, enter `arduino.local` into your browser
+3. Configure the network, making sure that:
+ - Your encryption (WPA, WPA2, WEP) is correct
+ - Your *case-sensitive* network name is correct
+4. Connect to your old network, go to `arduino.local` in your browser. If your browser can't find it, go back to step 1!
 
-scp this folder over
-```
-$ scp -r * root@10.0.1.190:/root/
-```
+#### Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
+1. Load up run.ino from this folder
+2. Make sure that your IDE has selected `Arduino Yun` and the remote port:
+![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
+3. Freeze
 
-ssh in
+#### Copy a ton of files over to the Linino
+1. Download this folder
+2. Open up your computer's terminal and move to where you downloaded this folder:
 ```bash
-$ ssh root@10.0.1.190
+$ cd ~/Downloads/plotly_yun
+$ ls
+Arduino			plotly			run.py
+README.md		requests		run2.ino
+YunMessenger		run.ino			run_background.py
 ```
-SSL
+3. Copy all of these files onto your arduino
 ```bash
-$ opkg update
-$ opkg install python-openssl
+$ scp -r * root@arduino.local:/root/
 ```
-with outputs:
+a TON of stuff will print out, don't worry!
+#### Cruise into the Linino, install some stuff, start listening for the Arduino
+1. SSH into your Linino:
+```bash
+$ ssh root@arduino.local
+```
+2. Install `python-openssl` so that you can chat to plotly securely:
+```bash
+# opkg update
+# opkg install python-openssl
+```
+with outputs, it'll look like:
 ```bash
 root@Arduino:~# opkg update
 Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.gz.
@@ -30,8 +54,14 @@ Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//pyth
 Configuring python-openssl.
 
 ```
+3. Run the python program `run.py` and wait
+```bash
+# python run.py
+```
 
-### How does it work?
+#### Run the Arduino program, and watch your graph update in real time!
+
+# How does it work?
 
 The Arduino microcontroller (ATmega32u4) sends data to the Linino over the `bridge` with the [YunMessenger](https://github.com/plotly/YunMessenger) library. The `bridge` is just a TCP connection over port `6571` on `localhost` and the `YunMessenger` library formalizes communication over that socket and allows multiple subscribers to listen to messages coming from the Arduino (the 32u4).
 
@@ -81,9 +111,12 @@ c.run()
 
 ```
 
+# Contact!
+- <chris@plot.ly>
+- [@plotlygraphs](https://twitter.com/plotlygraphs)
 
 
-### Troubleshooting
+# Troubleshooting
 - Connecting the yun to WiFi has no error handling. It can fail silently while attempting to connect to a network, so double check your encryption and your network name. Also, network names are case-senstive and sometimes the Arduino will default to connecting to the lower-case version of your network.
 - If you've connected multiple arduino yun's, you won't be able to connect with `arduino.local`. Instead, connect with each device's IP address
 - Use the latest Arduino IDE (1.5.6 -r2)
@@ -95,9 +128,3 @@ while (!Console) {
   ; // wait for Console port to connect.
 }
 ```
-!!
-
-
-### Contact!
-- <chris@plot.ly>
-- [@plotlygraphs](https://twitter.com/plotlygraphs)
