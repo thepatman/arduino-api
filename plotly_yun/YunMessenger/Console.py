@@ -67,6 +67,7 @@ class Console(object):
                     self.onMessage(publish_route, msg)
                 except Exception:
                     error_msg = "issue sending message, route: " + publish_route + "\n"
+                    self.log(traceback.format_exc())
                     self.log(error_msg)
 
             self.msg_buffer = ""

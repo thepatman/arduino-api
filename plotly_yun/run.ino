@@ -4,26 +4,19 @@
 
 void setup() { 
 
-    // start the serial port
-    Serial.begin(57600);
-
-    // for debugging, wait until a serial console is connected
-    delay(4000);
-    while (!Serial) { ; }
 
     // start-up the bridge
     Bridge.begin();
 
     delay(2000);
     Console.begin();
+    while (!Console) {
+      ; // wait for Console port to connect.
+    }
+    
     Console.buffer(64);
     delay(2000);    
-    Console.print(char(29));
-    Console.print("plotly");
-    Console.print(char(30));
-    Console.print("{\"x\": 5, \"y\": 5}");
-    Console.print(char(31));
-    Console.flush();
+
 
     /*
     YunMessenger ym;
@@ -33,4 +26,18 @@ void setup() {
 
 
 void loop() { 
+
+
+    Console.print(char(29));
+    Console.print("plotly");
+    Console.print(char(30));
+    Console.print("{\"x\": ");
+    Console.print(millis());
+    Console.print(", \"y\": ");
+    Console.print(analogRead(A0));
+    Console.print("}");
+    Console.print(char(31));
+    Console.flush();
+    delay(100);
+
 }

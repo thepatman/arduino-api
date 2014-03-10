@@ -5,7 +5,7 @@ import json
 def streamz(msg):
     print msg
     s = plotly.stream('954epeiyvz')
-    s.write(json.parse(msg))
+    s.write(json.loads(msg))
 
 c = Console.Console()
 c.onMessage['plotly'] = streamz
