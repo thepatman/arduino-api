@@ -85,7 +85,7 @@ c.run()
 
 ### Troubleshooting
 - Connecting the yun to WiFi has no error handling. It can fail silently while attempting to connect to a network, so double check your encryption and your network name. Also, network names are case-senstive and sometimes the Arduino will default to connecting to the lower-case version of your network.
-- If you've connected multiple arduino yun's, you won't be able to connect with `arduino.local`. Instead, connect with the devices IP address
+- If you've connected multiple arduino yun's, you won't be able to connect with `arduino.local`. Instead, connect with each device's IP address
 - Use the latest Arduino IDE (1.5.6 -r2)
 - Reseting the network ("hold down the wifi button for > 5 seconds") often requires several tries!
 - To verify that the python client on the Linino is ready to recieve commands, run `$ telnet localhost 6571`
