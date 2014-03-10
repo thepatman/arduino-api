@@ -16,17 +16,10 @@ void setup() {
     
     Console.buffer(64);
     delay(2000);    
-
-
-    /*
-    YunMessenger ym;
-    ym.send("plotly", "{\"x\": 5, \"y\": 5}");
-    */
 } 
 
 
 void loop() { 
-
 
     Console.print(char(29));
     Console.print("plotly");
