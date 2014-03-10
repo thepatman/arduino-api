@@ -15,57 +15,60 @@ You know the drill:
 2. Sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu)
 3. Find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings)
 4. Open up `config.json` from this folder and add your username, API key, and stream token to the file. It'll look something like:
-```
-{
-  "plotly_username": "anna.lyst",
-  "plotly_api_key": "ab4kftunvd",
-  "plotly_streaming_tokens": ["ab4kf5nfdn"]
-}
-```
-(those are fake keys and tokens, so don't try to use them, they won't work!)
+ ```
+ {
+   "plotly_username": "anna.lyst",
+   "plotly_api_key": "ab4kftunvd",
+   "plotly_streaming_tokens": ["ab4kf5nfdn"]
+ }
+ ```
+
+ (those are fake keys and tokens, so don't try to use them, they won't work!)
 
 #### Copy a ton of files over to the Linino
 1. Open up your computer's terminal and move to where you downloaded this folder:
-```bash
-$ cd ~/Downloads/plotly_yun
-$ ls
-Arduino			plotly			run.py
-README.md		requests		run2.ino
-YunMessenger		run.ino			run_background.py
-```
+ ```bash
+ $ cd ~/Downloads/plotly_yun
+ $ ls
+ Arduino			plotly			run.py
+ README.md		requests		run2.ino
+ YunMessenger		run.ino			run_background.py
+ ```
+
 2. Copy all of these files onto your arduino
-```bash
-$ scp -r * root@arduino.local:/root/
-```
-a TON of stuff will print out, don't worry!
+ ```bash
+ $ scp -r * root@arduino.local:/root/
+ ```
+ a TON of stuff will print out, don't worry!
 
 #### Cruise into the Linino, install some stuff, start listening for the Arduino
 1. SSH into your Linino:
-```bash
-$ ssh root@arduino.local
-```
-2. Install `python-openssl` so that you can chat to plotly securely:
-```bash
-root@Arduino:~# opkg update
-root@Arduino:~# opkg install python-openssl
-```
-with outputs, it'll look like:
-```bash
-root@Arduino:~# opkg update
-Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.gz.
-Updated list of available packages in /var/opkg-lists/barrier_breaker.
-Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.sig.
-Signature check passed.
-root@Arduino:~# opkg install python-openssl
-Installing python-openssl (2.7.3-2) to root...
-Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//python-openssl_2.7.3-2_ar71xx.ipk.
-Configuring python-openssl.
+ ```bash
+ $ ssh root@arduino.local
+ ```
 
-```
+2. Install `python-openssl` so that you can chat to plotly securely:
+ ```bash
+ root@Arduino:~# opkg update
+ root@Arduino:~# opkg install python-openssl
+ ```
+ with outputs, it'll look like:
+ ```bash
+ root@Arduino:~# opkg update
+ Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.gz.
+ Updated list of available packages in /var/opkg-lists/barrier_breaker.
+ Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.sig.
+ Signature check passed.
+ root@Arduino:~# opkg install python-openssl
+ Installing python-openssl (2.7.3-2) to root...
+ Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//python-openssl_2.7.3-2_ar71xx.ipk.
+ Configuring python-openssl.
+ ```
+
 3. Run the python program `run.py` and wait
-```bash
-root@Arduino:~# python run.py
-```
+ ```bash
+ root@Arduino:~# python run.py
+ ```
 
 #### Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
 1. Load up run.ino from this folder
