@@ -4,18 +4,16 @@
 
 void setup() { 
 
-    // start the serial port
-    Serial.begin(57600);
-
-    // for debugging, wait until a serial console is connected
-    delay(4000);
-    while (!Serial) { ; }
 
     // start-up the bridge
     Bridge.begin();
 
     delay(2000);
     Console.begin();
+    while (!Console) {
+      ; // wait for Console port to connect.
+    }
+    
     Console.buffer(64);
     delay(2000);    
     Console.print(char(29));
