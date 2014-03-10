@@ -83,6 +83,7 @@ You know the drill:
    {u'stream-host': u'http://stream.plot.ly', u'stream-status': u'All Streams Go!', u'url': u'https://plot.ly/~Arduino-Yun/8', u'filename': u'mic check', u'warning': u'', u'error': u'', u'message': u''}
    connecting
    ```
+
 6. Watch your plotly graph update in real-time!
 
 # How does it work?
