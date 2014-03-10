@@ -9,7 +9,7 @@ Basic functionality, through the setup below, works! I'm just cleaning up the in
 #### Connect your Yún to wifi
 You know the drill:
 
-1. Reset the WiFi chip: hold down the WLAN button for like 10 seconds (probably multiple times) until Arduin Yun-XXXX comes up as a network
+1. Reset the WiFi chip: hold down the WLAN button for like 10 seconds (probably multiple times) until Arduino Yun-XXXX comes up as a network
 2. Connect to that network, enter `arduino.local` into your browser
 3. Configure the network, making sure that:
  - Your encryption (WPA, WPA2, WEP) is correct
