@@ -71,18 +71,18 @@ You know the drill:
  Configuring python-openssl.
  ```
 
-3. Run the python program `run.py` and wait
- ```bash
- root@Arduino:~# python run.py
- ```
 
 #### Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
 1. Load up run.ino from this folder
 2. Make sure that your IDE has selected `Arduino Yun` and the remote port:
 ![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
 3. Upload the program!
-4. Check out the Linino terminal that you ssh'd into for status updates and error messages
-5. Watch your plotly graph update in real-time!
+4. Go back into your Linino, and run `run.py`:
+   ```bash
+   root@Arduino:~# python run.py
+   ```
+5. Check out the Linino terminal that you ssh'd into for status updates and error messages
+6. Watch your plotly graph update in real-time!
 
 # How does it work?
 
