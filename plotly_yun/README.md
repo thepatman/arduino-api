@@ -33,7 +33,7 @@ Configuring python-openssl.
 
 ### How does it work?
 
-The Arduino microcontroller (ATmega32u4) sends data to the Linino over the `bridge` with the [YunMessenger](https://github.com/plotly/YunMessenger) library. The `bridge` is just a TCP connection over port `6571` on `localhost` and the `YunMessenger` library formalizes communication over that socket and allows multiple subscribers to listen to messages coming from the Arduino. 
+The Arduino microcontroller (ATmega32u4) sends data to the Linino over the `bridge` with the [YunMessenger](https://github.com/plotly/YunMessenger) library. The `bridge` is just a TCP connection over port `6571` on `localhost` and the `YunMessenger` library formalizes communication over that socket and allows multiple subscribers to listen to messages coming from the Arduino (the 32u4).
 
 On the Arduino side, the communication over this socket looks like:
 ```C
