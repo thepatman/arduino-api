@@ -89,3 +89,10 @@ c.run()
 - Use the latest Arduino IDE (1.5.6 -r2)
 - Reseting the network ("hold down the wifi button for > 5 seconds") often requires several tries!
 - To verify that the python client on the Linino is ready to recieve commands, run `$ telnet localhost 6571`
+- Don't forget:
+```
+while (!Console) {
+  ; // wait for Console port to connect.
+}
+```
+!!
