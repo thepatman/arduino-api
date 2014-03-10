@@ -11,8 +11,8 @@ api_key = plotly_user_config['plotly_api_key']
 stream_token = plotly_user_config['plotly_streaming_tokens'][0]
 
 # Make the initializing plotly request
-p = plotly.plot(username, api_key)
-p.off()
+p = plotly.plotly(username, api_key)
+p.ioff()
 print p.plot([{'x': [], 'y': [], 'stream': {'token': stream_token}}])
 
 
