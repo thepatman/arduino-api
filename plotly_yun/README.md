@@ -47,7 +47,7 @@ You know the drill:
  ```
  a TON of stuff will print out, don't worry!
 
-#### Cruise into the Linino, install some stuff, start listening for the Arduino
+#### Cruise into the Linino and install some stuff
 1. SSH into your Linino:
  ```bash
  $ ssh root@arduino.local
