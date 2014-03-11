@@ -3,7 +3,6 @@
 # Status
 Basic functionality, through the setup below, works! I'm just cleaning up the interface, setting up some better error handling, and figuring out how to run it as a reliable background process!
 
-
 # Setup
 
 #### Connect your Yún to wifi
@@ -133,6 +132,33 @@ c.onMessage['plotly'] = handlePlotlyMessages
 # to the associated "subscriber" (the data between characters 29 and 30).
 
 c.run()
+
+```
+
+# Interface
+I'm working on getting the interface to something like this:
+
+```C
+
+#include <plotly.h>
+
+plotly.init(); // static method that kills all existing plotly processes
+plotly logger1(token1); // fires up an asynch plotly process, passes token as command line option, uses token as subscriber name
+plotly logger2(token2);
+plotly logger3(token3);
+
+void setup(){
+  [...]
+}
+
+unsigned long x;
+void loop(){
+ x = millis();
+ logger1.plot(x, analogRead(A0));
+ logger2.plot(x, analogRead(A1));
+ logger3.plot(x, analogRead(A2));
+
+}
 
 ```
 
