@@ -79,9 +79,10 @@ You know the drill:
 4. Go back into your Linino, and run `run.py`:
    ```bash
    root@Arduino:~# python run.py
-   {u'stream-host': u'http://stream.plot.ly', u'stream-status': u'All Streams Go!', u'url': u'https://plot.ly/~Arduino-Yun/8', u'filename': u'mic check', u'warning': u'', u'error': u'', u'message': u''}
-   connecting
+   Plot initialized at: https://plot.ly/~Arduino-Yun/28
+   with tokens: xi83ke94lw, 9x4gkihdlx, 3ab1qn3z23
    ```
+   (your tokens and your URL will be different!)
 
    If you're watching the logs, you'll see something like:
    ```bash
