@@ -83,6 +83,16 @@ You know the drill:
    connecting
    ```
 
+   If you're watching the logs, you'll see something like:
+   ```bash
+   root@Arduino:~# tail -f YunMessenger.log
+   2014-03-12 02:57:36 INFO: Logger initiated
+   2014-03-12 02:57:38 INFO: Plot initialized at: https://plot.ly/~Arduino-Yun/28
+   with tokens: 83ke94lw, 9x4gkihdlx, 3ab1qn3z23
+   2014-03-12 02:57:38 INFO: Run initiated
+   2014-03-12 02:57:39 INFO: Attempting to connect to localhost:6571
+   ```
+
 6. Watch your plotly graph update in real-time!
 
 # How does it work?
