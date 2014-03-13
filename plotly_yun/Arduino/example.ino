@@ -29,8 +29,6 @@ void setup() {
 
     plotter1.timezone = "America/Montreal";
     plotter2.timezone = "America/Montreal";
-    plotter3.timezone = "America/Montreal";
-
 } 
 
 void loop() { 
