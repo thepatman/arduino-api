@@ -91,6 +91,7 @@ You know the drill:
         "plotly_streaming_tokens": ["ab4kf5nfdn", "kdf5bn4dbn"]
    }
    ```
+
    (those are fake keys and tokens, so don't try to use them, they won't work!)
 3. Open up your computer's terminal and move to where you downloaded this folder:
    ```bash
