@@ -106,6 +106,7 @@ You know the drill:
    ```bash
    $ scp -r Linino root@arduino.local:/root/
    ```
+
    a TON of stuff will print out, don't worry!
 5. Cruise into your Linino and install python-openssl:
    ```bash
@@ -114,8 +115,7 @@ You know the drill:
    root@Arduino:~# opkg install python-openssl
    ```
 
-
-#### Run the pro
+#### Run the Arduino program
 1. Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
 2. Load up run.ino from this folder
 3. Make sure that your IDE has selected `Arduino Yun` and the remote port:
@@ -139,7 +139,6 @@ You know the drill:
    2014-03-12 02:57:39 INFO: Attempting to connect to localhost:6571
    ```
 6. Graph the URL that the terminal printed out, and view your graph in your browser!
-
 
 
 # How does it work?
