@@ -104,7 +104,7 @@ class PlotlyHandler:
             self.streams[token].write(data)
         else:
             c.logger.warning("Recieved the token: {token} which has no associated stream.\n"\
-                "Add the token {token} to your config.json file to register this stream.")
+                "Add the token {token} to your config.json file to register this stream.".format(token=data['token']))
 
 plotlyHandler = PlotlyHandler(stream_tokens)
 
