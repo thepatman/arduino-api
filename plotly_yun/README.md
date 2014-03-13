@@ -83,6 +83,7 @@ You know the drill:
 1. Download and uncompress this folders's zip file: [https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip](https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip)
 2. Update the file called `config.json` in the `Linino` folder with your plotly credentials. You can sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu) and you can view your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings).
     Your filled-in `config.json` file will look like:
+    
    ```
    {
         "plotly_username": "anna.lyst",
@@ -96,11 +97,12 @@ You know the drill:
    
     ```bash
    $ cd ~/Downloads/plotly_yun
-   $ ls
+      $ ls
    Arduino			plotly			run.py
    README.md		requests		run2.ino
    YunMessenger		run.ino			run_background.py
    ```
+   
 
 4. Copy all of the files from the Linino folder to your Linino
    

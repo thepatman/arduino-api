@@ -1,11 +1,43 @@
 #include "PlotlyYun.h"
 #include "YunMessenger.h"
 
-Plotly::Plotly(char *stream_token){
-    stream_token_ = stream_token;
+plotly::plotly(char *stream_token_){
+    stream_token = stream_token_;
 }
 
-Plotly::plot(int x, int y){
+plotly::plotly(char *stream_token_, char *timezone_){
+    stream_token = stream_token_;
+    timezone = timezone_;
+}
+
+void plotly::plot( float y ){
+    preprinttimezone_();
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+
+void plotly::plot( char *y ){
+    preprinttimezone_();    
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+
+void plotly::plot( String y ){
+    preprinttimezone_();
+    midprint_();
+    Console.print("\"");
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+
+void plotly::plot(float x, float y){
     /*
      * Send a plotly-formatted JSON object
      * to the plotly subscriber on the Linino
@@ -13,13 +45,118 @@ Plotly::plot(int x, int y){
      * Example object:
      * {"x": 1, "y": 10}
     */
-    Messenger.open("plotly");
-    Console.print("{\"x\": ");
+
+    //Messenger::send("plotly", "{\"x\": 1, \"y\": 10}");
+
+    preprint_(); 
     Console.print(x);
-    Console.print(", \"y\": ");
+    midprint_();
     Console.print(y);
-    Console.print("}, \"token\": \"");
-    Console.print(self.stream_token_);
-    Console.print("\"}");
-    Messenger.close();
+    postprint_();
 }
+
+void plotly::plot(char *x, float y){
+    preprint_();
+    Console.print("\"");
+    Console.print(x);
+    Console.print("\"");    
+    midprint_();
+    Console.print(y);
+    postprint_();
+}
+void plotly::plot(String x, float y){
+    preprint_();
+    Console.print(x);
+    midprint_();
+    Console.print(y);
+    postprint_();
+}
+
+void plotly::plot(float x, char *y){
+    preprint_();
+    Console.print(x);
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+void plotly::plot(char *x, char *y){
+    preprint_();
+    Console.print("\"");
+    Console.print(x);
+    Console.print("\"");    
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+void plotly::plot(String x, char *y){
+    preprint_();
+    Console.print("\"");    
+    Console.print(x);
+    Console.print("\"");    
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+
+void plotly::plot(float x, String y){
+    preprint_();
+    Console.print(x);
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+void plotly::plot(char *x, String y){
+    preprint_();
+    Console.print("\"");    
+    Console.print(x);
+    Console.print("\"");    
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+void plotly::plot(String x, String y){
+    preprint_();
+    Console.print("\"");    
+    Console.print(x);
+    Console.print("\"");    
+    midprint_();
+    Console.print("\"");    
+    Console.print(y);
+    Console.print("\"");    
+    postprint_();
+}
+
+
+void plotly::preprint_(){
+    Messenger::open("plotly");
+    Console.print("{\"x\": ");
+}
+
+void plotly::preprinttimezone_(){
+    Messenger::open("plotly");
+    Console.print("{\"timezone\": \"");
+    Console.print(timezone);
+    Console.print("\"");
+}
+
+void plotly::midprint_(){
+    Console.print(", \"y\": ");
+}
+
+void plotly::postprint_(){
+    Console.print(", \"token\": \"");
+    Console.print(stream_token);
+    Console.print("\"}");
+    Messenger::close();    
+}
+

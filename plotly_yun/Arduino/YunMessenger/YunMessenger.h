@@ -6,7 +6,7 @@
 
 #include "Arduino.h"
 
-class Messenger {
+class Messenger : public ConsoleClass{
     public:
         Messenger();
         static void send(char *subscriber, char *message);

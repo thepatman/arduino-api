@@ -7,7 +7,7 @@
 Messenger::Messenger(){    
 }
 
-static void Messenger::send(char *subscriber, char *message){
+void Messenger::send(char *subscriber, char *message){
     Console.buffer(64);
     Console.print(char(29));
     Console.print(subscriber);
@@ -17,14 +17,16 @@ static void Messenger::send(char *subscriber, char *message){
     Console.flush();
 }
 
-static void Messenger::open(char *subscriber){
+void Messenger::open(char *subscriber){
     Console.buffer(64);
     Console.print(char(29));
     Console.print(subscriber);
     Console.print(char(30));
 }
 
-static void Messenger::close(){
-    Console.print(char(30));
+
+
+void Messenger::close(){
+    Console.print(char(31));
     Console.flush();
 }
