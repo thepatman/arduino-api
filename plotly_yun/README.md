@@ -105,7 +105,7 @@ You know the drill:
 4. Copy all of the files from the Linino folder to your Linino
    
     ```bash
-    $ scp -r Linino root@arduino.local:/root/
+    $ scp -r Linino/* root@arduino.local:/root/
     ```
 
    a TON of stuff will print out, don't worry!
@@ -116,6 +116,11 @@ You know the drill:
    root@Arduino:~# opkg update
    root@Arduino:~# opkg install python-openssl
    ```
+
+(Are you new to the terminal? Here is screen-cast video of my terminal as I run through commands 3-5:
+[![](http://new.tinygrab.com/c751bc2ee2a578abe66d6b4d045e683ec084679f39.png)](http://asciinema.org/a/8137)
+
+Still need some help? Get in touch!)
 
 #### Run the Arduino program
 1. Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
