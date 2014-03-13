@@ -143,14 +143,14 @@ Still need some help? Get in touch!)
 4. Make sure that your IDE has selected `Arduino Yun` and the remote port:
 ![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
 5. Upload the program!
-6. Go back into your Linino, and run `run.py`:
+6. Go back into your Linino, and run `run.py`. It'll take about 9 seconds before the output comes up:
     ```bash
     $ ssh root@arduino.local
     root@Arduino:~# python run.py
     Plot initialized at: https://plot.ly/~Arduino-Yun/28
     with tokens: ab4kf5nfdn, kdf5bn4dbn
     ```
-
+    
    (your tokens and your URL will be different!)
 
    If you're watching the logs, you'll see something like:
