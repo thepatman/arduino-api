@@ -1,9 +1,13 @@
-## Real-time Plotting with the Arduino Yun
+## Real-time Graphing and Data Logging with the Yún
 
-#### Graph your data from your Arduino Yún in real-time in your browser. 
+#### The easiest and fastest way to plot and share data on the Yún. 
 
-[![Mock Signal Data](https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
-[Click through to see the live, updating graph](http://plot.ly/~streaming-demos/6)
+<p align="center">
+<a href="http://plot.ly/~streaming-demos/6">
+<img src="https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif">
+</a><br>
+<a href="http://plot.ly/~streaming-demos/6">Click through to see the live graph</a>
+</p>
 
 #### It's super easy
 
@@ -14,8 +18,8 @@
 #include <Console.h>
 
 // Initialize plotly "plotters" with a unique token that is generated for you
-// when you sign up for a free account on plotly
-// Find your stream tokens in your plotly account here: https://plot.ly/settings .
+// when you sign up for a free account on plotly (https://plot.ly)
+// Find your stream tokens in your plotly account here: https://plot.ly/settings
 // Initialize as many plotters as you want! Each plotter will send
 // data to the same plot as a separate line.
 
@@ -43,7 +47,21 @@ void loop() {
 }
 ```
 
+#### In the wild
 
+##### A video of our real-time heart rate monitor (click to view)
+<p align="center">
+<a href="https://vine.co/v/Mq2LQexrbl7">
+<img src="http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png" />
+</a>
+</p>
+
+##### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
+<p align="center">
+<a href="http://vimeo.com/87362390">
+<img src="http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png" />
+</a>
+</p>
 
 # Setup
 
