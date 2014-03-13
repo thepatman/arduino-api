@@ -97,9 +97,7 @@ You know the drill:
     ```bash
    $ cd ~/Downloads/plotly_yun
    $ ls
-   Arduino			plotly			run.py
-   README.md		requests		run2.ino
-   YunMessenger		run.ino			run_background.py
+    Arduino         Linino          README.md
    ```
 
 4. Copy all of the files from the Linino folder to your Linino
@@ -123,17 +121,33 @@ You know the drill:
 Still need some help? Get in touch!)
 
 #### Run the Arduino program
-1. Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
-2. Load up run.ino from this folder
-3. Make sure that your IDE has selected `Arduino Yun` and the remote port:
+1. Add the folders inside the `Arduino` to your Arduino libraries folder. On a Mac, this is in `~/Documents/Arduino/libraries/`
+    ![](http://new.tinygrab.com/c751bc2ee2bdecc21b412dd36ba491606ed81fd36a.png)
+2. Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
+3. Load up example.ino from the `Arduino` folder in this repository and add your tokens to the script, i.e. change these lines:
+    
+    ```cpp
+    plotly plotter1("put_your_10_character_stream_token_here");
+    plotly plotter2("put_another_token_here");
+    ```
+    
+    to the tokens you that you placed in `config.json` and that you found in [https://plot.ly/settings](https://plot.ly/settings):
+
+    ```cpp
+    plotly plotter1("ab4kf5nfdn");
+    plotly plotter2("kdf5bn4dbn");
+    ```
+
+4. Make sure that your IDE has selected `Arduino Yun` and the remote port:
 ![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
-4. Upload the program!
-5. Go back into your Linino, and run `run.py`:
-   ```bash
-   root@Arduino:~# python run.py
-   Plot initialized at: https://plot.ly/~Arduino-Yun/28
-   with tokens: xi83ke94lw, 9x4gkihdlx, 3ab1qn3z23
-   ```
+5. Upload the program!
+6. Go back into your Linino, and run `run.py`:
+    ```bash
+    $ ssh root@arduino.local
+    root@Arduino:~# python run.py
+    Plot initialized at: https://plot.ly/~Arduino-Yun/28
+    with tokens: ab4kf5nfdn, kdf5bn4dbn
+    ```
 
    (your tokens and your URL will be different!)
 
@@ -142,12 +156,12 @@ Still need some help? Get in touch!)
    root@Arduino:~# tail -f YunMessenger.log
    2014-03-12 02:57:36 INFO: Logger initiated
    2014-03-12 02:57:38 INFO: Plot initialized at: https://plot.ly/~Arduino-Yun/28
-   with tokens: 83ke94lw, 9x4gkihdlx, 3ab1qn3z23
+   with tokens: ab4kf5nfdn, kdf5bn4dbn
    2014-03-12 02:57:38 INFO: Run initiated
    2014-03-12 02:57:39 INFO: Attempting to connect to localhost:6571
    ```
 
-6. Graph the URL that the terminal printed out, and view your graph in your browser!
+6. Grab the URL that the terminal printed out, view your graph in your browser, and celebrate!
 
 
 # How does it work?
