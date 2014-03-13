@@ -94,7 +94,8 @@ You know the drill:
 
    (those are fake keys and tokens, so don't try to use them, they won't work!)
 3. Open up your computer's terminal and move to where you downloaded this folder:
-   ```bash
+   
+    ```bash
    $ cd ~/Downloads/plotly_yun
    $ ls
    Arduino			plotly			run.py
@@ -103,13 +104,15 @@ You know the drill:
    ```
 
 4. Copy all of the files from the Linino folder to your Linino
-   ```bash
-   $ scp -r Linino root@arduino.local:/root/
-   ```
+   
+    ```bash
+    $ scp -r Linino root@arduino.local:/root/
+    ```
 
    a TON of stuff will print out, don't worry!
 5. Cruise into your Linino and install python-openssl:
-   ```bash
+   
+    ```bash
    $ ssh root@arduino.local
    root@Arduino:~# opkg update
    root@Arduino:~# opkg install python-openssl
