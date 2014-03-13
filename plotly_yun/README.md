@@ -2,7 +2,6 @@
 
 #### The easiest and fastest way to plot and share data on the Yún. 
 
-<script type="text/javascript" src="https://asciinema.org/a/14.js" id="asciicast-14" async></script>
 
 The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-account. It's free, open source, and the graphs and data are entirely online. 
 
