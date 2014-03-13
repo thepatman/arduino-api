@@ -85,7 +85,6 @@ class PlotlyHandler:
             {"y": 1, "token": "ibagefhdci", "timezone": "America/Montreal"}
         If it's the latter form, we'll compute the time and assign that as x
         '''
-        c.logger.debug("rec'd: {msg}".format(msg=msg))
         data = json.loads(msg)
         if data['token'] in self.streams:
             token = data['token']
@@ -100,7 +99,6 @@ class PlotlyHandler:
                     tz = timezone("America/Montreal")
                 del data['timezone']
                 data['x'] = tz.localize(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S.%f')
-            c.logger.debug("writing: {data}".format(data=json.dumps(data)))
             self.streams[token].write(data)
         else:
             c.logger.warning("Recieved the token: {token} which has no associated stream.\n"\
