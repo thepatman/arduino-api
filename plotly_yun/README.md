@@ -127,6 +127,7 @@ You know the drill:
    Plot initialized at: https://plot.ly/~Arduino-Yun/28
    with tokens: xi83ke94lw, 9x4gkihdlx, 3ab1qn3z23
    ```
+
    (your tokens and your URL will be different!)
 
    If you're watching the logs, you'll see something like:
@@ -138,6 +139,7 @@ You know the drill:
    2014-03-12 02:57:38 INFO: Run initiated
    2014-03-12 02:57:39 INFO: Attempting to connect to localhost:6571
    ```
+
 6. Graph the URL that the terminal printed out, and view your graph in your browser!
 
 
@@ -174,11 +176,13 @@ On the Linino, status updates, warnings, and errors are written to a file called
 root@Arduino:~# cat ~/Plotly.log
 [...]
 ```
+
 The file might have a ton of lines and be overwhelming to look at, so to check out just the last 50 lines, run:
 ```
 root@Arduino:~# tail -n50 ~/Plotly.log
 [...]
 ```
+
 To watch the messages as they're being written to the file in real-time, run:
 ```
 root@Arduino:~# tail -f ~/Plotly.log
