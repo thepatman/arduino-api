@@ -2,6 +2,8 @@
 
 #### The easiest and fastest way to plot and share data on the Yún. 
 
+The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-account. It's free, open source, and the graphs are entirely online. 
+
 <p align="center">
 <a href="http://plot.ly/~streaming-demos/6">
 <img src="https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif">
