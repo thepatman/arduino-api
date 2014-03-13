@@ -80,7 +80,7 @@ You know the drill:
 4. Connect to your old network, go to `arduino.local` in your browser. If your browser can't find it, go back to step 1!
 
 #### Set up the Linino Side
-1. Download and uncompress this folders's zip file: [https://github.com/plotly/arduino-api/commits/master](https://github.com/plotly/arduino-api/commits/master)
+1. Download and uncompress this folders's zip file: [https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip](https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip)
 2. Update the file called `config.json` in the `Linino` folder with your plotly credentials. You can sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu) and you can view your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings).
     Your filled-in `config.json` file will look like:
    ```
