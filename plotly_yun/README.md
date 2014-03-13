@@ -50,7 +50,7 @@ void loop() {
 }
 ```
 
-### In the wild
+## In the wild
 
 #### A video of our real-time heart rate monitor (click to view)
 <p align="center">
@@ -66,7 +66,7 @@ void loop() {
 </a>
 </p>
 
-# 5-Min Quickstart
+## 5-Min Quickstart
 
 
 #### Connect your Yún to WiFi
