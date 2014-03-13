@@ -1,7 +1,48 @@
+## Real-time Plotting with the Arduino Yun
+
+Graph your data from your Arduino Yún in real-time in your browser. 
+
 [![Mock Signal Data](https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
 
-# Status
-Basic functionality, through the setup below, works! I'm just cleaning up the interface, setting up some better error handling, and figuring out how to run it as a reliable background process!
+It couldn't be easier:
+
+```C++
+#include <PlotlyYun.h>
+#include <YunMessenger.h>
+#include <Bridge.h>
+#include <Console.h>
+
+// Initialize plotly "plotters" with a unique token that is generated for you
+// when you sign up for a free account on plotly
+// Find your stream tokens in your plotly account here: https://plot.ly/settings .
+// Initialize as many plotters as you want! Each plotter will send
+// data to the same plot as a separate line.
+
+plotly plotter("put_your_10_character_stream_token_here");
+
+void setup() { 
+
+    // start-up the bridge and the console
+    Bridge.begin();
+
+    delay(2000);
+    Console.begin();
+    while (!Console) {
+      ; // wait for Console port to connect.
+    }
+    Console.buffer(64);
+    delay(2000);
+} 
+
+void loop() { 
+
+    plotter.plot( analogRead(A0) );
+
+    delay(100); // Graph 10 points every second
+}
+```
+
+
 
 # Setup
 
