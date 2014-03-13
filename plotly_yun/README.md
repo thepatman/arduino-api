@@ -4,7 +4,7 @@ Graph your data from your Arduino Yún in real-time in your browser.
 
 [![Mock Signal Data](https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
 
-It couldn't be easier:
+#### It's super easy
 
 ```C++
 #include <PlotlyYun.h>
