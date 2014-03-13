@@ -1,6 +1,6 @@
 ## Real-time Plotting with the Arduino Yun
 
-Graph your data from your Arduino Yún in real-time in your browser. 
+#### Graph your data from your Arduino Yún in real-time in your browser. 
 
 [![Mock Signal Data](https://raw.github.com/plotly/Streaming-Demos/master/readme_gifs/real-timesensor.gif)](http://plot.ly/~streaming-demos/6)
 
