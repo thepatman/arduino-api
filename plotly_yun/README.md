@@ -275,8 +275,8 @@ root@Arduino:~# kill -9 $(pgrep -f "python run.py")
 - Reseting the network ("hold down the wifi button for > 5 seconds") often requires several tries!
 - To verify that the python client on the Linino is ready to recieve commands, run `$ telnet localhost 6571`
 - Don't forget:
-```
-while (!Console) {
-  ; // wait for Console port to connect.
-}
-```
+  ```
+  while (!Console) {
+    ; // wait for Console port to connect.
+  }
+  ```
