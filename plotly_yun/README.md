@@ -2,7 +2,9 @@
 
 #### The easiest and fastest way to plot and share data on the Yún. 
 
-The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-account. It's free, open source, and the graphs are entirely online. 
+<script type="text/javascript" src="https://asciinema.org/a/14.js" id="asciicast-14" async></script>
+
+The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-account. It's free, open source, and the graphs and data are entirely online. 
 
 <p align="center">
 <a href="http://plot.ly/~streaming-demos/6">
@@ -13,7 +15,7 @@ The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-a
 
 #### It's super easy
 
-```C++
+```
 #include <PlotlyYun.h>
 #include <YunMessenger.h>
 #include <Bridge.h>
@@ -49,96 +51,76 @@ void loop() {
 }
 ```
 
-#### In the wild
+### In the wild
 
-##### A video of our real-time heart rate monitor (click to view)
+#### A video of our real-time heart rate monitor (click to view)
 <p align="center">
 <a href="https://vine.co/v/Mq2LQexrbl7">
 <img src="http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png" />
 </a>
 </p>
 
-##### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
+#### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
 <p align="center">
 <a href="http://vimeo.com/87362390">
 <img src="http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png" />
 </a>
 </p>
 
-# Setup
+# 5-Min Quickstart
+
 
 #### Connect your Yún to wifi
 You know the drill:
 
-1. Reset the WiFi chip: hold down the WLAN button for like 10 seconds (probably multiple times) until Arduino Yun-XXXX comes up as a network
+1. Reset the WiFi chip: hold down the WLAN button for ~10 seconds until Arduino Yun-XXXX comes up as a network. I've found that this sometimes takes multiple tries and may ~45 seconds.
 2. Connect to that network, enter `arduino.local` into your browser
 3. Configure the network, making sure that:
  - Your encryption (WPA, WPA2, WEP) is correct
  - Your *case-sensitive* network name is correct
 4. Connect to your old network, go to `arduino.local` in your browser. If your browser can't find it, go back to step 1!
 
-#### Update the `config.json` file with your plotly credentials
-1. Download this folder
-2. Sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu)
-3. Find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings)
-4. Open up `config.json` from this folder and add your username, API key, and stream token to the file. It'll look something like:
- ```
- {
-    "plotly_username": "anna.lyst",
-    "plotly_api_key": "ab4kftunvd",
-    "plotly_streaming_tokens": ["ab4kf5nfdn"]
- }
- ```
+#### Set up the Linino Side
+1. Download and uncompress [this folder]()
+2. Update the file called `config.json` in the `Linino` folder with your plotly credentials. You can sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu) and you can view your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings).
+    Your filled-in `config.json` file will look like:
+   ```
+   {
+        "plotly_username": "anna.lyst",
+        "plotly_api_key": "ab4kftunvd",
+        "plotly_streaming_tokens": ["ab4kf5nfdn", "kdf5bn4dbn"]
+   }
+   ```
+   (those are fake keys and tokens, so don't try to use them, they won't work!)
+3. Open up your computer's terminal and move to where you downloaded this folder:
+   ```bash
+   $ cd ~/Downloads/plotly_yun
+   $ ls
+   Arduino			plotly			run.py
+   README.md		requests		run2.ino
+   YunMessenger		run.ino			run_background.py
+   ```
 
- (those are fake keys and tokens, so don't try to use them, they won't work!)
-
-#### Copy a ton of files over to the Linino
-1. Open up your computer's terminal and move to where you downloaded this folder:
- ```bash
- $ cd ~/Downloads/plotly_yun
- $ ls
- Arduino			plotly			run.py
- README.md		requests		run2.ino
- YunMessenger		run.ino			run_background.py
- ```
-
-2. Copy all of these files onto your arduino
- ```bash
- $ scp -r * root@arduino.local:/root/
- ```
- a TON of stuff will print out, don't worry!
-
-#### Cruise into the Linino and install some stuff
-1. SSH into your Linino:
- ```bash
- $ ssh root@arduino.local
- ```
-
-2. Install `python-openssl` so that you can chat to plotly securely:
- ```bash
- root@Arduino:~# opkg update
- root@Arduino:~# opkg install python-openssl
- ```
- with outputs, it'll look like:
- ```bash
- root@Arduino:~# opkg update
- Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.gz.
- Updated list of available packages in /var/opkg-lists/barrier_breaker.
- Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//Packages.sig.
- Signature check passed.
- root@Arduino:~# opkg install python-openssl
- Installing python-openssl (2.7.3-2) to root...
- Downloading http://download.linino.org/dogstick/all-in-one/latest/packages//python-openssl_2.7.3-2_ar71xx.ipk.
- Configuring python-openssl.
- ```
+4. Copy all of the files from the Linino folder to your Linino
+   ```bash
+   $ scp -r Linino root@arduino.local:/root/
+   ```
+   a TON of stuff will print out, don't worry!
+5. Cruise into your Linino and install python-openssl:
+   ```bash
+   $ ssh root@arduino.local
+   root@Arduino:~# opkg update
+   root@Arduino:~# opkg install python-openssl
+   ```
 
 
-#### Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
-1. Load up run.ino from this folder
-2. Make sure that your IDE has selected `Arduino Yun` and the remote port:
+#### Run the pro
+1. Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
+2. Load up run.ino from this folder
+3. Make sure that your IDE has selected `Arduino Yun` and the remote port:
 ![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
-3. Upload the program!
-4. Go back into your Linino, and run `run.py`:
+4. Upload the program!
+5. Go back into your Linino, and run `run.py`:
    ```bash
    root@Arduino:~# python run.py
    Plot initialized at: https://plot.ly/~Arduino-Yun/28
@@ -155,8 +137,9 @@ You know the drill:
    2014-03-12 02:57:38 INFO: Run initiated
    2014-03-12 02:57:39 INFO: Attempting to connect to localhost:6571
    ```
+6. Graph the URL that the terminal printed out, and view your graph in your browser!
 
-6. Watch your plotly graph update in real-time!
+
 
 # How does it work?
 
@@ -180,59 +163,77 @@ Console.print("{\"x\": 1, \"y\": 10}"); // the message (in this case a plotly fo
 Console.print(char(31)); // indicates the end of the message
 ```
 
-One of these subscribers is a socket to plotly's streaming servers, at `stream.plot.ly`. On the Linino side, the YunMessenger abstracts handling this communication to something like:
+On the Linino side, `YunMessenger.Console` opens a TCP socket on port `6571` of `localhost`. `run.py` assigns a message handler to `"plotly"` messages that come through the YunMessenger. These messages are parsed and sent over a TCP socket to plotly's streaming servers, at `stream.plot.ly`.
 
-```python
-from YunMessenger import Console
-import plotly
-import json
+More about plotly's streaming API can be found here: [https://github.com/plotly/Streaming-Demos](https://github.com/plotly/Streaming-Demos)
 
-# Send messages to plotly's streaming servers
-def handlePlotlyMessages(msg):
-    print msg
-    s = plotly.stream(stream_token)
-    s.write(json.loads(msg))
+# More on Usage
+#### Debugging and Log Files
+On the Linino, status updates, warnings, and errors are written to a file called `~/Plotly.log`. This file is capped at 0.5MB. 
+```bash
+root@Arduino:~# cat ~/Plotly.log
+[...]
+```
+The file might have a ton of lines and be overwhelming to look at, so to check out just the last 50 lines, run:
+```
+root@Arduino:~# tail -n50 ~/Plotly.log
+[...]
+```
+To watch the messages as they're being written to the file in real-time, run:
+```
+root@Arduino:~# tail -f ~/Plotly.log
 
-# Initialize a YunMessenger console object
-c = Console.Console()
+2014-03-12 01:35:35 INFO: Attempting to connect to localhost:6571
+2014-03-12 01:35:35 ERROR: Can't connect to localhost:6571
+2014-03-12 01:35:35 DEBUG: Traceback (most recent call last):
+  File "/root/YunMessenger/Console.py", line 83, in run
+    self.console.connect(('localhost', 6571))
+  File "/usr/lib/python2.7/socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+error: [Errno 146] Connection refused
 
-# Assign a "subscriber" to `plotly` messages
-c.onMessage['plotly'] = handlePlotlyMessages
-
-# Connect to the socket on `localhost:6571` 
-# Parse the data the comes over TCP for characters 29, 30, and 31
-# and distribute "messages" (the data between characters 30 and 31)
-# to the associated "subscriber" (the data between characters 29 and 30).
-
-c.run()
-
+2014-03-12 01:35:36 INFO: Attempting to connect to localhost:6571
+2014-03-12 01:35:36 INFO: Connected to localhost:6571
 ```
 
-# Interface
-I'm working on getting the interface to something like this:
+#### Running the Python program in the background
+You can run processes in the background by appending `&` to your bash commands:
+```bash
+root@Arduino:~# (python run.py)&
+```
 
-```C
+Observer which processes are running with `top`:
+```bash
+root@Arduino:~# top
 
-#include <plotly.h>
+Mem: 53728K used, 7404K free, 0K shrd, 5256K buff, 18404K cached
+CPU:   0% usr   9% sys   0% nic  90% idle   0% io   0% irq   0% sirq
+Load average: 0.39 0.35 0.33 1/52 14213
+  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
+14213 13667 root     R     1500   2%   9% top
+13705 13667 root     S    13924  23%   0% python run.py
+ 1530     1 nobody   S     2180   4%   0% avahi-daemon: running [Arduino.local]
+ 1502     1 root     S     1700   3%   0% /usr/sbin/dbus-daemon --system
+ 1167     1 root     S     1588   3%   0% wpa_supplicant -B -P /var/run/wifi-wl
+ 1493     1 root     S     1576   3%   0% /usr/sbin/uhttpd -f -h /www -r Arduin
+  574     1 root     S     1552   3%   0% {rcS} /bin/sh /etc/init.d/rcS S boot
+  731     1 root     S     1540   3%   0% /sbin/netifd
+  701     1 root     S     1512   2%   0% /sbin/syslogd -C16
+ 1251   731 root     S     1512   2%   0% udhcpc -p /var/run/udhcpc-wlan0.pid -
+ 1565     1 root     S N   1508   2%   0% {uSDaemon} /bin/sh /sbin/uSDaemon
+    1     0 root     S     1508   2%   0% init
+13667 13655 root     S     1508   2%   0% -ash
+13352 13335 root     S     1508   2%   0% -ash
+11639     1 root     S     1504   2%   0% /bin/ash --login
+  788   731 root     S     1504   2%   0% udhcpc -p /var/run/udhcpc-eth1.pid -s
+13369 13352 root     S     1504   2%   0% top
+ 1556     1 root     S     1504   2%   0% /usr/sbin/ntpd -n -p 0.openwrt.pool.n
+  845     1 root     S     1504   2%   0% /sbin/watchdog -t 5 /dev/watchdog
+```
 
-plotly.init(); // static method that kills all existing plotly processes
-plotly logger1(token1); // fires up an asynch plotly process, passes token as command line option, uses token as subscriber name
-plotly logger2(token2);
-plotly logger3(token3);
-
-void setup(){
-  [...]
-}
-
-unsigned long x;
-void loop(){
- x = millis();
- logger1.plot(x, analogRead(A0));
- logger2.plot(x, analogRead(A1));
- logger3.plot(x, analogRead(A2));
-
-}
-
+Kill these background processes with:
+```bash
+root@Arduino:~# kill -9 $(pgrep -f "python run.py")
 ```
 
 # Contact!
@@ -241,8 +242,8 @@ void loop(){
 
 
 # Troubleshooting
-- Connecting the yun to WiFi has no error handling. It can fail silently while attempting to connect to a network, so double check your encryption and your network name. Also, network names are case-senstive and sometimes the Arduino will default to connecting to the lower-case version of your network.
-- If you've connected multiple arduino yun's, you won't be able to connect with `arduino.local`. Instead, connect with each device's IP address
+- Get in touch!
+- Connecting the yun to WiFi has no error handling. It can fail silently while attempting to connect to a network, so double check your encryption and your network name. Also, network names are case-senstive!
 - Use the latest Arduino IDE (1.5.6 -r2)
 - Reseting the network ("hold down the wifi button for > 5 seconds") often requires several tries!
 - To verify that the python client on the Linino is ready to recieve commands, run `$ telnet localhost 6571`
