@@ -163,7 +163,7 @@ Still need some help? Get in touch!)
    2014-03-12 02:57:39 INFO: Attempting to connect to localhost:6571
    ```
 
-6. Grab the URL that the terminal printed out, view your graph in your browser, and celebrate!
+6. Grab the URL that the terminal printed out, view your graph in your browser, and celebrate! The graph and data will also be saved in your plotly account. You can view, edit, and share your graphs while data is streaming to them in real-time!
 
 
 # How does it work?
