@@ -12,8 +12,8 @@ meta = [
     {'src': './simple.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
     {'src': './date_strings.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
     {'src': './auto_timestamp.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
-    {'src': './plotly_streaming.pre.cpp', 'destination': '../streaming', 'folder_prefix': 'plotly_'},
-    {'src': './plotly_streaming.pre.h', 'destination': '../streaming', 'folder_prefix': 'plotly_'},
+    {'src': './plotly_streaming.pre.cpp', 'destination': '../streaming', 'folder_prefix': 'plotly_streaming_'},
+    {'src': './plotly_streaming.pre.h', 'destination': '../streaming', 'folder_prefix': 'plotly_streaming_'},
     {'src': './run_streaming.pre.ino', 'destination': '../streaming/examples', 'folder_prefix': ''},    
 ]
 
