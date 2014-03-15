@@ -2,6 +2,14 @@
 #include <Ethernet.h>
 #include "plotly_streaming_ethernet.h"
 
+
+// arguments: username, api key, streaming token, filename
+// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
+// Sign up to plotly here: https://plot.ly
+// View your API key and streamtokens here: https://plot.ly/settings
+plotly logger(username, api key, streaming token, filename);
+
+
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
 
@@ -17,12 +25,6 @@ void startEthernet(){
     delay(1000);
 }
 
-
-// arguments: username, api key, streaming token, filename
-// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
-// Sign up to plotly here: https://plot.ly
-// View your API key and streamtokens here: https://plot.ly/settings
-plotly logger(username, api key, streaming token, filename);
 
 void setup() {
 
@@ -44,5 +46,5 @@ void loop() {
   x = millis();
   y = analogRead(A0);
   logger.plot(x, y);
-  delay(500);
+  delay(50);
 }

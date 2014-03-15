@@ -11,7 +11,7 @@
 #include <SPI.h>
 #include <string.h>
 #include "utility/debug.h"
-#include <plotly_cc3000.h>
+#include <plotly_streaming_cc3000.h>
 
 #define WLAN_SSID       "yourSSID"
 #define WLAN_PASS       "yourPassword"
@@ -20,6 +20,14 @@
 #include <GSM.h>
 #include "plotly_streaming_gsm.h"
 % endif
+
+
+// arguments: username, api key, streaming token, filename
+// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
+// Sign up to plotly here: https://plot.ly
+// View your API key and streamtokens here: https://plot.ly/settings
+plotly logger(username, api key, streaming token, filename);
+
 
 % if lib=="wifi":
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -60,7 +68,7 @@ void startEthernet(){
 void wifi_connect(){
   /* Initialise the module */
   Serial.println(F("\n... Initializing..."));
-  if (!plotly.cc3000.begin())
+  if (!logger.cc3000.begin())
   {
     Serial.println(F("... Couldn't begin()! Check your wiring?"));
     while(1);
@@ -69,7 +77,7 @@ void wifi_connect(){
   // Optional SSID scan
   // listSSIDResults();
   
-  if (!plotly.cc3000.connectToAP(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
+  if (!logger.cc3000.connectToAP(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
     Serial.println(F("Failed!"));
     while(1);
   }
@@ -78,7 +86,7 @@ void wifi_connect(){
   
   /* Wait for DHCP to complete */
   Serial.println(F("... Request DHCP"));
-  while (!plotly.cc3000.checkDHCP())
+  while (!logger.cc3000.checkDHCP())
   {
     delay(100); // ToDo: Insert a DHCP timeout!
   }
@@ -89,12 +97,6 @@ void gsm_connect(){
   // ...
 }
 % endif
-
-// arguments: username, api key, streaming token, filename
-// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
-// Sign up to plotly here: https://plot.ly
-// View your API key and streamtokens here: https://plot.ly/settings
-plotly logger(username, api key, streaming token, filename);
 
 void setup() {
 
@@ -124,5 +126,7 @@ void loop() {
   x = millis();
   y = analogRead(A0);
   logger.plot(x, y);
-  delay(500);
+  %if lib!="cc3000":
+  delay(50);
+  %endif
 }

@@ -1,6 +1,14 @@
 #include <WiFi.h>
 #include "plotly_streaming_wifi.h"
 
+
+// arguments: username, api key, streaming token, filename
+// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
+// Sign up to plotly here: https://plot.ly
+// View your API key and streamtokens here: https://plot.ly/settings
+plotly logger(username, api key, streaming token, filename);
+
+
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 char ssid[] = "wifi_network_name"; //  your network SSID (name) 
 char pass[] = "wifi_password"; // // your network password
@@ -19,12 +27,6 @@ void wifi_connect(){
       Serial.println("... Connected to network");
     }
 }
-
-// arguments: username, api key, streaming token, filename
-// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
-// Sign up to plotly here: https://plot.ly
-// View your API key and streamtokens here: https://plot.ly/settings
-plotly logger(username, api key, streaming token, filename);
 
 void setup() {
 
@@ -46,5 +48,5 @@ void loop() {
   x = millis();
   y = analogRead(A0);
   logger.plot(x, y);
-  delay(500);
+  delay(50);
 }

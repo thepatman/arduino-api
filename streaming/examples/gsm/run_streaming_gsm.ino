@@ -1,15 +1,17 @@
 #include <GSM.h>
 #include "plotly_streaming_gsm.h"
 
-void gsm_connect(){
-  // ...
-}
 
 // arguments: username, api key, streaming token, filename
 // e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
 // Sign up to plotly here: https://plot.ly
 // View your API key and streamtokens here: https://plot.ly/settings
 plotly logger(username, api key, streaming token, filename);
+
+
+void gsm_connect(){
+  // ...
+}
 
 void setup() {
 
@@ -31,5 +33,5 @@ void loop() {
   x = millis();
   y = analogRead(A0);
   logger.plot(x, y);
-  delay(500);
+  delay(50);
 }

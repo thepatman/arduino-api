@@ -2,6 +2,7 @@
 #define plotly_streaming_cc3000_h
 
 #include "Arduino.h"
+#include <avr/pgmspace.h>
 
 #include <Adafruit_CC3000.h>
 #include <ccspi.h>
@@ -33,6 +34,18 @@ class plotly
         int LOG_LEVEL;
         bool DRY_RUN;
 
+        void print_(int d);
+        void print_(float d);
+        void print_(String d);
+        void print_(unsigned long d);
+        void print_(char *d);
+        void print_(const __FlashStringHelper* d);
+
+        int len_(int i);
+        int len_(unsigned long i);
+        int len_(float i);
+        int len_(char *i);
+        int len_(String i);
 
     private:
         unsigned char floatPrec_;
@@ -42,18 +55,6 @@ class plotly
         char *api_key_;
         char *stream_token_;
         char *filename_;
-
-        void print_(int d);
-        void print_(float d);
-        void print_(String d);
-        void print_(unsigned long d);
-        void print_(char *d);
-
-        int len_(int i);
-        int len_(unsigned long i);
-        int len_(float i);
-        int len_(char *i);
-        int len_(String i);
 
 };
 #endif
