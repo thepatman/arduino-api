@@ -1,5 +1,3 @@
-## The Gist
-
 <p align="center">
 <a href="http://vimeo.com/89003132">
 <img src="http://new.tinygrab.com/c751bc2ee24505ea0425b28e9c8f2d1f8aa81ad395.png" />
