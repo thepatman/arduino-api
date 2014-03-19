@@ -7,6 +7,8 @@
 #include <WiFi.h>
 #include "plotly_wifi.h"
 
+plotly plotly;
+
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 char ssid[] = "wifi_network_name"; //  your network SSID (name) 
 char pass[] = "wifi_password"; // // your network password
@@ -35,7 +37,6 @@ void setup() {
   }
   wifi_connect();
 
-  plotly plotly;
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers
   plotly.username = "public_arduino"; // your plotly username -- sign up at https://plot.ly/ssu or feel free to use this public account. password of the account is "password"

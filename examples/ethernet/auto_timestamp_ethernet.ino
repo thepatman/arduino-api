@@ -9,6 +9,8 @@
 #include <Ethernet.h>
 #include "plotly_ethernet.h"
 
+plotly plotly; // initialize a plotly object, named plotly
+
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
 
@@ -34,7 +36,6 @@ void setup() {
   }
   startEthernet();
 
-  plotly plotly; // initialize a plotly object, named plotly
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers
   plotly.username = "public_arduino"; // your plotly username -- sign up at https://plot.ly/ssu or feel free to use this public account. password of the account is "password"

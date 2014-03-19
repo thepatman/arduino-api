@@ -3,6 +3,8 @@
 #include <GSM.h>
 #include "plotly_gsm.h"
 
+plotly plotly;
+
 void gsm_connect(){
   // ...
 }
@@ -16,7 +18,6 @@ void setup() {
   }
   gsm_connect();
 
-  plotly plotly;
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers
   plotly.username = "public_arduino"; // your plotly username -- sign up at https://plot.ly/ssu or feel free to use this public account. password of the account is "password"

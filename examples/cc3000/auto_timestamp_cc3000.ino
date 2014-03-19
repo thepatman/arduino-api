@@ -16,6 +16,8 @@
 #define WLAN_PASS       "yourPassword"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 
+plotly plotly; // initialize a plotly object, named plotly
+
 void wifi_connect(){
   /* Initialise the module */
   Serial.println(F("\nInitializing..."));
@@ -53,7 +55,6 @@ void setup() {
   }
   wifi_connect();
 
-  plotly plotly; // initialize a plotly object, named plotly
   plotly.VERBOSE = true; // turn to false to suppress printing over serial
   plotly.DRY_RUN = false; // turn to false when you want to connect to plotly's servers
   plotly.username = "public_arduino"; // your plotly username -- sign up at https://plot.ly/ssu or feel free to use this public account. password of the account is "password"
