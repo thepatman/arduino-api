@@ -5,22 +5,23 @@
 #include "utility/debug.h"
 #include <plotly_streaming_cc3000.h>
 
-#define WLAN_SSID       "yourSSID"
-#define WLAN_PASS       "yourPassword"
+#define WLAN_SSID       "StationC"
+#define WLAN_PASS       "stationcgaspe"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 
 
 // arguments: username, api key, streaming token, filename
-// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
+// e.g. plotly graph("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
 // Sign up to plotly here: https://plot.ly
 // View your API key and streamtokens here: https://plot.ly/settings
-plotly logger(username, api key, streaming token, filename);
+char *tokens[] = {"8xdfnkq1nb","xtndiqvpol"};
+plotly graph("streaming-demos", "3yyglqsi85", tokens, "filename");
 
 
 void wifi_connect(){
   /* Initialise the module */
   Serial.println(F("\n... Initializing..."));
-  if (!logger.cc3000.begin())
+  if (!graph.cc3000.begin())
   {
     Serial.println(F("... Couldn't begin()! Check your wiring?"));
     while(1);
@@ -29,7 +30,7 @@ void wifi_connect(){
   // Optional SSID scan
   // listSSIDResults();
   
-  if (!logger.cc3000.connectToAP(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
+  if (!graph.cc3000.connectToAP(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
     Serial.println(F("Failed!"));
     while(1);
   }
@@ -38,7 +39,7 @@ void wifi_connect(){
   
   /* Wait for DHCP to complete */
   Serial.println(F("... Request DHCP"));
-  while (!logger.cc3000.checkDHCP())
+  while (!graph.cc3000.checkDHCP())
   {
     delay(100); // ToDo: Insert a DHCP timeout!
   }
@@ -55,14 +56,14 @@ void setup() {
 
   wifi_connect();
 
-  logger.begin(50);     // show 50 points in the plot
+
+  graph.begin();
+
+  unsigned long x = millis();
+  int y = analogRead(A0);
+  graph.plot(x, y, tokens[0]);
+  graph.plot(x, y+5, tokens[1]);
 
 }
 
-unsigned long x;
-int y;
-void loop() {
-  x = millis();
-  y = analogRead(A0);
-  logger.plot(x, y);
-}
+void loop() {}

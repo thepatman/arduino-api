@@ -3,10 +3,11 @@
 
 
 // arguments: username, api key, streaming token, filename
-// e.g. logger("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
+// e.g. plotly graph("my_username", "abcdefghij", "ABCDEFGHIJ", "My plotly filename"); 
 // Sign up to plotly here: https://plot.ly
 // View your API key and streamtokens here: https://plot.ly/settings
-plotly logger(username, api key, streaming token, filename);
+char *tokens[] = {"8xdfnkq1nb","xtndiqvpol"};
+plotly graph("streaming-demos", "3yyglqsi85", tokens, "filename");
 
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -38,15 +39,14 @@ void setup() {
 
   wifi_connect();
 
-  logger.begin(50);     // show 50 points in the plot
+
+  graph.begin();
+
+  unsigned long x = millis();
+  int y = analogRead(A0);
+  graph.plot(x, y, tokens[0]);
+  graph.plot(x, y+5, tokens[1]);
 
 }
 
-unsigned long x;
-int y;
-void loop() {
-  x = millis();
-  y = analogRead(A0);
-  logger.plot(x, y);
-  delay(50);
-}
+void loop() {}

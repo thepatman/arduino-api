@@ -13,78 +13,97 @@
 #include <avr/pgmspace.h>
 
 
-plotly::plotly(char *username, char *api_key, char *stream_token, char *filename)
+plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filename)
   : cc3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,SPI_CLOCK_DIV2){
     floatWidth_ = 10;
     floatPrec_ = 5;
-    LOG_LEVEL = 0;  // 0 = Debugging, 1 = Informational, 2 = Status, 3 = Errors, 4 = Quiet (Serial Off)
-    DRY_RUN = false;
+    log_level = 0;  // 0 = Debugging, 1 = Informational, 2 = Status, 3 = Errors, 4 = Quiet (// Serial Off)
+    dry_run = false;
     username_ = username;
     api_key_ = api_key;
-    stream_token_ = stream_token;
+    stream_tokens_ = stream_tokens;
     filename_ = filename;
 }
 
-void plotly::begin(unsigned long maxpoints){
+void plotly::begin(){
+    unsigned long maxpoints = 500;
+    int nTraces = sizeof(stream_tokens_);
     /* 
     *  Validate a stream with a REST post to plotly 
     */
-    if(DRY_RUN && LOG_LEVEL < 3){ Serial.println(F("... This is a dry run, we are not connecting to plotly's servers...")); }
+    if(dry_run && log_level < 3){ 
+        // Serial.println(F("... This is a dry run, we are not connecting to plotly's servers...")); 
+    }
     else{
-      if(LOG_LEVEL < 3) { Serial.println(F("... Attempting to connect to plotly's REST servers...")); }
+      if(log_level < 3) { 
+        // Serial.println(F("... Attempting to connect to plotly's REST servers...")); 
+    }
       #define WEBSITE "plot.ly"
       uint32_t ip = 0;
       // Try looking up the website's IP address
       while (ip == 0) {
         if (! cc3000.getHostByName(WEBSITE, &ip)) {
-        if(LOG_LEVEL < 4) Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
+        if(log_level < 4) {
+            // Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
+        }
       }
       delay(500);
       }
       client = cc3000.connectTCP(ip, 80);
       while ( !client.connected() ) {
-        if(LOG_LEVEL < 4){ Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); }
+        if(log_level < 4){
+            // Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
+        }
         delay(1000);
       }
     }
-    if(LOG_LEVEL < 3) Serial.println(F("... Connected to plotly's REST servers"));
-    if(LOG_LEVEL < 3) Serial.println(F("... Sending HTTP Post to plotly"));
+    if(log_level < 3){} // Serial.println(F("... Connected to plotly's REST servers"));
+    if(log_level < 3){} // Serial.println(F("... Sending HTTP Post to plotly"));
     print_(F("POST /clientresp HTTP/1.1\r\n"));
     print_(F("Host: 107.21.214.199\r\n"));
     print_(F("User-Agent: Arduino/0.5.1\r\n"));
 
     print_(F("Content-Length: "));
-    int contentLength = 202 + len_(username_) + len_(maxpoints) + len_(filename_);
+    int contentLength = 115 + len_(username_) + nTraces*(87+len_(maxpoints)) + (nTraces-1)*2 + len_(filename_);
     print_(contentLength);
     /* contentLength = 
     *   44  // first part of querystring below
     * + len_(username)  // upper bound on username length
     * + 5   // &key=
     * + 10  // api_key length
-    * + 66  // &args=[...
-    * + 10  // stream_token length 
-    * + 16  // "\", \"maxpoints\": "
-    * + len_(maxpoints)  
-    * + 49  // }}]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \"
+    * + 7  // &args=[...
+    * + nTraces*(87+len(maxpoints)) // len({\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \") + 10 + len(\", "maxpoints": )+len(maxpoints)+len(}})
+    * + (nTraces-1)*2 // ", " in between trace objects
+    * + 47  // ]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \"
     * + len_(filename)
-    * + 1   // closing "}
+    * + 2   // closing "}
     *------
-    * 202 + len_(username) + len_(maxpoints) + len_(filename)
-    */ 
+    * 115 + len_(username) + nTraces*(86+len(maxpoints)) + (nTraces-1)*2 + len_(filename)
+    */
+    // Terminate headers with new lines
     print_(F("\r\n\r\n"));
 
+    // Start printing querystring body
     print_(F("version=0.2&origin=plot&platform=arduino&un="));
     print_(username_);
     print_(F("&key="));
     print_(api_key_);
-    print_(F("&args=[{\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \""));
-    print_(stream_token_);
-    print_(F("\", \"maxpoints\": "));
-    print_(maxpoints);
-    print_(F("}}]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \""));
+    print_(F("&args=["));
+    // print a trace for each token supplied
+    for(int i=0; i<nTraces; i++){
+        print_(F("{\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \""));
+        print_(stream_tokens_[i]);
+        print_(F("\", \"maxpoints\": "));
+        print_(maxpoints);
+        print_(F("}}"));
+        if(nTraces > 1 && i != nTraces-1){
+            print_(F(", "));
+        }
+    }
+    print_(F("]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \""));
     print_(filename_);
     print_(F("\"}"));
-    // final newline to terminate the post
+    // final newline to terminate the POST
     print_(F("\r\n"));
 
     /*
@@ -104,17 +123,19 @@ void plotly::begin(unsigned long maxpoints){
     bool proceed = false;
     bool fidMatched = false;
 
-    if(LOG_LEVEL < 3) Serial.println(F("... Sent message, plotly's response:"));
-    if(!DRY_RUN){
+    if(log_level < 3){} // Serial.println(F("... Sent message, plotly's response:"));
+    /*
+    if(!dry_run){
         while(client.connected()){
             if(client.available()){
                 char c = client.read();
-                if(LOG_LEVEL < 2) Serial.print(c);
+                if(log_level < 2) // Serial.print(c);
 
                 /*
                  * Attempt to read the "All streams go" msg if it exists
                  * by comparing characters as they roll in
                 */
+                 /*
                 if(asgCnt == len_(allStreamsGo) && !proceed){
                     proceed = true;
                 }
@@ -131,7 +152,8 @@ void plotly::begin(unsigned long maxpoints){
                  * We'll character-count up through char url[] and through username_, then start 
                  * filling in characters into fid
                 */
-                if(LOG_LEVEL < 3){
+                 /*
+                if(log_level < 3){
                     if(url[urlCnt]==c && urlCnt < len_(url)){
                         urlCnt += 1;
                     } else if(urlCnt > 0 && urlCnt < len_(url)){
@@ -156,24 +178,25 @@ void plotly::begin(unsigned long maxpoints){
                 }
             }
         }
+
         client.close();
     }    
 
-    if(!proceed && LOG_LEVEL < 4){ 
-        Serial.print(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
+    if(!dry_run && !proceed && log_level < 4){ 
+        // Serial.print(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
         return;
     }
-
-    if(LOG_LEVEL < 3){
-        Serial.println(F("... A-ok from plotly, All Streams Go!"));
+    */
+    if(log_level < 3){
+        // Serial.println(F("... A-ok from plotly, All Streams Go!"));
         if(fidMatched){
-            Serial.print(F("... View your streaming plot here: https://plot.ly/~"));
-            Serial.print(username_);
-            Serial.print(F("/"));
+            // Serial.print(F("... View your streaming plot here: https://plot.ly/~"));
+            // Serial.print(username_);
+            // Serial.print(F("/"));
             for(int i=0; i<fidCnt; i++){
-                Serial.print(fid[i]);
+                // Serial.print(fid[i]);
             }
-            Serial.println(F(""));
+            // Serial.println(F(""));
         }
     }
 
@@ -181,33 +204,31 @@ void plotly::begin(unsigned long maxpoints){
     /*
      * Start request to stream servers
     */    
-    if(LOG_LEVEL < 3) Serial.println(F("... Connecting to plotly's streaming servers..."));
-    #define STREAM_SERVER "stream.plot.ly"
+    if(log_level < 3){} // Serial.println(F("... Connecting to plotly's streaming servers..."));
+    #define STREAM_SERVER "arduino.plot.ly"
     uint32_t stream_ip = 0;
     // Try looking up the website's IP address
     while (stream_ip == 0) {
         if (! cc3000.getHostByName(STREAM_SERVER, &stream_ip)) {
-            if(LOG_LEVEL < 4) Serial.println(F("Couldn't resolve!"));
+            if(log_level < 4){} // Serial.println(F("Couldn't resolve!"));
         }
     }
     client = cc3000.connectTCP(stream_ip, 80);
     while ( !client.connected() ) {
-        if(LOG_LEVEL < 4) Serial.println(F("... Couldn\'t connect to servers.... trying again!"));
+        if(log_level < 4){} // Serial.println(F("... Couldn\'t connect to servers... trying again!"));
         delay(1000);
     }
-    if(LOG_LEVEL < 3) Serial.println(F("... Connected to plotly's streaming servers\n... Initializing stream"));
+    if(log_level < 3){} // Serial.println(F("... Connected to plotly's streaming servers\n... Initializing stream"));
 
     print_(F("POST / HTTP/1.1\r\n"));
     print_(F("Host: 127.0.0.1\r\n"));
     print_(F("User-Agent: Python\r\n"));
     print_(F("Transfer-Encoding: chunked\r\n"));
     print_(F("Connection: close\r\n"));
-    print_(F("plotly-streamtoken: "));
-    print_(stream_token_);
-    print_(F("\r\nplotly-convertTimestamp: America/Montreal"));
+    print_(F("plotly-convertTimestamp: America/Montreal"));
     print_(F("\r\n\r\n"));
 
-    if(LOG_LEVEL < 3) Serial.println(F("... Done initializing, ready to stream!"));
+    if(log_level < 3){} // Serial.println(F("... Done initializing, ready to stream!"));
 
 }
 
@@ -217,15 +238,21 @@ void plotly::stop(){
 }
 
 void plotly::jsonStart(int i){
-    if(LOG_LEVEL<2) Serial.print(i+15, HEX);    // 15 char for the json that wraps the data: {"x": , "y": }\n
-    if(!DRY_RUN) client.print(i+15, HEX);
+    // Print the length of the message in hex:
+    // 15 char for the json that wraps the data: {"x": , "y": }\n 
+    // + 23 char for the token: , "token": "abcdefghij"
+    // = 38
+    if(log_level<2) // Serial.print(i+44, HEX);
+    if(!dry_run) client.print(i+44, HEX);
     print_(F("\r\n{\"x\": "));
 }
 void plotly::jsonMiddle(){
     print_(F(", \"y\": "));
 }
-void plotly::jsonEnd(){
-    print_(F("}\n\r\n"));
+void plotly::jsonEnd(char *token){
+    print_(F(", \"streamtoken\": \""));
+    print_(token);
+    print_(F("\"}\n\r\n"));
 }
 
 int plotly::len_(int i){
@@ -264,80 +291,80 @@ int plotly::len_(String i){
     return i.length();
 }
 
-void plotly::plot(int x, int y){
+void plotly::plot(int x, int y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(int x, float y){
+void plotly::plot(int x, float y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(unsigned long x, int y){
+void plotly::plot(unsigned long x, int y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(unsigned long x, float y){
+void plotly::plot(unsigned long x, float y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(float x, int y){
+void plotly::plot(float x, int y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(float x, float y){
+void plotly::plot(float x, float y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(char *x, int y){
+void plotly::plot(char *x, int y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(char *x, float y){
+void plotly::plot(char *x, float y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(String x, int y){
+void plotly::plot(String x, int y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
-void plotly::plot(String x, float y){
+void plotly::plot(String x, float y, char *token){
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
     print_(y);
-    jsonEnd();
+    jsonEnd(token);
 }
 
 void plotly::print_(int d){
-    if(LOG_LEVEL < 2) Serial.print(d);
-    if(!DRY_RUN) client.print(d);
+    if(log_level < 2) // Serial.print(d);
+    if(!dry_run) client.print(d);
 }
 void plotly::print_(float d){
     char s_[floatWidth_];
@@ -345,18 +372,18 @@ void plotly::print_(float d){
     print_(s_);
 }
 void plotly::print_(String d){
-    if(LOG_LEVEL < 2) Serial.print(d);
-    if(!DRY_RUN) client.print(d);
+    if(log_level < 2) // Serial.print(d);
+    if(!dry_run) client.print(d);
 }
 void plotly::print_(unsigned long d){
-    if(LOG_LEVEL < 2) Serial.print(d);
-    if(!DRY_RUN) client.print(d);
+    if(log_level < 2) // Serial.print(d);
+    if(!dry_run) client.print(d);
 }
 void plotly::print_(char *d){
-    if(LOG_LEVEL < 2) Serial.print(d);
-    if(!DRY_RUN) client.fastrprint(d);    
+    if(log_level < 2) // Serial.print(d);
+    if(!dry_run) client.fastrprint(d);    
 }
 void plotly::print_(const __FlashStringHelper* d){
-    if(LOG_LEVEL < 2) Serial.print(d);
-    if(!DRY_RUN) client.fastrprint(d);    
+    if(log_level < 2) // Serial.print(d);
+    if(!dry_run) client.fastrprint(d);    
 }

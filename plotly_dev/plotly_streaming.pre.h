@@ -33,7 +33,7 @@
 class plotly
 {
     public:
-        plotly(char *username, char *api_key, char *stream_token, char *filename);
+        plotly(char *username, char *api_key, char* stream_tokens[], char *filename);
         % if lib=="ethernet":
         EthernetClient client;
         % elif lib=="wifi":
@@ -44,11 +44,18 @@ class plotly
         % elif lib=="gsm":
         GSMClient client;
         % endif
-        void begin(unsigned long maxpoints);
+        void begin();
         void stop();
         void jsonStart(int i);
         void jsonMiddle();
-        void jsonEnd();
+        void jsonEnd(char *token);
+
+        /*
+        void plot(int y, char *token);
+        void plot(float y, char *token);
+        */
+
+        /*
         void plot(int x, int y);
         void plot(int x, float y);
         void plot(unsigned long x, int y);
@@ -59,8 +66,22 @@ class plotly
         void plot(char *x, float y);
         void plot(String x, int y);
         void plot(String x, float y);
-        int LOG_LEVEL;
-        bool DRY_RUN;
+        */
+
+        void plot(int x, int y, char *token);
+        void plot(int x, float y, char *token);
+        void plot(unsigned long x, int y, char *token);
+        void plot(unsigned long x, float y, char *token);
+        void plot(float x, int y, char *token);
+        void plot(float x, float y, char *token);
+        void plot(char *x, int y, char *token);
+        void plot(char *x, float y, char *token);
+        void plot(String x, int y, char *token);
+        void plot(String x, float y, char *token);
+
+
+        int log_level;
+        bool dry_run;
 
         void print_(int d);
         void print_(float d);
@@ -81,7 +102,7 @@ class plotly
 
         char *username_;
         char *api_key_;
-        char *stream_token_;
+        char** stream_tokens_;
         char *filename_;
 
 };
