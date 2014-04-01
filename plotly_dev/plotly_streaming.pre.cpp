@@ -366,9 +366,6 @@ void plotly::plot(unsigned long x, float y, char *token){
     char s_[15];
     dtostrf(y,2,3,s_);
 
-    Serial.print("len_(s_): ");
-    Serial.println(len_(s_));
-
     jsonStart(len_(x)+len_(s_)-1);
     print_(x);
     jsonMiddle();
