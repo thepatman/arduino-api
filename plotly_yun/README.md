@@ -50,21 +50,7 @@ void loop() {
 }
 ```
 
-## In the wild
 
-#### A video of our real-time heart rate monitor (click to view)
-<p align="center">
-<a href="https://vine.co/v/Mq2LQexrbl7">
-<img src="http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png" />
-</a>
-</p>
-
-#### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
-<p align="center">
-<a href="http://vimeo.com/87362390">
-<img src="http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png" />
-</a>
-</p>
 
 ## 5-Min Quickstart
 
