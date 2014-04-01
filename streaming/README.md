@@ -13,6 +13,8 @@
 #include <plotly_wifi_streaming.h>
 
 #define num_traces 2
+// Sign up to plotly here: https://plot.ly
+// View your API key and stream tokens in your settings: https://plot.ly/settings
 char *streaming_tokens[num_traces] = {"your_plotly_stream_token", "another_plotly_stream_token"};
 plotly graph("your_plotly_username", 
             "your_plotly_api_key", 
@@ -38,3 +40,5 @@ void loop() {
   graph.plot(millis(), analogRead(A1), tokens[1]);
 }
 ```
+
+## Features
