@@ -84,7 +84,7 @@ You know the drill:
 2. Update the file called `config.json` in the `Linino` folder with your plotly credentials. You can sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu) and you can view your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings).
     Your filled-in `config.json` file will look like:
     
-   ```
+   ```json
    {
         "plotly_username": "anna.lyst",
         "plotly_api_key": "ab4kftunvd",
@@ -207,7 +207,7 @@ root@Arduino:~# tail -n50 ~/Plotly.log
 ```
 
 To watch the messages as they're being written to the file in real-time, run:
-```
+```bash
 root@Arduino:~# tail -f ~/Plotly.log
 
 2014-03-12 01:35:35 INFO: Attempting to connect to localhost:6571
