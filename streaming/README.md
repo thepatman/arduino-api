@@ -4,7 +4,9 @@
 </a>
 </p>
 
+### Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphing tool for streaming, real-time, interactive data logging and graphing. It's free for public use!
 
+### Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](http://plot.ly/~streaming-demos/6/)
 
 ## Super easy!
 
