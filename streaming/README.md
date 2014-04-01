@@ -12,8 +12,13 @@
 #include <WiFi.h>
 #include <plotly_wifi_streaming.h>
 
-// arguments: username, api key, streaming token, filename
-plotly logger(username, api_key, streaming_token, filename);
+#define num_traces 2
+char *streaming_tokens[num_traces] = {"your_plotly_stream_token", "another_plotly_stream_token"};
+plotly graph("your_plotly_username", 
+            "your_plotly_api_key", 
+            streaming_tokens, 
+            "your_plotly_filename", 
+            num_traces);
 
 void setup() {
 
@@ -21,18 +26,15 @@ void setup() {
 
   wifi_connect();
 
-  // start connection to plotly's servers
-  logger.begin(50);     // show 50 points in the plot
-
+  // Initialize a streaming graph in your plotly account
+  graph.init();
+  // Initialize plotly's streaming service
+  graph.openStream(); 
 }
 
-unsigned long x;
-int y;
 void loop() {
-  // now let's stream to plotly, giddyup!
-  x = millis();
-  y = analogRead(A0);
-  logger.plot(x, y);    // plot (x, y) values
-  delay(500);
+  // now let's stream-data to plotly, giddyup!
+  graph.plot(millis(), analogRead(A0), tokens[0]);
+  graph.plot(millis(), analogRead(A1), tokens[1]);
 }
 ```
