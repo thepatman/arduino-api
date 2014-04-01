@@ -8,7 +8,7 @@
 
 plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces)
   {
-    log_level = 0;  // 0 = Debugging, 1 = Informational, 2 = Status, 3 = Errors, 4 = Quiet (// Serial Off)
+    log_level = 2;  // 0 = Debugging, 1 = Informational, 2 = Status, 3 = Errors, 4 = Quiet (// Serial Off)
     dry_run = false;
     username_ = username;
     api_key_ = api_key;
