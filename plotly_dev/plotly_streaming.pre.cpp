@@ -10,8 +10,6 @@
 #include <Adafruit_CC3000.h>
 #include <ccspi.h>
 #include <SPI.h>
-#include <string.h>
-#include "utility/debug.h"
 #define ADAFRUIT_CC3000_IRQ   3
 #define ADAFRUIT_CC3000_VBAT  5
 #define ADAFRUIT_CC3000_CS    10
@@ -25,42 +23,43 @@
 #include <avr/pgmspace.h>
 
 
-plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filename)
+plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces)
 % if lib !="cc3000":
   {
 % else:
   : cc3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,SPI_CLOCK_DIV2){
 % endif
-    floatWidth_ = 10;
-    floatPrec_ = 5;
     log_level = 0;  // 0 = Debugging, 1 = Informational, 2 = Status, 3 = Errors, 4 = Quiet (// Serial Off)
     dry_run = false;
     username_ = username;
     api_key_ = api_key;
     stream_tokens_ = stream_tokens;
     filename_ = filename;
+    nTraces_ = nTraces;
+    maxpoints = 30;
+    fibonacci_ = 1;
 }
 
-void plotly::begin(){
-    unsigned long maxpoints = 500;
-    int nTraces = sizeof(stream_tokens_);
-    /* 
-    *  Validate a stream with a REST post to plotly 
-    */
+void plotly::init(){
+    // 
+    //  Validate a stream with a REST post to plotly 
+    //
     if(dry_run && log_level < 3){ 
-        // Serial.println(F("... This is a dry run, we are not connecting to plotly's servers...")); 
+        Serial.println(F("... This is a dry run, we are not connecting to plotly's servers...")); 
     }
     else{
       if(log_level < 3) { 
-        // Serial.println(F("... Attempting to connect to plotly's REST servers...")); 
+        Serial.println(F("... Attempting to connect to plotly's REST servers")); 
     }
       % if lib!="cc3000":
       while ( !client.connect("plot.ly", 80) ) {
         if(log_level < 4){ 
-            // Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
+            Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
         }
-        delay(1000);
+        fibonacci_ += fibonacci_;
+        delay(min(fibonacci_, 60000));
       }
+      fibonacci_ = 1;
       % else:
       #define WEBSITE "plot.ly"
       uint32_t ip = 0;
@@ -68,7 +67,7 @@ void plotly::begin(){
       while (ip == 0) {
         if (! cc3000.getHostByName(WEBSITE, &ip)) {
         if(log_level < 4) {
-            // Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
+            Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
         }
       }
       delay(500);
@@ -76,35 +75,38 @@ void plotly::begin(){
       client = cc3000.connectTCP(ip, 80);
       while ( !client.connected() ) {
         if(log_level < 4){
-            // Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
+            Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
         }
-        delay(1000);
+        fibonacci_ += fibonacci_;
+        delay(min(fibonacci_, 60000));
+        client = cc3000.connectTCP(ip, 80);
       }
+      fibonacci_ = 1;
       % endif
     }
-    if(log_level < 3){} // Serial.println(F("... Connected to plotly's REST servers"));
-    if(log_level < 3){} // Serial.println(F("... Sending HTTP Post to plotly"));
+    if(log_level < 3){} Serial.println(F("... Connected to plotly's REST servers"));
+    if(log_level < 3){} Serial.println(F("... Sending HTTP Post to plotly"));
     print_(F("POST /clientresp HTTP/1.1\r\n"));
     print_(F("Host: 107.21.214.199\r\n"));
     print_(F("User-Agent: Arduino/0.5.1\r\n"));
 
     print_(F("Content-Length: "));
-    int contentLength = 115 + len_(username_) + nTraces*(87+len_(maxpoints)) + (nTraces-1)*2 + len_(filename_);
+    int contentLength = 115 + len_(username_) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
     print_(contentLength);
-    /* contentLength = 
-    *   44  // first part of querystring below
-    * + len_(username)  // upper bound on username length
-    * + 5   // &key=
-    * + 10  // api_key length
-    * + 7  // &args=[...
-    * + nTraces*(87+len(maxpoints)) // len({\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \") + 10 + len(\", "maxpoints": )+len(maxpoints)+len(}})
-    * + (nTraces-1)*2 // ", " in between trace objects
-    * + 47  // ]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \"
-    * + len_(filename)
-    * + 2   // closing "}
-    *------
-    * 115 + len_(username) + nTraces*(86+len(maxpoints)) + (nTraces-1)*2 + len_(filename)
-    */
+    // contentLength = 
+    //   44  // first part of querystring below
+    // + len_(username)  // upper bound on username length
+    // + 5   // &key=
+    // + 10  // api_key length
+    // + 7  // &args=[...
+    // + nTraces*(87+len(maxpoints)) // len({\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \") + 10 + len(\", "maxpoints": )+len(maxpoints)+len(}})
+    // + (nTraces-1)*2 // ", " in between trace objects
+    // + 47  // ]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \"
+    // + len_(filename)
+    // + 2   // closing "}
+    //------
+    // 115 + len_(username) + nTraces*(86+len(maxpoints)) + (nTraces-1)*2 + len_(filename)
+    //
     // Terminate headers with new lines
     print_(F("\r\n\r\n"));
 
@@ -115,13 +117,13 @@ void plotly::begin(){
     print_(api_key_);
     print_(F("&args=["));
     // print a trace for each token supplied
-    for(int i=0; i<nTraces; i++){
+    for(int i=0; i<nTraces_; i++){
         print_(F("{\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \""));
         print_(stream_tokens_[i]);
         print_(F("\", \"maxpoints\": "));
         print_(maxpoints);
         print_(F("}}"));
-        if(nTraces > 1 && i != nTraces-1){
+        if(nTraces_ > 1 && i != nTraces_-1){
             print_(F(", "));
         }
     }
@@ -131,11 +133,11 @@ void plotly::begin(){
     // final newline to terminate the POST
     print_(F("\r\n"));
 
-    /*
-     * Wait for a response
-     * Parse the response for the "All Streams Go!" and proceed to streaming
-     * if we find it
-    */
+    //
+    // Wait for a response
+    // Parse the response for the "All Streams Go!" and proceed to streaming
+    // if we find it
+    //
     char allStreamsGo[] = "All Streams Go!";
     int asgCnt = 0; // asg stands for All Streams Go
     char url[] = "\"url\": \"http://107.21.214.199/~";
@@ -148,19 +150,19 @@ void plotly::begin(){
     bool proceed = false;
     bool fidMatched = false;
 
-    if(log_level < 3){} // Serial.println(F("... Sent message, plotly's response:"));
-    /*
+    if(log_level < 3){} Serial.println(F("... Sent message, plotly's response:"));
+
     if(!dry_run){
         while(client.connected()){
             if(client.available()){
                 char c = client.read();
-                if(log_level < 2) // Serial.print(c);
+                if(log_level < 2) Serial.print(c);
 
-                /*
-                 * Attempt to read the "All streams go" msg if it exists
-                 * by comparing characters as they roll in
-                */
-                 /*
+                //
+                // Attempt to read the "All streams go" msg if it exists
+                // by comparing characters as they roll in
+                //
+
                 if(asgCnt == len_(allStreamsGo) && !proceed){
                     proceed = true;
                 }
@@ -171,13 +173,13 @@ void plotly::begin(){
                     asgCnt = 0;
                 }
 
-                /*
-                 * Extract the last bit of the URL from the response
-                 * The url is in the form http://107.21.214.199/~USERNAME/FID
-                 * We'll character-count up through char url[] and through username_, then start 
-                 * filling in characters into fid
-                */
-                 /*
+                //
+                // Extract the last bit of the URL from the response
+                // The url is in the form http://107.21.214.199/~USERNAME/FID
+                // We'll character-count up through char url[] and through username_, then start 
+                // filling in characters into fid
+                //
+
                 if(log_level < 3){
                     if(url[urlCnt]==c && urlCnt < len_(url)){
                         urlCnt += 1;
@@ -212,51 +214,56 @@ void plotly::begin(){
     }    
 
     if(!dry_run && !proceed && log_level < 4){ 
-        // Serial.print(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
+        Serial.println(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
         return;
     }
-    */
+
     if(log_level < 3){
-        // Serial.println(F("... A-ok from plotly, All Streams Go!"));
+        Serial.println(F("... A-ok from plotly, All Streams Go!"));
         if(fidMatched){
-            // Serial.print(F("... View your streaming plot here: https://plot.ly/~"));
-            // Serial.print(username_);
-            // Serial.print(F("/"));
+            Serial.print(F("... View your streaming plot here: https://plot.ly/~"));
+            Serial.print(username_);
+            Serial.print(F("/"));
             for(int i=0; i<fidCnt; i++){
-                // Serial.print(fid[i]);
+                Serial.print(fid[i]);
             }
-            // Serial.println(F(""));
+            Serial.println(F(""));
         }
     }
-
-
-    /*
-     * Start request to stream servers
-    */    
-    if(log_level < 3){} // Serial.println(F("... Connecting to plotly's streaming servers..."));
+}
+void plotly::openStream() {
+    //
+    // Start request to stream servers
+    //
+    if(log_level < 3){} Serial.println(F("... Connecting to plotly's streaming servers..."));
     % if lib!="cc3000":
     char server[] = "arduino.plot.ly";
     int port = 80;
     while ( !client.connect(server, port) ) {
-        if(log_level < 4) // Serial.println(F("... Couldn\'t connect to servers.... trying again!"));
-        delay(1000);
+        if(log_level < 4) Serial.println(F("... Couldn\'t connect to servers... trying again!"));
+        fibonacci_ += fibonacci_;
+        delay(min(fibonacci_, 60000));
     }
+    fibonacci_ = 1;    
     % else:
     #define STREAM_SERVER "arduino.plot.ly"
     uint32_t stream_ip = 0;
     // Try looking up the website's IP address
     while (stream_ip == 0) {
         if (! cc3000.getHostByName(STREAM_SERVER, &stream_ip)) {
-            if(log_level < 4){} // Serial.println(F("Couldn't resolve!"));
+            if(log_level < 4){} Serial.println(F("Couldn't resolve!"));
         }
     }
     client = cc3000.connectTCP(stream_ip, 80);
     while ( !client.connected() ) {
-        if(log_level < 4){} // Serial.println(F("... Couldn\'t connect to servers... trying again!"));
-        delay(1000);
+        if(log_level < 4){} Serial.println(F("... Couldn\'t connect to servers... trying again!"));
+        fibonacci_ += fibonacci_;
+        delay(min(fibonacci_, 60000));
+        client = cc3000.connectTCP(stream_ip, 80);
     }
+    fibonacci_ = 1;
     % endif
-    if(log_level < 3){} // Serial.println(F("... Connected to plotly's streaming servers\n... Initializing stream"));
+    if(log_level < 3){} Serial.println(F("... Connected to plotly's streaming servers\n... Initializing stream"));
 
     print_(F("POST / HTTP/1.1\r\n"));
     print_(F("Host: 127.0.0.1\r\n"));
@@ -266,11 +273,10 @@ void plotly::begin(){
     print_(F("plotly-convertTimestamp: America/Montreal"));
     print_(F("\r\n\r\n"));
 
-    if(log_level < 3){} // Serial.println(F("... Done initializing, ready to stream!"));
-
+    if(log_level < 3){} Serial.println(F("... Done initializing, ready to stream!"));
 }
 
-void plotly::stop(){
+void plotly::closeStream(){
     print_(F("0\r\n\r\n"));
     % if lib!="cc3000":
     client.stop();
@@ -278,23 +284,43 @@ void plotly::stop(){
     client.close();
     % endif
 }
-
+void plotly::reconnectStream(){
+    while(!client.connected()){
+        if(log_level<4) Serial.println(F("... Disconnected from streaming servers"));
+        closeStream();
+        openStream();
+    }
+}
 void plotly::jsonStart(int i){
     // Print the length of the message in hex:
     // 15 char for the json that wraps the data: {"x": , "y": }\n 
     // + 23 char for the token: , "token": "abcdefghij"
     // = 38
-    if(log_level<2) // Serial.print(i+44, HEX);
+    if(log_level<2) Serial.print(i+44, HEX);
     if(!dry_run) client.print(i+44, HEX);
+    % if lib=="cc3000":
     print_(F("\r\n{\"x\": "));
+    % else:
+    print_("\r\n{\"x\": ");
+    % endif
 }
 void plotly::jsonMiddle(){
+    % if lib=="cc3000":
     print_(F(", \"y\": "));
+    % else:
+    print_(", \"y\": ");
+    % endif
 }
 void plotly::jsonEnd(char *token){
+    % if lib=="cc3000":
     print_(F(", \"streamtoken\": \""));
     print_(token);
     print_(F("\"}\n\r\n"));
+    % else:
+    print_(", \"streamtoken\": \"");
+    print_(token);
+    print_("\"}\n\r\n");
+    % endif
 }
 
 int plotly::len_(int i){
@@ -323,31 +349,11 @@ int plotly::len_(unsigned long i){
     else if(i > 9) return 2;
     else return 1;
 }
-int plotly::len_(float i){
-    return floatWidth_;
-}
 int plotly::len_(char *i){
     return strlen(i);
 }
-int plotly::len_(String i){
-    return i.length();
-}
-
-void plotly::plot(int x, int y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(int x, float y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
 void plotly::plot(unsigned long x, int y, char *token){
+    reconnectStream();
     jsonStart(len_(x)+len_(y));
     print_(x);
     jsonMiddle();
@@ -355,74 +361,34 @@ void plotly::plot(unsigned long x, int y, char *token){
     jsonEnd(token);
 }
 void plotly::plot(unsigned long x, float y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(float x, int y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(float x, float y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(char *x, int y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(char *x, float y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(String x, int y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
-void plotly::plot(String x, float y, char *token){
-    jsonStart(len_(x)+len_(y));
-    print_(x);
-    jsonMiddle();
-    print_(y);
-    jsonEnd(token);
-}
+    reconnectStream();
 
+    char s_[15];
+    dtostrf(y,2,3,s_);
+
+    Serial.print("len_(s_): ");
+    Serial.println(len_(s_));
+
+    jsonStart(len_(x)+len_(s_)-1);
+    print_(x);
+    jsonMiddle();
+    print_(y);
+    jsonEnd(token);
+}
 void plotly::print_(int d){
-    if(log_level < 2) // Serial.print(d);
-    if(!dry_run) client.print(d);
-}
-void plotly::print_(float d){
-    char s_[floatWidth_];
-    dtostrf(d,floatWidth_,floatPrec_,s_);
-    print_(s_);
-}
-void plotly::print_(String d){
-    if(log_level < 2) // Serial.print(d);
+    if(log_level < 2) Serial.print(d);
     if(!dry_run) client.print(d);
 }
 void plotly::print_(unsigned long d){
-    if(log_level < 2) // Serial.print(d);
+    if(log_level < 2) Serial.print(d);
+    if(!dry_run) client.print(d);
+}
+void plotly::print_(float d){
+    if(log_level < 2) Serial.print(d);
     if(!dry_run) client.print(d);
 }
 void plotly::print_(char *d){
-    if(log_level < 2) // Serial.print(d);
+    if(log_level < 2) Serial.print(d);
     % if lib != "cc3000":
     if(!dry_run) client.print(d);
     % else:
@@ -430,7 +396,7 @@ void plotly::print_(char *d){
     % endif
 }
 void plotly::print_(const __FlashStringHelper* d){
-    if(log_level < 2) // Serial.print(d);
+    if(log_level < 2) Serial.print(d);
     % if lib != "cc3000":
     if(!dry_run) client.print(d);
     % else:

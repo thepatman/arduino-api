@@ -38,19 +38,22 @@ void setup() {
 
   startEthernet();
 
-
   graph.init();
   graph.openStream();
 }
 
-unsigned long x;
-int y;
-
+float y0, y1, y2, y3, y4, y5;
 void loop() {
-  graph.plot(millis(), analogRead(A0), tokens[0]);
-  graph.plot(millis(), analogRead(A1), tokens[1]);
-  graph.plot(millis(), analogRead(A2), tokens[2]);
-  graph.plot(millis(), analogRead(A3), tokens[3]);
-  graph.plot(millis(), analogRead(A4), tokens[4]);
-  graph.plot(millis(), analogRead(A5), tokens[5]);
+  y0 = analogRead(A0);
+  graph.plot(millis(), y0, tokens[0]);
+  y1 = analogRead(A1);
+  graph.plot(millis(), y1, tokens[1]);
+  y2 = analogRead(A2);
+  graph.plot(millis(), y2, tokens[2]);
+  y3 = analogRead(A3);
+  graph.plot(millis(), y3, tokens[3]);
+  y4 = analogRead(A4);
+  graph.plot(millis(), y4, tokens[4]);
+  y5 = analogRead(A5);
+  graph.plot(millis(), y5, tokens[5]);
 }

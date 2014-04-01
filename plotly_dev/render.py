@@ -14,7 +14,9 @@ meta = [
     {'src': './auto_timestamp.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
     {'src': './plotly_streaming.pre.cpp', 'destination': '../streaming', 'folder_prefix': 'plotly_streaming_'},
     {'src': './plotly_streaming.pre.h', 'destination': '../streaming', 'folder_prefix': 'plotly_streaming_'},
-    {'src': './run_streaming.pre.ino', 'destination': '../streaming/examples', 'folder_prefix': ''},    
+    {'src': './run_streaming.pre.ino', 'destination': '../streaming/examples', 'folder_prefix': ''},
+    {'src': './run_streaming_multiple.pre.ino', 'destination': '../streaming/examples', 'folder_prefix': ''},
+    {'src': './breakdown.pre.ino', 'destination': '../streaming/examples', 'folder_prefix': ''}        
 ]
 
 for m in meta:
