@@ -14,7 +14,7 @@ The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-a
 
 #### It's super easy
 
-```
+```C
 #include <PlotlyYun.h>
 #include <YunMessenger.h>
 #include <Bridge.h>
