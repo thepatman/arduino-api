@@ -1,12 +1,16 @@
+## Real-time Graphing and Data Logging
+
+#### The easiest and fastest way to plot and share data on the Arduino. 
+
 <p align="center">
 <a href="http://vimeo.com/89003132">
 <img src="http://new.tinygrab.com/c751bc2ee24505ea0425b28e9c8f2d1f8aa81ad395.png" />
 </a>
 </p>
 
-### Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphing tool for streaming, real-time, interactive data logging and graphing. It's free for public use!
+Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphing tool for streaming, real-time, interactive data logging and graphing. It's free, open source, and your graphs and data are entirely online.
 
-### Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](http://plot.ly/~streaming-demos/6/)
+Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](http://plot.ly/~streaming-demos/6/)
 
 ## Super easy!
 
@@ -18,11 +22,7 @@
 // Sign up to plotly here: https://plot.ly
 // View your API key and stream tokens in your settings: https://plot.ly/settings
 char *streaming_tokens[num_traces] = {"your_plotly_stream_token", "another_plotly_stream_token"};
-plotly graph("your_plotly_username", 
-            "your_plotly_api_key", 
-            streaming_tokens, 
-            "your_plotly_filename", 
-            num_traces);
+plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
 
 void setup() {
 
@@ -43,4 +43,77 @@ void loop() {
 }
 ```
 
-## Features
+## In the wild
+
+#### A video of our real-time heart rate monitor (click to view)
+<p align="center">
+<a href="https://vine.co/v/Mq2LQexrbl7">
+<img src="http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png" />
+</a>
+</p>
+
+#### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
+<p align="center">
+<a href="http://vimeo.com/87362390">
+<img src="http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png" />
+</a>
+</p>
+
+
+## 30 Second Quickstart
+(Working on the Yún? Click on the `arduino_yún` folder for a separate instructions)
+
+1. Sign up to plotly (it's free!): [https://plot.ly](https://plot.ly).
+2. Download and uncompress the latest plotly release: [https://github.com/plotly/arduino-api/releases](https://github.com/plotly/arduino-api/releases).
+3. Place the appropriate library your Arduino libraries folder. On a Mac, this is in `~/Documents/Arduino/libraries/`:
+    ![](http://new.tinygrab.com/c751bc2ee29f2d309e4fd8985685df0a1d83cf115a.png)
+4. Open up the Arduino IDE. If your using WiFi and haven't upgraded your firmware, use the [IDE version 1.0.3](http://arduino.cc/en/main/software).
+5. Load up one of the examples from this repository. Fill in your plotly username, API key, stream tokens, and filename. You can find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings). It'll look something like:
+    
+    ```cpp
+    char *tokens[] = {"ab4kf5nfdn","kdf5bn4dbn"};
+    plotly graph("anna.lyst","ab4kftunvd", tokens, "arduino graph");
+    ```
+    (those are fake keys and tokens, so don't try to use them, they won't work!)
+
+6. Upload the program!
+7. Open up your Serial Monitor. You'll see an output like:
+
+    ```
+    ... Attempting to connect to WPA network...
+    ... Connected to network
+    ... Attempting to connect to plotly's REST servers
+    ... Connected to plotly's REST servers
+    ... Sending HTTP Post to plotly
+    ... Sent message, plotly's response:
+    ... A-ok from plotly, All Streams Go!
+    ... View your streaming plot here: https://plot.ly/~streaming-demos/6
+    ... Connecting to plotly's streaming servers...
+    ... Connected to plotly's streaming servers
+    ... Initializing stream
+    ... Done initializing, ready to stream!
+    ```
+8. Grab the URL that was printed out, view your graph in your browser, and celebrate! The graph and data is saved in your plotly account, so you can view it in your plotly file list here: [https://plot.ly/plot](https://plot.ly/plot). You can view, edit, and share your graphs while data is streaming to them in real-time! Everybody that views the graph will see the exact same data at the same time (try it out yourself: open your graph in two different browser windows).
+
+## More on Usage
+
+Documentation
+```C++
+class plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces);
+```
+*Member Functions*
+- `void plotly.init()`
+- `void plotly.openStream()`
+- `void plotly.closeStream()`
+- `void plotly.reconnectStream()`
+- `void plot(unsigned long x, int y, char *token)`
+- `void plot(unsigned long x, float y, char *token)`
+*Member Parameters*
+- `int plotly.log_level`
+- `bool plotly.dry_run`
+- `int plotly.maxpoints`
+- `bool plotly.convertTimestamp` (Default `true`)
+- `char *plotly.timeZone` (Default: `"America/Montreal"`)
+
+
+
