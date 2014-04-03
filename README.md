@@ -128,7 +128,7 @@ Plotly graphs can be edited while data is streaming to them. Every aspect of the
 ### Multiple Viewers
 Everybody who looks at your streaming graph sees the exact same data, at the exact same time! Give it a try yourself: open up a graph in two different browser windows.
 
-### Docs
+## Docs
 
 ```Cpp
 class plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces);
@@ -180,13 +180,13 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 
   If `true`, then your graph is publicly viewable and discoverable by unique url. If `false`, then only you can view the graph.
   
-### Contributing Notes
+## Contributing Notes
 The `wifi`, `ethernet`, `gsm`, and `cc3000` libraries and examples are 95% identical and so are automatically generated from template files in the `plotly_dev` folder. We use Mako, one of Python's templating libraries to generate these files. To run, do:
 
 ```bash
 $ python render.py
 ```
 
-### Contact
+## Contact
 - [@plotlygraphs](https://twitter.com/plotlygraphs)
 - <chris@plot.ly>
