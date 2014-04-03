@@ -60,7 +60,7 @@ void loop() {
 </p>
 
 
-## 30 Second Quickstart
+## 5 Minute Quickstart
 (Working on the Yún? Click on the `plotly_yun` folder for a separate instructions)
 
 1. Sign up to plotly (it's free!): [https://plot.ly](https://plot.ly).
