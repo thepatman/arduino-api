@@ -187,6 +187,6 @@ The `wifi`, `ethernet`, `gsm`, and `cc3000` libraries and examples are 95% ident
 $ python render.py
 ```
 
-## Contact
+## Get in touch
 - [@plotlygraphs](https://twitter.com/plotlygraphs)
 - <chris@plot.ly>
