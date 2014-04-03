@@ -44,7 +44,7 @@ class plotly
         % elif lib=="gsm":
         GSMClient client;
         % endif
-        void init();
+        bool init();
         void openStream();
         void closeStream();
         void reconnectStream();
@@ -58,6 +58,10 @@ class plotly
         int log_level;
         bool dry_run;
         int maxpoints;
+        bool world_readable;
+        bool convertTimestamp;
+        char *timezone;
+
     private:
         void print_(int d);
         void print_(unsigned long d);

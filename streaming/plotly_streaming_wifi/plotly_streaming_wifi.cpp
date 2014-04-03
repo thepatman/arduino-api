@@ -17,9 +17,12 @@ plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filen
     nTraces_ = nTraces;
     maxpoints = 30;
     fibonacci_ = 1;
+    world_readable = true;
+    convertTimestamp = true;
+    timezone = "America/Montreal";
 }
 
-void plotly::init(){
+bool plotly::init(){
     // 
     //  Validate a stream with a REST post to plotly 
     //
@@ -84,7 +87,13 @@ void plotly::init(){
     }
     print_(F("]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \""));
     print_(filename_);
-    print_(F("\"}"));
+    print_(F("\", \"world_readable\": "));
+    if(world_readable){
+        print_("true");
+    } else{
+        print_("false");
+    }
+    print_(F("}"));
     // final newline to terminate the POST
     print_(F("\r\n"));
 
@@ -105,7 +114,7 @@ void plotly::init(){
     bool proceed = false;
     bool fidMatched = false;
 
-    if(log_level < 3){} Serial.println(F("... Sent message, plotly's response:"));
+    if(log_level < 2){} Serial.println(F("... Sent message, plotly's response:"));
 
     if(!dry_run){
         while(client.connected()){
@@ -166,10 +175,9 @@ void plotly::init(){
 
     if(!dry_run && !proceed && log_level < 4){ 
         Serial.println(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
-        return;
     }
 
-    if(log_level < 3){
+    if(!dry_run && proceed && log_level < 3){
         Serial.println(F("... A-ok from plotly, All Streams Go!"));
         if(fidMatched){
             Serial.print(F("... View your streaming plot here: https://plot.ly/~"));
@@ -181,6 +189,7 @@ void plotly::init(){
             Serial.println(F(""));
         }
     }
+    return proceed;
 }
 void plotly::openStream() {
     //
@@ -202,7 +211,11 @@ void plotly::openStream() {
     print_(F("User-Agent: Python\r\n"));
     print_(F("Transfer-Encoding: chunked\r\n"));
     print_(F("Connection: close\r\n"));
-    print_(F("plotly-convertTimestamp: America/Montreal"));
+    if(convertTimestamp){
+        print_(F("plotly-convertTimestamp: \""));
+        print_(timezone);
+        print_(F("\""));
+    } 
     print_(F("\r\n\r\n"));
 
     if(log_level < 3){} Serial.println(F("... Done initializing, ready to stream!"));
