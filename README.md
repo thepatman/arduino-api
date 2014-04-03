@@ -181,7 +181,11 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
   If `true`, then your graph is publicly viewable and discoverable by unique url. If `false`, then only you can view the graph.
   
 ### Contributing Notes
-The `wifi`, `ethernet`, `gsm`, and `cc3000` libraries and examples are 95% identical, and so are automatically generated from template files in the `plotly_dev` folder with one of Python's templating libraries, Mako. 
+The `wifi`, `ethernet`, `gsm`, and `cc3000` libraries and examples are 95% identical and so are automatically generated from template files in the `plotly_dev` folder. We use Mako, one of Python's templating libraries to generate these files. To run, do:
+
+```bash
+$ python render.py
+```
 
 ### Contact
 - [@plotlygraphs](https://twitter.com/plotlygraphs)
