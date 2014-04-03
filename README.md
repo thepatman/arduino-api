@@ -7,7 +7,7 @@ Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphi
 
 Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](http://plot.ly/~streaming-demos/6/)
 
-## Super easy!
+## Super easy
 
 ```C
 #include <WiFi.h>
@@ -49,7 +49,7 @@ void loop() {
 ## 5 Minute Quickstart
 (Working on the Yún? Click on the [`plotly_yun`](https://github.com/plotly/arduino-api/tree/master/plotly_yun) folder for separate instructions)
 
-1. Sign up to plotly (it's free!): [https://plot.ly](https://plot.ly).
+1. Sign up to plotly: [https://plot.ly](https://plot.ly).
 2. Download and uncompress the latest plotly release: [https://github.com/plotly/arduino-api/releases](https://github.com/plotly/arduino-api/releases).
 3. Place the appropriate library your Arduino libraries folder. On a Mac, this is in `~/Documents/Arduino/libraries/`:
     ![](http://new.tinygrab.com/c751bc2ee29f2d309e4fd8985685df0a1d83cf115a.png)
@@ -60,9 +60,9 @@ void loop() {
     char *tokens[] = {"ab4kf5nfdn","kdf5bn4dbn"};
     plotly graph("anna.lyst","ab4kftunvd", tokens, "arduino graph");
     ```
-    (those are fake keys and tokens, so don't try to use them, they won't work!)
+    (those are fake keys and tokens)
 
-6. Upload the program!
+6. Upload the program.
 7. Open up your Serial Monitor. You'll see an output like:
 
     ```
@@ -79,7 +79,7 @@ void loop() {
     ... Initializing stream
     ... Done initializing, ready to stream!
     ```
-8. Grab the URL that was printed out, view your graph in your browser, and celebrate! The graph and data is saved in your plotly account, so you can view it in your plotly file list here: [https://plot.ly/plot](https://plot.ly/plot). You can view, edit, and share your graphs while data is streaming to them in real-time! Everybody that views the graph will see the exact same data at the same time (try it out yourself: open your graph in two different browser windows).
+8. Grab the URL that was printed out, view your graph in your browser, and celebrate! The graph and data is saved in your plotly account, so you can view it in your plotly file list here: [https://plot.ly/plot](https://plot.ly/plot). You can view, edit, and share your graphs while data is streaming to them in real-time. Everybody that views the graph will see the exact same data at the same time (try it out yourself: open your graph in two different browser windows).
 
 ## Usage and Docs
 
