@@ -123,7 +123,7 @@ To change the timezone, set `timeZone` to one of the strings in here: [Accepted 
 ```
 
 ### Editing the live  graph
-Plotly graphs can be edited while data is streaming to them. Every aspect of the graph is configurable: you can add a second y-axis, turn the graphs into subplots, change the colors, update the title, change the chart type, etc. To get started, just open up the graph in your list of files here: [https://plot.ly/plot](https://plot.ly/plot).
+Plotly graphs can be edited while data is streaming to them. Every aspect of the graph is configurable: you can add a second y-axis, turn the graphs into subplots, change the colors, update the title, change the chart type, etc. To get started, just open up the graph in your list of files here: [https://plot.ly/plot](https://plot.ly/plot) or click `Save and Edit` on the public view of your graph that the serial monitor printed out (e.g. [http://plot.ly/~streaming-demos/6/](http://plot.ly/~streaming-demos/6/)).
 
 ### Multiple Viewers
 Everybody who looks at your streaming graph sees the exact same data, at the exact same time! Give it a try yourself: open up a graph in two different browser windows.
