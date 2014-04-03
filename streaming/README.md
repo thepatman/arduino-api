@@ -122,8 +122,8 @@ To change the timezone, set `timeZone` to one of the strings in here: [Accepted 
   graph.timezone = "Africa/Abidjan";
 ```
 
-### Editing the graph
-Plotly graphs can be edited while data is streaming to them. Every aspect of the graph is configurable, ou can add a second y-axis, turn the graphs into subplots, change the colors, update the title, change the chart type, ... etc!
+### Editing thelive  graph
+Plotly graphs can be edited while data is streaming to them. Every aspect of the graph is configurable, ou can add a second y-axis, turn the graphs into subplots, change the colors, update the title, change the chart type, ... etc! To get started, just open up the graph in your list of files here: [https://plot.ly/plot](https://plot.ly/plot).
 
 ### Multiple Viewers
 Everybody who looks at your streaming graph sees the exact same data, at the exact same time! Give it a try yourself: open up a graph in two different browser windows.
