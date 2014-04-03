@@ -130,9 +130,9 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 
 **Public Member Functions**
 
-- `void plotly.init()`
+- `bool plotly.init()`
   
-  Creates an empty graph in your plotly account that will get streamed to. This is done by making an API call to plotly's REST service.
+  Creates an empty graph in your plotly account that will get streamed to. This is done by making an API call to plotly's REST service. Returns `true` if initialization was successful, `false` otherwise.
 - `void plotly.openStream()`
   
   Opens a TCP connection to plotly's streaming service. The stream is uniquely identified by the `stream_tokens`.
