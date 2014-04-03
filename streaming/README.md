@@ -37,7 +37,7 @@ void setup() {
 }
 
 void loop() {
-  // now let's stream-data to plotly, giddyup!
+  // now let's stream data to plotly, giddyup!
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
 }
@@ -97,23 +97,67 @@ void loop() {
 
 ## More on Usage
 
-Documentation
+### Usage, Your Data Rights, and Private Graphs
+When you make a graph on plotly, you retain the rights to your content (see our terms [here](https://plot.ly/tou). You also control whether your graphs are public or private. Public plotting is free; for a lot of private use, you can get a Premium or Organizational plan (see http://plot.ly/plans). It's just like GitHub.
+
+By default, anyone can view the graphs at the unique URL. To make the graphs private, so that only you can see them when your logged in, set `world_readable` to `false`:
+
+```C+++
+  plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  graph.world_readable = false;
+```
+
+
+### Docs
+
 ```C++
 class plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces);
 ```
-*Member Functions*
+
+**Public Member Functions**
+
 - `void plotly.init()`
+  
+  Creates an empty graph in your plotly account that will get streamed to. This is done by making an API call to plotly's REST service.
 - `void plotly.openStream()`
+  
+  Opens a TCP connection to plotly's streaming service. The stream is uniquely identified by the `stream_tokens`.
 - `void plotly.closeStream()`
+  
+  Closes the TCP connection to plotly's streaming service.
 - `void plotly.reconnectStream()`
+  
+  Reopens the connection to plotly's streaming service if not connected.
 - `void plot(unsigned long x, int y, char *token)`
+  
+  Plots `(x, y)` to the streaming graph.
 - `void plot(unsigned long x, float y, char *token)`
-*Member Parameters*
-- `int plotly.log_level`
+  
+  Plots `(x, y)` to the streaming graph.
+**Public Member Parameters**
+- `int plotly.log_level` (Default `2`)
+  
+  Determines which messages are printed over serial. Levels are:
+  - `0`: Debugging
+  - `1`: Informational
+  - `2`: Status
+  - `3`: Errors
+  - `4`: Quiet
 - `bool plotly.dry_run`
-- `int plotly.maxpoints`
+  
+  If `True`, then no calls are made to Plotly's servers.
+- `int plotly.maxpoints` (Default `30`)
+  
+  Determines the number of points to plot at a time. Valid from `1` to `200000`. 
 - `bool plotly.convertTimestamp` (Default `true`)
+  
+  If `true`, the Plotly assumes that `x` is milliseconds since program start (`millis()`) and automatically converts these values into a timestamp.
 - `char *plotly.timeZone` (Default: `"America/Montreal"`)
 
+  The timezone to convert the timestamps if `plotly.convertTimestamp=true`. A list of the accepted timezones are in this repo: [Accepted Timezone Strings.txt](https://github.com/plotly/arduino-api/blob/master/Accepted%20Timezone%20Strings.txt)
 
+- `bool world_readable` (Default: true)
+
+  If `true`, then your graph is publicly viewable and discoverable by unique url. If `false`, then only you can view the graph.
+  
 
