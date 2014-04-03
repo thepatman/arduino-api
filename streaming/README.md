@@ -102,15 +102,29 @@ When you make a graph on plotly, you retain the rights to your content (see our 
 
 By default, anyone can view the graphs at the unique URL. To make the graphs private, so that only you can see them when your logged in, set `world_readable` to `false`:
 
-```C+++
+```Cpp
   plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
   graph.world_readable = false;
 ```
 
+### Time stamping
+By default, plotly assumes that `x` is `millis()` and automatically converts the `x` to a real-time timestamp with the timezone `"America/Montreal"` on the server. To disable this, set `convertTimestamp` to `false`, e.g.
+
+```Cpp
+  plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  graph.autoTimestamp = false;
+```
+
+To change the timezone, set `timeZone` to one of the strings in here: [Accepted Timezone Strings.txt](https://github.com/plotly/arduino-api/blob/master/Accepted%20Timezone%20Strings.txt), e.g.
+
+```Cpp
+  plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  graph.timezone = "Africa/Abidjan";
+```
 
 ### Docs
 
-```C++
+```Cpp
 class plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces);
 ```
 
@@ -160,4 +174,9 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 
   If `true`, then your graph is publicly viewable and discoverable by unique url. If `false`, then only you can view the graph.
   
+### Contributing Notes
+The `wifi`, `ethernet`, `gsm`, and `cc3000` libraries and examples are 95% identical, and so are automatically generated from template files in the `plotly_dev` folder with one of Python's templating libraries, Mako. 
 
+### Contact
+- [@plotlygraphs](https://twitter.com/plotlygraphs)
+- <chris@plot.ly>
