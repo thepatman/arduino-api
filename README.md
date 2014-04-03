@@ -61,7 +61,7 @@ void loop() {
 
 
 ## 30 Second Quickstart
-(Working on the Yún? Click on the `arduino_yún` folder for a separate instructions)
+(Working on the Yún? Click on the `plotly_yun` folder for a separate instructions)
 
 1. Sign up to plotly (it's free!): [https://plot.ly](https://plot.ly).
 2. Download and uncompress the latest plotly release: [https://github.com/plotly/arduino-api/releases](https://github.com/plotly/arduino-api/releases).
@@ -122,7 +122,7 @@ To change the timezone, set `timeZone` to one of the strings in here: [Accepted 
   graph.timezone = "Africa/Abidjan";
 ```
 
-### Editing thelive  graph
+### Editing the live  graph
 Plotly graphs can be edited while data is streaming to them. Every aspect of the graph is configurable, ou can add a second y-axis, turn the graphs into subplots, change the colors, update the title, change the chart type, ... etc! To get started, just open up the graph in your list of files here: [https://plot.ly/plot](https://plot.ly/plot).
 
 ### Multiple Viewers
