@@ -61,7 +61,7 @@ void loop() {
 
 
 ## 5 Minute Quickstart
-(Working on the Yún? Click on the `plotly_yun` folder for a separate instructions)
+(Working on the Yún? Click on the [`plotly_yun`](https://github.com/plotly/arduino-api/tree/master/plotly_yun) folder for separate instructions)
 
 1. Sign up to plotly (it's free!): [https://plot.ly](https://plot.ly).
 2. Download and uncompress the latest plotly release: [https://github.com/plotly/arduino-api/releases](https://github.com/plotly/arduino-api/releases).
@@ -95,7 +95,7 @@ void loop() {
     ```
 8. Grab the URL that was printed out, view your graph in your browser, and celebrate! The graph and data is saved in your plotly account, so you can view it in your plotly file list here: [https://plot.ly/plot](https://plot.ly/plot). You can view, edit, and share your graphs while data is streaming to them in real-time! Everybody that views the graph will see the exact same data at the same time (try it out yourself: open your graph in two different browser windows).
 
-## More on Usage
+## Usage and Docs
 
 ### Usage, Your Data Rights, and Private Graphs
 When you make a graph on plotly, you retain the rights to your content (see our terms [here](https://plot.ly/tou)). You also control whether your graphs are public or private. Public plotting is free; for a lot of private use, you can get a Premium or Organizational plan (see http://plot.ly/plans). It's just like GitHub.
@@ -128,7 +128,7 @@ Plotly graphs can be edited while data is streaming to them. Every aspect of the
 ### Multiple Viewers
 Everybody who looks at your streaming graph sees the exact same data, at the exact same time! Give it a try yourself: open up a graph in two different browser windows.
 
-## Docs
+### Docs
 
 ```Cpp
 class plotly(char *username, char *api_key, char* stream_tokens[], char *filename, int nTraces);
