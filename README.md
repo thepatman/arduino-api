@@ -1,12 +1,7 @@
 ## Real-time Graphing and Data Logging
 
 #### The easiest and fastest way to plot and share data on the Arduino. 
-
-<p align="center">
-<a href="http://vimeo.com/89003132">
-<img src="http://new.tinygrab.com/c751bc2ee24505ea0425b28e9c8f2d1f8aa81ad395.png" />
-</a>
-</p>
+[![Real-time Plotting with Arduino and Plotly](http://new.tinygrab.com/c751bc2ee24505ea0425b28e9c8f2d1f8aa81ad395.png)](http://vimeo.com/89003132)
 
 Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphing tool for streaming, real-time, interactive data logging and graphing. It's free, open source, and your graphs and data are entirely online.
 
@@ -46,19 +41,10 @@ void loop() {
 ## In the wild
 
 #### A video of our real-time heart rate monitor (click to view)
-<p align="center">
-<a href="https://vine.co/v/Mq2LQexrbl7">
-<img src="http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png" />
-</a>
-</p>
+[![Real-time Heart Rate Monitor with Plotly and an Arduino Yun](http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png)](https://vine.co/v/Mq2LQexrbl7)
 
 #### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
-<p align="center">
-<a href="http://vimeo.com/87362390">
-<img src="http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png" />
-</a>
-</p>
-
+[![Arduino streaming-data data to plotly from a mountain edge, in Peachland, BC](http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png)](http://vimeo.com/87362390)
 
 ## 5 Minute Quickstart
 (Working on the Yún? Click on the [`plotly_yun`](https://github.com/plotly/arduino-api/tree/master/plotly_yun) folder for separate instructions)
