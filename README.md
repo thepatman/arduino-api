@@ -98,7 +98,7 @@ void loop() {
 ## More on Usage
 
 ### Usage, Your Data Rights, and Private Graphs
-When you make a graph on plotly, you retain the rights to your content (see our terms [here](https://plot.ly/tou). You also control whether your graphs are public or private. Public plotting is free; for a lot of private use, you can get a Premium or Organizational plan (see http://plot.ly/plans). It's just like GitHub.
+When you make a graph on plotly, you retain the rights to your content (see our terms [here](https://plot.ly/tou)). You also control whether your graphs are public or private. Public plotting is free; for a lot of private use, you can get a Premium or Organizational plan (see http://plot.ly/plans). It's just like GitHub.
 
 By default, anyone can view the graphs at the unique URL. To make the graphs private, so that only you can see them when your logged in, set `world_readable` to `false`:
 
