@@ -129,8 +129,4 @@ int y;
 void loop() {
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
-  graph.plot(millis(), analogRead(A2), tokens[2]);
-  graph.plot(millis(), analogRead(A3), tokens[3]);
-  graph.plot(millis(), analogRead(A4), tokens[4]);
-  graph.plot(millis(), analogRead(A5), tokens[5]);
 }

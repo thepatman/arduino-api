@@ -5,19 +5,19 @@
 #include "utility/debug.h"
 #include <plotly_streaming_cc3000.h>
 
-#define WLAN_SSID       "StationC"
-#define WLAN_PASS       "stationcgaspe"
+#define WLAN_SSID       "wifi_network_name"
+#define WLAN_PASS       "wifi_network_password"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 
 // Sign up to plotly here: https://plot.ly
 // View your API key and streamtokens here: https://plot.ly/settings
-#define nTraces 6
+#define nTraces 2
 // View your tokens here: https://plot.ly/settings
 // Supply as many tokens as data traces
 // e.g. if you want to ploty A0 and A1 vs time, supply two tokens
-char *tokens[nTraces] = {"8xdfnkq1nb", "xtndiqvpol", "9hacultmgo", "twb02gfo7c", "nr4c87j7tq", "6hkp0pnj0q"};
+char *tokens[nTraces] = {"token_1", "token_2"};
 // arguments: username, api key, streaming token, filename
-plotly graph("streaming-demos", "3yyglqsi85", tokens, "filename", nTraces);
+plotly graph("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
 
 void wifi_connect(){
   /* Initialise the module */
@@ -68,8 +68,4 @@ int y;
 void loop() {
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
-  graph.plot(millis(), analogRead(A2), tokens[2]);
-  graph.plot(millis(), analogRead(A3), tokens[3]);
-  graph.plot(millis(), analogRead(A4), tokens[4]);
-  graph.plot(millis(), analogRead(A5), tokens[5]);
 }

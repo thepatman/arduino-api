@@ -10,7 +10,6 @@ meta = [
     {'src': './plotly_streaming.pre.cpp', 'destination': '../', 'folder_prefix': 'plotly_streaming_'},
     {'src': './plotly_streaming.pre.h', 'destination': '../', 'folder_prefix': 'plotly_streaming_'},
     {'src': './simple.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
-    {'src': './multiple.pre.ino', 'destination': '../examples', 'folder_prefix': ''},
 ]
 
 for m in meta:
