@@ -27,7 +27,7 @@
 // e.g. if you want to ploty A0 and A1 vs time, supply two tokens
 char *tokens[nTraces] = {"8xdfnkq1nb", "xtndiqvpol", "9hacultmgo", "twb02gfo7c", "nr4c87j7tq", "6hkp0pnj0q"};
 // arguments: username, api key, streaming token, filename
-plotly graph("streaming-demos", "3yyglqsi85", tokens, "filename", nTraces);
+plotly graph("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
 
 % if lib=="wifi":
 char ssid[] = "Your_WiFi_Network_Name"; //  your network SSID (name) 
