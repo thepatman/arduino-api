@@ -37,6 +37,7 @@ void loop() {
   graph.plot(millis(), analogRead(A1), tokens[1]);
 }
 ```
+See more examples in the [examples](/examples) folder.
 
 ## In the wild
 
@@ -54,7 +55,7 @@ void loop() {
 3. Place the appropriate library your Arduino libraries folder. On a Mac, this is in `~/Documents/Arduino/libraries/`:
     ![](http://new.tinygrab.com/c751bc2ee29f2d309e4fd8985685df0a1d83cf115a.png)
 4. Open up the Arduino IDE. If your using WiFi and haven't upgraded your firmware, use the [IDE version 1.0.3](http://arduino.cc/en/main/software).
-5. Load up one of the examples from this repository. Fill in your plotly username, API key, stream tokens, and filename. You can find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings). It'll look something like:
+5. Load up one of the [examples](/examples) from this repository. Fill in your plotly username, API key, stream tokens, and filename. You can find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings). It'll look something like:
     
     ```cpp
     char *tokens[] = {"ab4kf5nfdn","kdf5bn4dbn"};
