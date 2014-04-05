@@ -40,8 +40,9 @@ void setup() {
 
   wifi_connect();
 
-
-  graph.init();
+  bool success;
+  success = graph.init();
+  if(!success){while(true){}}
   graph.openStream();
 }
 

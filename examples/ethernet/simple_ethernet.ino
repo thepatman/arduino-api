@@ -38,8 +38,9 @@ void setup() {
 
   startEthernet();
 
-
-  graph.init();
+  bool success;
+  success = graph.init();
+  if(!success){while(true){}}
   graph.openStream();
 }
 

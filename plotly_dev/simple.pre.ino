@@ -118,8 +118,9 @@ void setup() {
   gsm_connect();
   % endif
 
-
-  graph.init();
+  bool success;
+  success = graph.init();
+  if(!success){while(true){}}
   graph.openStream();
 }
 

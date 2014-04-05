@@ -67,7 +67,12 @@ bool plotly::init(){
     print_(F("User-Agent: Arduino/0.5.1\r\n"));
 
     print_(F("Content-Length: "));
-    int contentLength = 115 + len_(username_) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
+    int contentLength = 135 + len_(username_) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
+    if(world_readable){
+        contentLength += 4;
+    } else{
+        contentLength += 5;
+    }
     print_(contentLength);
     // contentLength = 
     //   44  // first part of querystring below
@@ -79,7 +84,9 @@ bool plotly::init(){
     // + (nTraces-1)*2 // ", " in between trace objects
     // + 47  // ]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \"
     // + len_(filename)
-    // + 2   // closing "}
+    // + 21 // ", "world_readable": 
+    // + 4 if world_readable, 5 otherwise
+    // + 1   // closing }
     //------
     // 115 + len_(username) + nTraces*(86+len(maxpoints)) + (nTraces-1)*2 + len_(filename)
     //
@@ -121,6 +128,7 @@ bool plotly::init(){
     // if we find it
     //
     char allStreamsGo[] = "All Streams Go!";
+    char error[] = "\"error\": \"";
     int asgCnt = 0; // asg stands for All Streams Go
     char url[] = "\"url\": \"http://107.21.214.199/~";
     char fid[4];
@@ -132,7 +140,9 @@ bool plotly::init(){
     bool proceed = false;
     bool fidMatched = false;
 
-    if(log_level < 2){} Serial.println(F("... Sent message, plotly's response:"));
+    if(log_level < 2){
+        Serial.println(F("... Sent message, waiting for plotly's response..."));
+    } 
 
     if(!dry_run){
         while(client.connected()){
@@ -187,7 +197,7 @@ bool plotly::init(){
                 }
             }
         }
-
+        Serial.print("Disconnecting");
         client.close();
     }    
 
