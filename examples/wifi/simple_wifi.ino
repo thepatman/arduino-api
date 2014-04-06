@@ -9,7 +9,7 @@
 // e.g. if you want to ploty A0 and A1 vs time, supply two tokens
 char *tokens[nTraces] = {"token_1", "token_2"};
 // arguments: username, api key, streaming token, filename
-plotly graph("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
+plotly graph = plotly("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 char ssid[] = "wifi_network_name"; //  your network SSID (name) 
@@ -52,4 +52,7 @@ int y;
 void loop() {
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
+
+  delay(200);
+
 }

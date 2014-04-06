@@ -1,5 +1,4 @@
 % if lib=="ethernet":
-#include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_streaming_ethernet.h"
 % elif lib=="wifi":
@@ -27,7 +26,7 @@
 // e.g. if you want to ploty A0 and A1 vs time, supply two tokens
 char *tokens[nTraces] = {"token_1", "token_2"};
 // arguments: username, api key, streaming token, filename
-plotly graph("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
+plotly graph = plotly("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
 
 % if lib=="wifi":
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
@@ -128,4 +127,11 @@ int y;
 void loop() {
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
+
+  % if lib=="wifi":
+  delay(200);
+  % elif lib=="ethernet":
+  delay(25);
+  % endif
+
 }

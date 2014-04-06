@@ -31,35 +31,33 @@ bool plotly::init(){
     // 
     //  Validate a stream with a REST post to plotly 
     //
-    if(dry_run && log_level < 3){ 
+    if(dry_run && log_level < 3){
         Serial.println(F("... This is a dry run, we are not connecting to plotly's servers...")); 
     }
-    else{
-      if(log_level < 3) { 
+    else if(log_level < 3) { 
         Serial.println(F("... Attempting to connect to plotly's REST servers")); 
     }
-      #define WEBSITE "plot.ly"
-      uint32_t ip = 0;
-      // Try looking up the website's IP address
-      while (ip == 0) {
+    #define WEBSITE "plot.ly"
+    uint32_t ip = 0;
+    // Try looking up the website's IP address
+    while (ip == 0) {
         if (! cc3000.getHostByName(WEBSITE, &ip)) {
-        if(log_level < 4) {
-            Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
+            if(log_level < 4) {
+                Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
+            }
         }
-      }
       delay(500);
-      }
-      client = cc3000.connectTCP(ip, 80);
-      while ( !client.connected() ) {
+    }
+    client = cc3000.connectTCP(ip, 80);
+    while ( !client.connected() ) {
         if(log_level < 4){
             Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
         }
         fibonacci_ += fibonacci_;
         delay(min(fibonacci_, 60000));
         client = cc3000.connectTCP(ip, 80);
-      }
-      fibonacci_ = 1;
     }
+    fibonacci_ = 1;
     if(log_level < 3){} Serial.println(F("... Connected to plotly's REST servers"));
     if(log_level < 3){} Serial.println(F("... Sending HTTP Post to plotly"));
     print_(F("POST /clientresp HTTP/1.1\r\n"));

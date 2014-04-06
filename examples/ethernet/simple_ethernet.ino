@@ -1,4 +1,3 @@
-#include <SPI.h>
 #include <Ethernet.h>
 #include "plotly_streaming_ethernet.h"
 
@@ -10,7 +9,7 @@
 // e.g. if you want to ploty A0 and A1 vs time, supply two tokens
 char *tokens[nTraces] = {"token_1", "token_2"};
 // arguments: username, api key, streaming token, filename
-plotly graph("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
+plotly graph = plotly("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
@@ -50,4 +49,7 @@ int y;
 void loop() {
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
+
+  delay(25);
+
 }
