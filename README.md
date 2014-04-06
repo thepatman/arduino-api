@@ -17,7 +17,7 @@ Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](ht
 // Sign up to plotly here: https://plot.ly
 // View your API key and stream tokens in your settings: https://plot.ly/settings
 char *streaming_tokens[num_traces] = {"your_plotly_stream_token", "another_plotly_stream_token"};
-plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
 
 void setup() {
 
@@ -90,7 +90,7 @@ When you make a graph on plotly, you retain the rights to your content (see our 
 By default, anyone can view the graphs at the unique URL. To make the graphs private, so that only you can see them when your logged in, set `world_readable` to `false`:
 
 ```Cpp
-  plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
   graph.world_readable = false;
 ```
 
@@ -98,15 +98,29 @@ By default, anyone can view the graphs at the unique URL. To make the graphs pri
 By default, plotly assumes that `x` is `millis()` and automatically converts the `x` to a real-time timestamp with the timezone `"America/Montreal"` on the server. To disable this, set `convertTimestamp` to `false`, e.g.
 
 ```Cpp
-  plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
-  graph.autoTimestamp = false;
+  plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  void setup(){
+    graph.autoTimestamp = false;
+  }
 ```
 
 To change the timezone, set `timeZone` to one of the strings in here: [Accepted Timezone Strings.txt](https://github.com/plotly/arduino-api/blob/master/Accepted%20Timezone%20Strings.txt), e.g.
 
 ```Cpp
-  plotly graph("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
-  graph.timezone = "Africa/Abidjan";
+  plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  void setup(){
+    graph.timezone = "Africa/Abidjan";
+  }
+```
+
+### Adjusting the number of points plotted at a time
+By default, your real-time graph will graph the `30` most recent points at a time. To adjust this, set the member variable `maxpoints` to something else, e.g.
+
+```Cpp
+  plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+  void setup(){
+    graph.maxpoints = 200;
+  }
 ```
 
 ### Editing the live  graph
