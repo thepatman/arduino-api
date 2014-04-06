@@ -1,8 +1,6 @@
 #include <Adafruit_CC3000.h>
 #include <ccspi.h>
 #include <SPI.h>
-#include <string.h>
-#include "utility/debug.h"
 #include <plotly_streaming_cc3000.h>
 
 #define WLAN_SSID       "wifi_network_name"
