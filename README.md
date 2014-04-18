@@ -129,6 +129,31 @@ Plotly graphs can be edited while data is streaming to them. Every aspect of the
 ### Multiple Viewers
 Everybody who looks at your streaming graph sees the exact same data, at the exact same time. Give it a try yourself: open up a graph in two different browser windows.
 
+### Overwriting or Appending Data
+By default, the initialization of your graph (`graph.init();`) overwrites the existing graph with your new data. This is the perfect option for development: when you re-run your script, a fresh new graph is created. However, when you run your Arduino for an extended period of time, the Arduino may reset itself, which would in turn reset the graph and remove the existing data. To prevent this from happening, you can use the `fileopt` `"extend"`, which will append your new data to the existing data in the graph.
+
+
+So, for running your Arduino for a very long time, you should add 
+```Cpp
+graph.fileopt = "extend"; // Remove this if you want the graph to be overwritten
+```
+to your `setup()` loop, i.e.
+
+```Cpp
+void setup() {
+  Serial.begin(9600);
+
+  startEthernet();
+
+  bool success;
+  graph.maxpoints = 500;
+  graph.fileopt = "extend"; // Remove this if you want the graph to be overwritten
+  success = graph.init();
+  if(!success){while(true){}}
+  graph.openStream();
+}
+```
+
 ### Docs
 
 ```Cpp
@@ -177,10 +202,18 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 
   The timezone to convert the timestamps if `plotly.convertTimestamp=true`. A list of the accepted timezones are in this repo: [Accepted Timezone Strings.txt](https://github.com/plotly/arduino-api/blob/master/Accepted%20Timezone%20Strings.txt)
 
-- `bool world_readable` (Default: true)
+- `bool plotly.world_readable` (Default: true)
 
   If `true`, then your graph is publicly viewable and discoverable by unique url. If `false`, then only you can view the graph.
+
+- `char *plotly.fileopt` (Default `"extend"`)
+
+  Either `"extend"` or `"overwrite"`. 
+  If `"overwrite"`, then when the graph is initialized (during `plotly.init()`), the existing graph is overwritten with a new one. This means that the existing data in the graph will be removed. This option is good for development, when you want a fresh graph to appear everytime you run your script.
   
+  If `"extend"`, then the existing data is kept when the graph is initialized (during `plotly.init()`), and the new data is appended onto the existing data. This option is good for when you are running your device for an extended period of time, for if the Arduino resets (which may happen every few hours) then the existing data in the graph is not removed.
+
+
 ## Contributing Notes
 The `wifi`, `ethernet`, `gsm`, and `cc3000` libraries and examples are 95% identical and so are automatically generated from template files in the `plotly_dev` folder. We use Mako, one of Python's templating libraries to generate these files. To run, do:
 
