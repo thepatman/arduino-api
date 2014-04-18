@@ -132,7 +132,7 @@ void loop() {
   % if lib=="wifi":
   delay(200);
   % elif lib=="ethernet":
-  delay(25);
+  delay(50);
   % endif
 
 }

@@ -28,6 +28,7 @@ class plotly
         bool world_readable;
         bool convertTimestamp;
         char *timezone;
+        char *fileopt;
 
     private:
         void print_(int d);

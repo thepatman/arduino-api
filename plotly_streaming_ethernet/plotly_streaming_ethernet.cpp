@@ -21,6 +21,7 @@ plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filen
     world_readable = true;
     convertTimestamp = true;
     timezone = "America/Montreal";
+    fileopt = "overwrite";
 }
 
 bool plotly::init(){
@@ -48,7 +49,7 @@ bool plotly::init(){
     print_(F("User-Agent: Arduino/0.5.1\r\n"));
 
     print_(F("Content-Length: "));
-    int contentLength = 135 + len_(username_) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
+    int contentLength = 126 + len_(username_) + len_(fileopt) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
     if(world_readable){
         contentLength += 4;
     } else{
@@ -63,13 +64,15 @@ bool plotly::init(){
     // + 7  // &args=[...
     // + nTraces*(87+len(maxpoints)) // len({\"y\": [], \"x\": [], \"type\": \"scatter\", \"stream\": {\"token\": \") + 10 + len(\", "maxpoints": )+len(maxpoints)+len(}})
     // + (nTraces-1)*2 // ", " in between trace objects
-    // + 47  // ]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \"
+    // + 22  // ]&kwargs={\"fileopt\": \"
+    // + len_(fileopt)
+    // + 16  // \", \"filename\": \"
     // + len_(filename)
     // + 21 // ", "world_readable": 
     // + 4 if world_readable, 5 otherwise
     // + 1   // closing }
     //------
-    // 115 + len_(username) + nTraces*(86+len(maxpoints)) + (nTraces-1)*2 + len_(filename)
+    // 126 + len_(username) + len_(fileopt) + nTraces*(86+len(maxpoints)) + (nTraces-1)*2 + len_(filename)
     //
     // Terminate headers with new lines
     print_(F("\r\n\r\n"));
@@ -91,7 +94,9 @@ bool plotly::init(){
             print_(F(", "));
         }
     }
-    print_(F("]&kwargs={\"fileopt\": \"overwrite\", \"filename\": \""));
+    print_(F("]&kwargs={\"fileopt\": \""));
+    print_(fileopt);
+    print_(F("\", \"filename\": \""));
     print_(filename_);
     print_(F("\", \"world_readable\": "));
     if(world_readable){

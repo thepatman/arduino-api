@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mako.template import Template
 from mako.runtime import Context
 import os
