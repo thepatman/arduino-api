@@ -206,7 +206,7 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 
   If `true`, then your graph is publicly viewable and discoverable by unique url. If `false`, then only you can view the graph.
 
-- `char *plotly.fileopt` (Default `"extend"`)
+- `char *plotly.fileopt` (Default `"overwrite"`)
 
   Either `"extend"` or `"overwrite"`. 
   If `"overwrite"`, then when the graph is initialized (during `plotly.init()`), the existing graph is overwritten with a new one. This means that the existing data in the graph will be removed. This option is good for development, when you want a fresh graph to appear everytime you run your script.
