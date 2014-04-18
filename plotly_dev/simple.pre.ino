@@ -1,5 +1,6 @@
 % if lib=="ethernet":
 #include <Ethernet.h>
+#include <SPI.h>
 #include "plotly_streaming_ethernet.h"
 % elif lib=="wifi":
 #include <WiFi.h>

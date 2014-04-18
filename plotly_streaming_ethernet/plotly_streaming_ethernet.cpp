@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include <Ethernet.h>
+#include <SPI.h>
 #include "plotly_streaming_ethernet.h"
 
 #include <avr/dtostrf.h>

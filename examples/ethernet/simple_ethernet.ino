@@ -1,4 +1,5 @@
 #include <Ethernet.h>
+#include <SPI.h>
 #include "plotly_streaming_ethernet.h"
 
 // Sign up to plotly here: https://plot.ly
