@@ -116,6 +116,7 @@ void setup() {
   gsm_connect();
   % endif
 
+  graph.fileopt="overwrite"; // See the "Usage" section in https://github.com/plotly/arduino-api for details
   bool success;
   success = graph.init();
   if(!success){while(true){}}

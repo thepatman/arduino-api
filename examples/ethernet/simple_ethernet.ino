@@ -38,6 +38,7 @@ void setup() {
 
   startEthernet();
 
+  graph.fileopt="overwrite"; // See the "Usage" section in https://github.com/plotly/arduino-api for details
   bool success;
   success = graph.init();
   if(!success){while(true){}}
@@ -51,6 +52,6 @@ void loop() {
   graph.plot(millis(), analogRead(A0), tokens[0]);
   graph.plot(millis(), analogRead(A1), tokens[1]);
 
-  delay(25);
+  delay(50);
 
 }
