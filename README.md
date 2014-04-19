@@ -135,7 +135,7 @@ By default, the initialization of your graph (`graph.init();`) overwrites the ex
 
 So, for running your Arduino for a very long time, you should add 
 ```Cpp
-graph.fileopt = "extend"; // Remove this if you want the graph to be overwritten
+graph.fileopt = "extend"; // Remove this if you want the graph to be overwritten on initialization
 ```
 to your `setup()` loop, i.e.
 
