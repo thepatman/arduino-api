@@ -154,6 +154,24 @@ void setup() {
 }
 ```
 
+### Logging and Debugging
+The parameter `log_level` sets how debugging information is printed out over serial. For troubleshooting, set `log_level` to `0`, i.e. 
+
+```
+void setup(){
+  Serial.begin(9600);
+  startEthernet();
+  
+  graph.log_level = 0;
+  
+  success = graph.init();
+  if(!success){while(true){}}
+  graph.openStream();
+}
+
+```
+Set `log_level` to `4` if you want nothing to be printed out on serial.
+
 ### Docs
 
 ```Cpp
