@@ -100,7 +100,7 @@ By default, plotly assumes that `x` is `millis()` and automatically converts the
 ```Cpp
   plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
   void setup(){
-    graph.autoTimestamp = false;
+    graph.convertTimestamp = false;
   }
 ```
 
