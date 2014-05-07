@@ -74,7 +74,8 @@ You know the drill:
    {
         "plotly_username": "anna.lyst",
         "plotly_api_key": "ab4kftunvd",
-        "plotly_streaming_tokens": ["ab4kf5nfdn", "kdf5bn4dbn"]
+        "plotly_streaming_tokens": ["ab4kf5nfdn", "kdf5bn4dbn"],
+        "show_this_many_points": 500
    }
    ```
 
