@@ -63,7 +63,7 @@ You know the drill:
 3. Configure the network, making sure that:
  - Your encryption (WPA, WPA2, WEP) is correct
  - Your *case-sensitive* network name is correct
-4. Connect to your old network, go to `arduino.local` in your browser. If your browser can't find it, go back to step 1!
+4. Connect to your old network, go to `arduino.local` in your browser. I've found that sometimes this may take ~30 seconds. If your browser can't find it, go back to step 1!
 
 #### Set up the Linino Side
 1. Download and uncompress this folders's zip file: [https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip](https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip)
