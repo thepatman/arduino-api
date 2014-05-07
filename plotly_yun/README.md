@@ -130,7 +130,7 @@ Still need some help? Get in touch!)
 4. Make sure that your IDE has selected `Arduino Yun` and the remote port:
 ![Arduino IDE Port Selection](http://new.tinygrab.com/c751bc2ee2ee7fe227a406dbdb8a3d6dfb53b00b29.png)
 5. Upload the program!
-6. Go back into your Linino, and run `run.py`. It'll take about 9 seconds before the output comes up:
+6. Go back into your Linino, and run `run.py`. It'll take about 10-45 seconds before the output comes up:
     ```bash
     $ ssh root@arduino.local
     root@Arduino:~# python run.py
