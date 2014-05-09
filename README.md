@@ -192,6 +192,7 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 - `void plot(unsigned long x, float y, char *token)`
   
   Plots `(x, y)` to the streaming graph.
+
 **Public Member Parameters**
 - `int plotly.log_level` (Default `2`)
   
