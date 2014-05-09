@@ -19,12 +19,8 @@ void startEthernet(){
     Serial.println("... Initializing ethernet");
     if(Ethernet.begin(mac) == 0){
         Serial.println("... Failed to configure Ethernet using DHCP");
-        // try to congifure using IP address instead of DHCP:
-        if(Ethernet.begin(mac, my_ip) == 0){
-            Serial.println("... Failed to configure Ethernet with IP");
-            // no point in carrying on, so do nothing forevermore
-            while(true){}
-        }
+        // try to congifure with explicit IP address instead of DHCP:
+        Ethernet.begin(mac, my_ip);
     }
     Serial.println("... Done initializing ethernet");
     delay(1000);
