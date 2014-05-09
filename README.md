@@ -37,15 +37,6 @@ void loop() {
   graph.plot(millis(), analogRead(A1), tokens[1]);
 }
 ```
-See more simple examples in the [examples](/examples) folder. See examples with hardware in our [workshop](https://plot.ly/workshop) page.
-
-## In the wild
-
-#### A video of our real-time heart rate monitor (click to view)
-[![Real-time Heart Rate Monitor with Plotly and an Arduino Yun](http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png)](https://vine.co/v/Mq2LQexrbl7)
-
-#### A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
-[![Arduino streaming-data data to plotly from a mountain edge, in Peachland, BC](http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png)](http://vimeo.com/87362390)
 
 ## 5 Minute Quickstart
 
@@ -235,10 +226,25 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
   
   If `"extend"`, then the existing data is kept when the graph is initialized (during `plotly.init()`), and the new data is appended onto the existing data. This option is good for when you are running your device for an extended period of time, for if the Arduino resets (which may happen every few hours) then the existing data in the graph is not removed.
 
-## References
-- More examples in the [examples](/examples) folder
-- Check out plotly streaming and hardware projects here: [https://plot.ly/workshop](https://plot.ly/workshop)
-- Real-time graphing in other languages and platforms: [https://plot.ly/streaming](https://plot.ly/streaming)
+## Projects
+
+- A video of our real-time heart rate monitor (click to view): 
+[![Real-time Heart Rate Monitor with Plotly and an Arduino Yun](http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png)](https://vine.co/v/Mq2LQexrbl7)
+
+- A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
+[![Arduino streaming-data data to plotly from a mountain edge, in Peachland, BC](http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png)](http://vimeo.com/87362390)
+
+- DHT22 Temperature and Humidity sensor: [http://plot.ly/workshop/arduino-dht22/](http://plot.ly/workshop/arduino-dht22/)
+
+- Analog Light Sensor: [http://plot.ly/workshop/arduino-analoglight/](http://plot.ly/workshop/arduino-analoglight/)
+
+- ML8511 UV Sensor: [http://plot.ly/workshop/arduino-uvsensor/](http://plot.ly/workshop/arduino-uvsensor/)
+
+- Air Quality Sensor: [http://plot.ly/workshop/arduino-airquality/](http://plot.ly/workshop/arduino-airquality/)
+
+- Water Flow Sensor: [http://plot.ly/workshop/arduino-waterflow/](http://plot.ly/workshop/arduino-waterflow/)
+
+- TMP36 Temperature Sensor: [http://plot.ly/workshop/arduino-tmp36/](http://plot.ly/workshop/arduino-tmp36/)
 
 
 ## Contributing Notes
