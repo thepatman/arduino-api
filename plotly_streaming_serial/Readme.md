@@ -31,7 +31,10 @@ $ npm install johnny-five
 
 ```bash
 $ node simple_plotly.js
-https://plot.ly/~streaming-demos/6
+1399607731073 Device(s) /dev/cu.usbmodem1421 
+1399607734347 Connected /dev/cu.usbmodem1421 
+1399607734347 Repl Initialized 
+>> View your streaming graph here: http://plot.ly/~streaming-demos/6/
 ```
 
 7 - Grab the url that is printed out and view your live-updating graph in plotly! Here is an example url: [https://plot.ly/~streaming-demos/6](https://plot.ly/~streaming-demos/6)
@@ -51,6 +54,7 @@ See our [workshop page](https://plot.ly/workshop) for detailed instruction.
 - Water Flow Sensor: [http://plot.ly/workshop/arduino-waterflow/](http://plot.ly/workshop/arduino-waterflow/)
 
 - TMP36 Temperature Sensor: [http://plot.ly/workshop/arduino-tmp36/](http://plot.ly/workshop/arduino-tmp36/)
+
 
 
 ### Get in touch
