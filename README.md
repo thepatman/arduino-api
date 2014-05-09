@@ -1,7 +1,7 @@
 ## Real-time Graphing and Data Logging
 
 #### The easiest and fastest way to plot and share data on the Arduino. 
-[![Real-time Plotting with Arduino and Plotly](http://new.tinygrab.com/c751bc2ee24505ea0425b28e9c8f2d1f8aa81ad395.png)](http://vimeo.com/89003132)
+[![Real-time Plotting with Arduino and Plotly](http://new.tinygrab.com/c751bc2ee22cd3db5a6d3fccb22458d570efc9ac84.png)](http://vimeo.com/89003132)
 
 Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphing tool for real-time, interactive data logging and graphing. It's free, open source, and your graphs and data are entirely online.
 
