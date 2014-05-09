@@ -8,8 +8,7 @@ Graph data from your Arduino with just a serial connection. These sketches conne
 ### Quickstart
 1 - Install node.js: [http://nodejs.org/download/](http://nodejs.org/download/)
 
-2 - Launch the Arduino IDE and upload the `Standard Firmata` sketch.
-    ![Standard Firmata Sketch Screenshot](http://new.tinygrab.com/c751bc2ee2f590b37ee2c70217786a4f9cf73a6966.png)
+2 - Launch the Arduino IDE and upload the `Standard Firmata` sketch. It's included in your Arduino IDE under `File` → `Examples` → `Firmata` → `StandardFirmata`.
 
 3 - Once uploaded, close the Arduino IDE. We're done with it. Your computer will now communicate with your Arduino over serial with node.js via the Standard Firmata protocol. Nice!
 
