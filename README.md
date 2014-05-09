@@ -48,7 +48,10 @@ See more simple examples in the [examples](/examples) folder. See examples with 
 [![Arduino streaming-data data to plotly from a mountain edge, in Peachland, BC](http://new.tinygrab.com/c751bc2ee28fbde72ce2f6b8904f1efd034210827d.png)](http://vimeo.com/87362390)
 
 ## 5 Minute Quickstart
-(Working on the Yún? Click on the [`plotly_yun`](https://github.com/plotly/arduino-api/tree/master/plotly_yun) folder for separate instructions)
+
+If you're working on the Yún, click on the [`plotly_yun`](/plotly_yun) folder for separate instructions.
+
+If you're device isn't internet connected, you can still connect to plotly over serial, click on the [`plotly_streaming_serial`](/plotly_streaming_serial) folder for separate instructions.
 
 1. Sign up to plotly: [https://plot.ly](https://plot.ly).
 2. Download and uncompress the latest plotly release: [https://github.com/plotly/arduino-api/releases](https://github.com/plotly/arduino-api/releases).
