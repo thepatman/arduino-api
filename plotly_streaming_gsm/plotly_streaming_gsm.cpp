@@ -77,7 +77,7 @@ bool plotly::init(){
     print_(F("\r\n\r\n"));
 
     // Start printing querystring body
-    print_(F("version=1.0&origin=plot&platform=arduino&un="));
+    print_(F("version=2.2&origin=plot&platform=arduino&un="));
     print_(username_);
     print_(F("&key="));
     print_(api_key_);
@@ -182,7 +182,6 @@ bool plotly::init(){
                 }
             }
         }
-        Serial.print("Disconnecting");
         client.stop();
     }    
 

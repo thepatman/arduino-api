@@ -38,17 +38,8 @@ bool plotly::init(){
     else if(log_level < 3) { 
         Serial.println(F("... Attempting to connect to plotly's REST servers")); 
     }
-    #define WEBSITE "plot.ly"
-    uint32_t ip = 0;
+    uint32_t ip = cc3000.IP2U32(107,21,214,199);
     // Try looking up the website's IP address
-    while (ip == 0) {
-        if (! cc3000.getHostByName(WEBSITE, &ip)) {
-            if(log_level < 4) {
-                Serial.println(F("... Couldn't resolve Plotly's IP address! Get in touch with chris@plot.ly"));
-            }
-        }
-      delay(500);
-    }
     client = cc3000.connectTCP(ip, 80);
     while ( !client.connected() ) {
         if(log_level < 4){
@@ -95,7 +86,7 @@ bool plotly::init(){
     print_(F("\r\n\r\n"));
 
     // Start printing querystring body
-    print_(F("version=1.0&origin=plot&platform=arduino&un="));
+    print_(F("version=2.2&origin=plot&platform=arduino&un="));
     print_(username_);
     print_(F("&key="));
     print_(api_key_);
@@ -200,7 +191,6 @@ bool plotly::init(){
                 }
             }
         }
-        Serial.print("Disconnecting");
         client.close();
     }    
 
@@ -227,6 +217,8 @@ void plotly::openStream() {
     // Start request to stream servers
     //
     if(log_level < 3){} Serial.println(F("... Connecting to plotly's streaming servers..."));
+
+    /*
     #define STREAM_SERVER "arduino.plot.ly"
     uint32_t stream_ip = 0;
     // Try looking up the website's IP address
@@ -235,6 +227,9 @@ void plotly::openStream() {
             if(log_level < 4){} Serial.println(F("Couldn't resolve!"));
         }
     }
+    */
+    uint32_t stream_ip = cc3000.IP2U32(54, 226, 153, 102);
+
     client = cc3000.connectTCP(stream_ip, 80);
     while ( !client.connected() ) {
         if(log_level < 4){} Serial.println(F("... Couldn\'t connect to servers... trying again!"));
