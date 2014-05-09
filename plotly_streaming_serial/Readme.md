@@ -39,9 +39,9 @@ $ node simple_plotly.js
 
 7 - Grab the url that is printed out and view your live-updating graph in plotly! Here is an example url: [https://plot.ly/~streaming-demos/6](https://plot.ly/~streaming-demos/6)
 
-### Example Programs
+### Projects
 
-See our [workshop page](https://plot.ly/workshop) for detailed instruction.
+See our [workshop page](https://plot.ly/workshop) for step-by-step instructions.
 
 - DHT22 Temperature and Humidity sensor: [http://plot.ly/workshop/arduino-dht22/](http://plot.ly/workshop/arduino-dht22/)
 
