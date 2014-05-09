@@ -15,24 +15,24 @@ Graph data from your Arduino with just a serial connection. These sketches conne
 
 4 - Open your terminal, create a project folder, move into it:
 
-    ```bash
-    $ mkdir plotly_project
-    $ cd plotly_project
-    ```
+```bash
+$ mkdir plotly_project
+$ cd plotly_project
+```
 
 5 - Use the Node Package Manager (npm) to install two libraries. node.js is awesome and will only install these modules in your project directory. It's easy to keep things modular and organized!
 
-    ```bash
-    $ npm install plotly
-    $ npm install johnny-five
-    ```
+```bash
+$ npm install plotly
+$ npm install johnny-five
+```
 
 6 - Download one of our example scripts into your project folder and run it with node:
 
-    ```bash
-    $ node simple_plotly.js
-    https://plot.ly/~streaming-demos/6
-    ```
+```bash
+$ node simple_plotly.js
+https://plot.ly/~streaming-demos/6
+```
 
 7 - Grab the url that is printed out and view your live-updating graph in plotly! Here is an example url: [https://plot.ly/~streaming-demos/6](https://plot.ly/~streaming-demos/6)
 
