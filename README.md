@@ -51,7 +51,7 @@ See more simple examples in the [examples](/examples) folder. See examples with 
 
 If you're working on the Yún, click on the [`plotly_yun`](/plotly_yun) folder for separate instructions.
 
-If you're device isn't internet connected, you can still connect to plotly over serial, click on the [`plotly_streaming_serial`](/plotly_streaming_serial) folder for separate instructions.
+If you're device isn't internet connected, you can still connect to plotly over serial. Click on the [`plotly_streaming_serial`](/plotly_streaming_serial) folder for separate instructions.
 
 1. Sign up to plotly: [https://plot.ly](https://plot.ly).
 2. Download and uncompress the latest plotly release: [https://github.com/plotly/arduino-api/releases](https://github.com/plotly/arduino-api/releases).
