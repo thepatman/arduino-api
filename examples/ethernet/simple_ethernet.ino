@@ -13,7 +13,7 @@ char *tokens[nTraces] = {"token_1", "token_2"};
 plotly graph = plotly("plotly_username", "plotly_api_key", tokens, "your_filename", nTraces);
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-byte my_ip[] = { 199, 168, 222, 18 }; // google will tell you: "public ip address"
+byte my_ip[] = { 199, 168, 222, 18 };
 
 void startEthernet(){
     Serial.println("... Initializing ethernet");
