@@ -37,7 +37,7 @@ void loop() {
   graph.plot(millis(), analogRead(A1), tokens[1]);
 }
 ```
-See more examples in the [examples](/examples) folder.
+See more simple examples in the [examples](/examples) folder. See examples with hardware in our [workshop](https://plot.ly/workshop) page.
 
 ## In the wild
 
@@ -231,6 +231,11 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
   If `"overwrite"`, then when the graph is initialized (during `plotly.init()`), the existing graph is overwritten with a new one. This means that the existing data in the graph will be removed. This option is good for development, when you want a fresh graph to appear everytime you run your script.
   
   If `"extend"`, then the existing data is kept when the graph is initialized (during `plotly.init()`), and the new data is appended onto the existing data. This option is good for when you are running your device for an extended period of time, for if the Arduino resets (which may happen every few hours) then the existing data in the graph is not removed.
+
+## References
+- More examples in the [examples](/examples) folder
+- Check out plotly streaming and hardware projects here: [https://plot.ly/workshop](https://plot.ly/workshop)
+- Real-time graphing in other languages and platforms: [https://plot.ly/streaming](https://plot.ly/streaming)
 
 
 ## Contributing Notes
