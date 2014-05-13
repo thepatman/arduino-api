@@ -17,7 +17,7 @@ var plotly = require('plotly')(plotly_username, plotly_api_key);
 
 var data = [
   {name: "Pin A0", x:[], y:[], stream:{token: plotly_stream_tokens[0], maxpoints:500}},
-  {name: "Pin A0", x:[], y:[], stream:{token: plotly_stream_tokens[1], maxpoints:500}}
+  {name: "Pin A1", x:[], y:[], stream:{token: plotly_stream_tokens[1], maxpoints:500}}
 ];
 var layout = {fileopt : "overwrite", filename : "arduino-johnny5-demo"};
 
