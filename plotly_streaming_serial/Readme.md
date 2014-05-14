@@ -18,7 +18,7 @@ Graph data from your Arduino with just a serial connection. These sketches conne
 $ mkdir plotly_project
 $ cd plotly_project
 ```
-If your on a Windows machine, open up the `Node.js command prompt` and enter:
+Or, if your on a Windows machine, open up the `Node.js command prompt` and enter:
 
 ```bash
 > md plotly_project
