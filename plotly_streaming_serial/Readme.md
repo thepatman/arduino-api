@@ -18,6 +18,12 @@ Graph data from your Arduino with just a serial connection. These sketches conne
 $ mkdir plotly_project
 $ cd plotly_project
 ```
+If your on a Windows machine, open up the `Node.js command prompt` and enter:
+
+```bash
+> md plotly_project
+> cd plotly_project
+```
 
 5 - Use the Node Package Manager (npm) to install two libraries. node.js is awesome and will only install these modules in your project directory. It's easy to keep things modular and organized!
 
@@ -35,6 +41,16 @@ $ node simple_plotly.js
 1399607734347 Repl Initialized 
 >> View your streaming graph here: http://plot.ly/~streaming-demos/6/
 ```
+
+or, on Windows it'll look something like:
+```bash
+C:\...\plotly_node> node simple_plotly.js
+1400090004506 Device(s) COM4
+1400090007789 Connected COM4
+1400090007789 Repl Initialized
+>> View your streaming graph here: http://plot.ly/~streaming-demos/6/
+```
+
 
 7 - Grab the url that is printed out and view your live-updating graph in plotly! Here is an example url: [https://plot.ly/~streaming-demos/6](https://plot.ly/~streaming-demos/6)
 
