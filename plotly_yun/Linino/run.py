@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from YunMessenger import Console
-import plotly
+import plotly.plotly as py
 import json
 import traceback
 import datetime
@@ -37,7 +37,7 @@ except ValueError as e:
     raise e
 
 # Extract the credentials from the config file
-username = plotly_user_config['plotly_username'] 
+username = plotly_user_config['plotly_username']
 api_key = plotly_user_config['plotly_api_key']
 stream_tokens = plotly_user_config['plotly_streaming_tokens']
 if 'show_this_many_points' in plotly_user_config:
@@ -47,35 +47,33 @@ else:
 
 # Make the initializing plotly request
 # Pass all stream tokens from the config file into this plot
-p = plotly.plotly(username, api_key)
-p.ioff()
-res = p.plot([
-    {'x': [], 'y': [], 'stream': {'token': token, 'maxpoints': maxpoints}}
-    for token in stream_tokens
-    ], filename='Stream from Yun', fileopt='overwrite')
+py.sign_in(username, api_key)
 
-if 'stream-status' in res and 'All Streams Go!' in res['stream-status']:
-    status = "Plot initialized at: {url}\nwith token(s): {tokens}"\
-            .format(url=res['url'], tokens=', '.join(stream_tokens))
-    print(status)
-    c.logger.info(status)
-else:
-    status = "Error initializing plot: {msg}".format(msg=res['error'])
-    print(status)
-    c.logger.error(status)
-    sys.exit(1)
+url = py.plot(
+    [
+        {'x': [], 'y': [], 'stream': {'token': token, 'maxpoints': maxpoints}}
+        for token in stream_tokens
+    ], filename='Stream from Yun', auto_open=False)
 
-''' Create a message handler for streams
-that writes to streams that are indexed by token
-'''
+
+status = "Plot initialized at: {url}\nwith token(s): {tokens}"\
+         .format(url=url, tokens=', '.join(stream_tokens))
+print(status)
+c.logger.info(status)
+
+
 class PlotlyHandler:
+    ''' Create a message handler for streams
+    that writes to streams that are indexed by token
+    '''
     def __init__(self, stream_tokens):
-        ''' Store the stream tokens in an object 
+        ''' Store the stream tokens in an object
          so that the message handler can access them
         '''
         self.streams = {}
         for token in stream_tokens:
-            self.streams[token] = plotly.stream(token)
+            self.streams[token] = py.Stream(token)
+            self.streams[token].open()
 
     def handlePlotlyMessages(self, msg):
         ''' Write the msg data to the associated plotly stream
@@ -93,12 +91,12 @@ class PlotlyHandler:
                 try:
                     tz = timezone(data['timezone'])
                 except:
-                    c.logger.warning("Unrecognized timezone: {timezone}\n"\
+                    c.logger.warning("Unrecognized timezone: {timezone}\n"
                         "Defaulting to America/Montreal".format(timezone=data['timezone']))
                     c.logger.debug(traceback.format_exc())
                     tz = timezone("America/Montreal")
                 del data['timezone']
-                data['x'] = tz.localize(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S.%f')
+                data['x'] = tz.localize(datetime.datetime.now())
             self.streams[token].write(data)
         else:
             c.logger.warning("Recieved the token: {token} which has no associated stream.\n"\
