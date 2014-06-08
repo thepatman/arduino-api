@@ -95,7 +95,14 @@ You know the drill:
     $ scp -r Linino/* root@arduino.local:/root/
     ```
 
-   a TON of stuff will print out, don't worry!
+   a TON of stuff will print out, don't worry! If it is your first time connecting to the device, you may recieve the message:
+   ```
+    $ scp -r Linino/* root@arduino.local:/root/
+    The authenticity of host 'arduino.local (192.168.2.17)' can't be established.
+    RSA key fingerprint is ba:fe:ce:d6:59:33:00:be:af:9c:9e:f6:df:2q:a8:8d.
+    Are you sure you want to continue connecting (yes/no)? 
+    ```
+    No need for alarm, just type `yes`!
 5. Cruise into your Linino and install python-openssl:
    
     ```bash
@@ -267,3 +274,30 @@ root@Arduino:~# kill -9 $(pgrep -f "python run.py")
     ; // wait for Console port to connect.
   }
   ```
+- The first time you connect to your Linino, you may receive the message:
+
+  ```
+  $ scp -r Linino/* root@arduino.local:/root/
+  The authenticity of host 'arduino.local (192.168.2.17)' can't be established.
+  RSA key fingerprint is ba:fe:ce:d6:59:33:00:be:af:9c:9e:f6:df:2q:a8:8d.
+  Are you sure you want to continue connecting (yes/no)? 
+  ```
+  No need for alarm, just type `yes`!
+- If you connect your Yun to different networks, you may get this message when you try to `scp` or `ssh` into the device:
+
+  ```
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+  Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+  It is also possible that a host key has just been changed.
+  The fingerprint for the RSA key sent by the remote host is
+  ba:ge:fe:d8:53:99:14:de:af:9c:9e:g7:df:2b:a8:8d.
+  Please contact your system administrator.
+  Add correct host key in /Users/chris/.ssh/known_hosts to get rid of this message.
+  Offending RSA key in /Users/chris/.ssh/known_hosts:61
+  RSA host key for arduino.local has changed and you have requested strict checking.
+  Host key verification failed.
+  ```
+  No need for alarm, just remove the entire line in that `known_hosts` file. For my case above, I would remove line `61` in `/Users/chris/.ssh/known_hosts` (the file location and line number are given by this line: "`Offending RSA key in /Users/chris/.ssh/known_hosts:61`").
