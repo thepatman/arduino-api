@@ -20,7 +20,12 @@ except IOError as e:
 config_filename = './config.json'
 try:
     with open(config_filename) as config_file:
-        plotly_user_config = json.load(config_file)
+        config_string = config_file.read()
+        # Unicode song-and-dance to convert curly double quotes to straight single quotes
+        config_unicode = unicode(config_string, 'utf-8')
+        punctuation = { 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22 }
+        normalized_config_string = config_unicode.translate(punctuation).encode('ascii', 'ignore')
+        plotly_user_config = json.loads(normalized_config_string)
 except IOError as e:
     helpful_msg = "Please place a configuration file at {filename}"\
         " with your plotly credentials and try again.\n"\
