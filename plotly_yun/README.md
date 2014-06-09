@@ -75,7 +75,8 @@ You know the drill:
         "plotly_username": "anna.lyst",
         "plotly_api_key": "ab4kftunvd",
         "plotly_streaming_tokens": ["ab4kf5nfdn", "kdf5bn4dbn"],
-        "show_this_many_points": 500
+        "show_this_many_points": 500,
+        "file_option": "overwrite"
    }
    ```
 
@@ -217,6 +218,24 @@ start and stop the Python program from your Arduino code. This is pretty simple:
   `run_plotly.sh` will kill all of the existing `python run.py` programs
   and start a new one! You can view your streaming plot from within your
   plotly account at [https://plot.ly/plot](https://plot.ly/plot).
+
+### Overwriting or Extending Data
+By default, the initialization of your graph in `run.py` overwrites the existing graph with your new data. This is the perfect option for development: when you re-run your script, a fresh new graph is created. However, when you run your Arduino for an extended period of time, the Arduino may reset itself, which would in turn reset the graph and remove the existing data. To prevent this from happening, you can use the fileopt "extend", which will append your new data to the existing data in the graph.
+
+To do this, change the `file_option` field in `config.json` from `overwrite` to `extend`, i.e. your `config.json` file should look like:
+
+   ```json
+   {
+        "plotly_username": "anna.lyst",
+        "plotly_api_key": "ab4kftunvd",
+        "plotly_streaming_tokens": ["ab4kf5nfdn", "kdf5bn4dbn"],
+        "show_this_many_points": 500,
+        "file_option": "extend"
+   }
+   ```
+
+### Plotting more than 2 traces
+You can plot as many traces as you'd like. You just need to initialize a unique plotly object for each stream inside the Arduino code (e.g. `plotly plotter3("third_stream_token_here")`) and add that token to your `config.json` file in the Linino.
 
 
 # How does it work?
