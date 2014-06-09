@@ -46,6 +46,8 @@ except ValueError as e:
 username = plotly_user_config['plotly_username']
 api_key = plotly_user_config['plotly_api_key']
 stream_tokens = plotly_user_config['plotly_streaming_tokens']
+file_option = plotly_user_config['file_option']
+
 if 'show_this_many_points' in plotly_user_config:
     maxpoints = plotly_user_config['show_this_many_points']
 else:
@@ -59,7 +61,10 @@ url = py.plot(
     [
         {'x': [], 'y': [], 'stream': {'token': token, 'maxpoints': maxpoints}}
         for token in stream_tokens
-    ], filename='Stream from Yun', auto_open=False)
+    ], 
+    filename='Stream from Yun', 
+    auto_open=False,
+    fileopt=file_option)
 
 
 status = "Plot initialized at: {url}\nwith token(s): {tokens}"\
