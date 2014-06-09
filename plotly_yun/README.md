@@ -1,9 +1,9 @@
 ## Real-time Graphing and Data Logging with the Yún
 
-#### The easiest and fastest way to plot and share data on the Yún. 
+#### The easiest and fastest way to plot and share data on the Yún.
 
 
-The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-account. It's free, open source, and the graphs and data are entirely online. 
+The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-account. It's free, open source, and the graphs and data are entirely online.
 
 <p align="center">
 <a href="http://plot.ly/~streaming-demos/6">
@@ -28,7 +28,7 @@ The Plotly-Yún library streams data from your Arduino Yún to your Plotly web-a
 
 plotly plotter("put_your_10_character_stream_token_here");
 
-void setup() { 
+void setup() {
 
     // start-up the bridge and the console
     Bridge.begin();
@@ -40,9 +40,9 @@ void setup() {
     }
     Console.buffer(64);
     delay(2000);
-} 
+}
 
-void loop() { 
+void loop() {
 
     plotter.plot( analogRead(A0) );
 
@@ -69,7 +69,7 @@ You know the drill:
 1. Download and uncompress this folders's zip file: [https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip](https://github.com/plotly/arduino-api/raw/master/plotly_yun/plotly_yun.zip)
 2. Update the file called `config.json` in the `Linino` folder with your plotly credentials. You can sign up to plotly here (it's free!): [https://plot.ly/ssu](https://plot.ly/ssu) and you can view your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings).
     Your filled-in `config.json` file will look like:
-    
+
    ```json
    {
         "plotly_username": "anna.lyst",
@@ -81,16 +81,16 @@ You know the drill:
 
    (those are fake keys and tokens, so don't try to use them, they won't work!)
 3. Open up your computer's terminal and move to where you downloaded this folder:
-   
+
     ```bash
    $ cd ~/Downloads/plotly_yun
    $ ls
     Arduino         Linino          README.md
    ```
-   
+
 
 4. Copy all of the files from the Linino folder to your Linino
-   
+
     ```bash
     $ scp -r Linino/* root@arduino.local:/root/
     ```
@@ -104,7 +104,7 @@ You know the drill:
     ```
     No need for alarm, just type `yes`!
 5. Cruise into your Linino and install python-openssl:
-   
+
     ```bash
    $ ssh root@arduino.local
    root@Arduino:~# opkg update
@@ -121,12 +121,12 @@ Still need some help? Get in touch!)
     ![](http://new.tinygrab.com/c751bc2ee2bdecc21b412dd36ba491606ed81fd36a.png)
 2. Open up the [latest version of the Arduino IDE](http://arduino.cc/en/main/software)
 3. Load up example.ino from the `Arduino` folder in this repository and add your tokens to the script, i.e. change these lines:
-    
+
     ```cpp
     plotly plotter1("put_your_10_character_stream_token_here");
     plotly plotter2("put_another_token_here");
     ```
-    
+
     to the tokens you that you placed in `config.json` and that you found in [https://plot.ly/settings](https://plot.ly/settings):
 
     ```cpp
@@ -144,7 +144,7 @@ Still need some help? Get in touch!)
     Plot initialized at: https://plot.ly/~Arduino-Yun/28
     with tokens: ab4kf5nfdn, kdf5bn4dbn
     ```
-    
+
    (your tokens and your URL will be different!)
 
    If you're watching the logs, you'll see something like:
@@ -160,35 +160,10 @@ Still need some help? Get in touch!)
 7. Grab the URL that the terminal printed out, view your graph in your browser, and celebrate! The graph and data will also be saved in your plotly account. You can view, edit, and share your graphs while data is streaming to them in real-time!
 
 
-# How does it work?
-
-The Arduino microcontroller (ATmega32u4) sends data to the Linino over the `bridge` with the [YunMessenger](https://github.com/plotly/YunMessenger) library. The `bridge` is just a TCP connection over port `6571` on `localhost` and the `YunMessenger` library formalizes communication over that socket and allows multiple subscribers to listen to messages coming from the Arduino (the 32u4).
-
-On the Arduino side, the communication over this socket looks like:
-```C
-#include <Bridge.h>
-#include <Console.h>
-
-Bridge.begin();
-Console.begin();
-while (!Console) {
-  ; // wait for Console port to connect.
-}
-
-Console.print(char(29)); // indicate the start of the subscriber name
-Console.print("plotly"); // the name of the subscriber
-Console.print(char(30)); // indicates the start of the message
-Console.print("{\"x\": 1, \"y\": 10}"); // the message (in this case a plotly formatted JSON object)
-Console.print(char(31)); // indicates the end of the message
-```
-
-On the Linino side, `YunMessenger.Console` opens a TCP socket on port `6571` of `localhost`. `run.py` assigns a message handler to `"plotly"` messages that come through the YunMessenger. These messages are parsed and sent over a TCP socket to plotly's streaming servers, at `stream.plot.ly`.
-
-More about plotly's streaming API can be found here: [https://github.com/plotly/Streaming-Demos](https://github.com/plotly/Streaming-Demos)
 
 # More on Usage
 #### Debugging and Log Files
-On the Linino, status updates, warnings, and errors are written to a file called `~/Plotly.log`. This file is capped at 0.5MB. 
+On the Linino, status updates, warnings, and errors are written to a file called `~/Plotly.log`. This file is capped at 0.5MB.
 ```bash
 root@Arduino:~# cat ~/Plotly.log
 [...]
@@ -201,7 +176,7 @@ root@Arduino:~# tail -n50 ~/Plotly.log
 ```
 
 To watch the messages as they're being written to the file in real-time, run:
-```bash
+```
 root@Arduino:~# tail -f ~/Plotly.log
 
 2014-03-12 01:35:35 INFO: Attempting to connect to localhost:6571
@@ -217,47 +192,79 @@ error: [Errno 146] Connection refused
 2014-03-12 01:35:36 INFO: Connected to localhost:6571
 ```
 
-#### Running the Python program in the background
-You can run processes in the background by appending `&` to your bash commands:
-```bash
-root@Arduino:~# (python run.py)&
+### Running the program from the Arduino script
+
+`ssh`ing into the Linino and running `$ python run.py` is great for debugging:
+if any errors occur while running that script, they will be printed in the
+terminal for you to see. Once you get going, you'll probably want to just
+start and stop the Python program from your Arduino code. This is pretty simple:
+
+1. Uncomment out these lines in the `example.ino`:
+
+  ```
+    Process p;
+    p.runShellCommand("/root/run_plotly.sh");
+    while (p.running()){ ; } // do nothing until the process finishes
+  ```
+2. `ssh` into your Linino, and make the `run_plotly.sh` script executable:
+
+  ```
+  $ ssh root@arduino.local
+  # chmod 755 run_plotly.sh
 ```
+3. Upload your program.
 
-Observer which processes are running with `top`:
-```bash
-root@Arduino:~# top
+  `run_plotly.sh` will kill all of the existing `python run.py` programs
+  and start a new one!
 
-Mem: 53728K used, 7404K free, 0K shrd, 5256K buff, 18404K cached
-CPU:   0% usr   9% sys   0% nic  90% idle   0% io   0% irq   0% sirq
-Load average: 0.39 0.35 0.33 1/52 14213
-  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
-14213 13667 root     R     1500   2%   9% top
-13705 13667 root     S    13924  23%   0% python run.py
- 1530     1 nobody   S     2180   4%   0% avahi-daemon: running [Arduino.local]
- 1502     1 root     S     1700   3%   0% /usr/sbin/dbus-daemon --system
- 1167     1 root     S     1588   3%   0% wpa_supplicant -B -P /var/run/wifi-wl
- 1493     1 root     S     1576   3%   0% /usr/sbin/uhttpd -f -h /www -r Arduin
-  574     1 root     S     1552   3%   0% {rcS} /bin/sh /etc/init.d/rcS S boot
-  731     1 root     S     1540   3%   0% /sbin/netifd
-  701     1 root     S     1512   2%   0% /sbin/syslogd -C16
- 1251   731 root     S     1512   2%   0% udhcpc -p /var/run/udhcpc-wlan0.pid -
- 1565     1 root     S N   1508   2%   0% {uSDaemon} /bin/sh /sbin/uSDaemon
-    1     0 root     S     1508   2%   0% init
-13667 13655 root     S     1508   2%   0% -ash
-13352 13335 root     S     1508   2%   0% -ash
-11639     1 root     S     1504   2%   0% /bin/ash --login
-  788   731 root     S     1504   2%   0% udhcpc -p /var/run/udhcpc-eth1.pid -s
-13369 13352 root     S     1504   2%   0% top
- 1556     1 root     S     1504   2%   0% /usr/sbin/ntpd -n -p 0.openwrt.pool.n
-  845     1 root     S     1504   2%   0% /sbin/watchdog -t 5 /dev/watchdog
-```
 
-Kill these background processes with:
-```bash
-root@Arduino:~# kill -9 $(pgrep -f "python run.py")
-```
+# How does it work?
 
-# Contact!
+1. The Arduino microcontroller (ATmega32u4) sends data to the Linino over the `bridge`
+with the [YunMessenger](https://github.com/plotly/YunMessenger) library.
+The `bridge` is just a TCP connection over port `6571` on `localhost` and the
+`YunMessenger` library formalizes communication over that socket and allows
+multiple subscribers to listen to messages coming from the Arduino (the 32u4).
+
+2. On the Arduino side, the communication over this socket looks like:
+  ```C
+  #include <Bridge.h>
+  #include <Console.h>
+
+  Bridge.begin();
+  Console.begin();
+  while (!Console) {
+    ; // wait for Console port to connect.
+  }
+
+  Console.print(char(29)); // indicate the start of the subscriber name
+  Console.print("plotly"); // the name of the subscriber
+  Console.print(char(30)); // indicates the start of the message
+  Console.print("{\"x\": 1, \"y\": 10}"); // the message (in this case a plotly formatted JSON object)
+  Console.print(char(31)); // indicates the end of the message
+  ```
+
+3. On the Linino side, `YunMessenger.Console` opens a TCP socket on port `6571`
+   of `localhost`.
+
+4. `run.py` assigns a message handler to `"plotly"` messages that come through the
+   YunMessenger. That assignment looks like:
+   ```
+   # Assign a "subscriber" to `plotly` messages that are transmitted from plotly
+   c.onMessage['plotly'] = plotlyHandler.handlePlotlyMessages
+   ```
+5. These messages are parsed and sent over a TCP socket to plotly's
+   streaming servers, at `stream.plot.ly`. More about plotly's streaming API
+   and the Python client can be found here:
+  [https://plot.ly/python/streaming](https://plot.ly/python/streaming/).
+
+This interface allows you to signal process your data in Python (instead of C!)
+before it gets sent to your graph in Plotly. So, edit `run.py`: normalize your
+signal, or run a moving average over it, or execute an FFT!
+
+
+# Get in touch
+Need some help? Something not look right? Want to contribute? Drop us a line:
 - <chris@plot.ly>
 - [@plotlygraphs](https://twitter.com/plotlygraphs)
 

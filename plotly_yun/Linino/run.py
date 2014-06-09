@@ -6,6 +6,7 @@ import plotly.plotly as py
 import json
 import traceback
 import datetime
+import time
 from pytz import timezone
 import sys
 
@@ -17,7 +18,7 @@ except IOError as e:
     raise e
 
 # Load up plotly credentials
-config_filename = './config.json'
+config_filename = '/root/config.json'
 try:
     with open(config_filename) as config_file:
         config_string = config_file.read()
@@ -103,6 +104,7 @@ class PlotlyHandler:
                 del data['timezone']
                 data['x'] = tz.localize(datetime.datetime.now())
             self.streams[token].write(data)
+            time.sleep(50./1000.)
         else:
             c.logger.warning("Recieved the token: {token} which has no associated stream.\n"\
                 "Add the token {token} to your config.json file to register this stream.".format(token=data['token']))
