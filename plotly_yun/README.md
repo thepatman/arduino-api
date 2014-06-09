@@ -100,7 +100,7 @@ You know the drill:
     $ scp -r Linino/* root@arduino.local:/root/
     The authenticity of host 'arduino.local (192.168.2.17)' can't be established.
     RSA key fingerprint is ba:fe:ce:d6:59:33:00:be:af:9c:9e:f6:df:2q:a8:8d.
-    Are you sure you want to continue connecting (yes/no)? 
+    Are you sure you want to continue connecting (yes/no)?
     ```
     No need for alarm, just type `yes`!
 5. Cruise into your Linino and install python-openssl:
@@ -215,7 +215,8 @@ start and stop the Python program from your Arduino code. This is pretty simple:
 3. Upload your program.
 
   `run_plotly.sh` will kill all of the existing `python run.py` programs
-  and start a new one!
+  and start a new one! You can view your streaming plot from within your
+  plotly account at [https://plot.ly/plot](https://plot.ly/plot).
 
 
 # How does it work?
@@ -274,7 +275,7 @@ Need some help? Something not look right? Want to contribute? Drop us a line:
 - Connecting the yun to WiFi has no error handling. It can fail silently while attempting to connect to a network, so double check your encryption and your network name. Also, network names are case-senstive!
 - Use the latest Arduino IDE (1.5.6 -r2)
 - Reseting the network ("hold down the wifi button for > 5 seconds") often requires several tries!
-- To verify that the python client on the Linino is ready to recieve commands, run `$ telnet localhost 6571`
+- To verify that the python client on the Linino is ready to receive commands, run `$ telnet localhost 6571`
 - Don't forget:
   ```
   while (!Console) {
@@ -287,7 +288,7 @@ Need some help? Something not look right? Want to contribute? Drop us a line:
   $ scp -r Linino/* root@arduino.local:/root/
   The authenticity of host 'arduino.local (192.168.2.17)' can't be established.
   RSA key fingerprint is ba:fe:ce:d6:59:33:00:be:af:9c:9e:f6:df:2q:a8:8d.
-  Are you sure you want to continue connecting (yes/no)? 
+  Are you sure you want to continue connecting (yes/no)?
   ```
   No need for alarm, just type `yes`!
 - If you connect your Yun to different networks, you may get this message when you try to `scp` or `ssh` into the device:
