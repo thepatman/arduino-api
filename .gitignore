@@ -18,3 +18,7 @@ streaming/examples/gsm/breakdown_gsm.ino
 streaming/examples/wifi/breakdown_wifi.ino
 
 streaming/plotly_streaming_wifi/breakdown.ino
+
+plotly_yun/Linino/kill_processes.py
+
+plotly_yun/Linino/run_plotly.sh

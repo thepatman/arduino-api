@@ -9,6 +9,7 @@ import datetime
 import time
 from pytz import timezone
 import sys
+import os
 
 # Initialize a YunMessenger console object
 try:
@@ -42,7 +43,7 @@ except ValueError as e:
     c.logger.error(helpful_msg)
     raise e
 
-# Extract the credentials from the config file
+# Extract the credentials and settings from the config file
 username = plotly_user_config['plotly_username']
 api_key = plotly_user_config['plotly_api_key']
 stream_tokens = plotly_user_config['plotly_streaming_tokens']
@@ -61,8 +62,8 @@ url = py.plot(
     [
         {'x': [], 'y': [], 'stream': {'token': token, 'maxpoints': maxpoints}}
         for token in stream_tokens
-    ], 
-    filename='Stream from Yun', 
+    ],
+    filename='Stream from Yun',
     auto_open=False,
     fileopt=file_option)
 

@@ -193,31 +193,6 @@ error: [Errno 146] Connection refused
 2014-03-12 01:35:36 INFO: Connected to localhost:6571
 ```
 
-### Running the program from the Arduino script
-
-`ssh`ing into the Linino and running `$ python run.py` is great for debugging:
-if any errors occur while running that script, they will be printed in the
-terminal for you to see. Once you get going, you'll probably want to just
-start and stop the Python program from your Arduino code. This is pretty simple:
-
-1. Uncomment out these lines in the `example.ino`:
-
-  ```
-    Process p;
-    p.runShellCommand("/root/run_plotly.sh");
-    while (p.running()){ ; } // do nothing until the process finishes
-  ```
-2. `ssh` into your Linino, and make the `run_plotly.sh` script executable:
-
-  ```
-  $ ssh root@arduino.local
-  # chmod 755 run_plotly.sh
-```
-3. Upload your program.
-
-  `run_plotly.sh` will kill all of the existing `python run.py` programs
-  and start a new one! You can view your streaming plot from within your
-  plotly account at [https://plot.ly/plot](https://plot.ly/plot).
 
 ### Overwriting or Extending Data
 By default, the initialization of your graph in `run.py` overwrites the existing graph with your new data. This is the perfect option for development: when you re-run your script, a fresh new graph is created. However, when you run your Arduino for an extended period of time, the Arduino may reset itself, which would in turn reset the graph and remove the existing data. To prevent this from happening, you can use the fileopt "extend", which will append your new data to the existing data in the graph.
