@@ -228,7 +228,7 @@ void plotly::openStream() {
         }
     }
     */
-    uint32_t stream_ip = cc3000.IP2U32(54, 226, 153, 102);
+    uint32_t stream_ip = cc3000.IP2U32(107, 21, 214, 199);
 
     client = cc3000.connectTCP(stream_ip, 80);
     while ( !client.connected() ) {
