@@ -24,18 +24,18 @@ plotly::plotly(char *username, char *api_key, char* stream_tokens[], char *filen
 }
 
 bool plotly::init(){
-    // 
-    //  Validate a stream with a REST post to plotly 
+    //
+    //  Validate a stream with a REST post to plotly
     //
     if(dry_run && log_level < 3){
-        Serial.println(F("... This is a dry run, we are not connecting to plotly's servers...")); 
+        Serial.println(F("... This is a dry run, we are not connecting to plotly's servers..."));
     }
-    else if(log_level < 3) { 
-        Serial.println(F("... Attempting to connect to plotly's REST servers")); 
+    else if(log_level < 3) {
+        Serial.println(F("... Attempting to connect to plotly's REST servers"));
     }
     while ( !client.connect("plot.ly", 80) ) {
         if(log_level < 4){
-            Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!")); 
+            Serial.println(F("... Couldn\'t connect to plotly's REST servers... trying again!"));
         }
         fibonacci_ += fibonacci_;
         delay(min(fibonacci_, 60000));
@@ -55,7 +55,7 @@ bool plotly::init(){
         contentLength += 5;
     }
     print_(contentLength);
-    // contentLength = 
+    // contentLength =
     //   44  // first part of querystring below
     // + len_(username)  // upper bound on username length
     // + 5   // &key=
@@ -67,7 +67,7 @@ bool plotly::init(){
     // + len_(fileopt)
     // + 16  // \", \"filename\": \"
     // + len_(filename)
-    // + 21 // ", "world_readable": 
+    // + 21 // ", "world_readable":
     // + 4 if world_readable, 5 otherwise
     // + 1   // closing }
     //------
@@ -77,7 +77,7 @@ bool plotly::init(){
     print_(F("\r\n\r\n"));
 
     // Start printing querystring body
-    print_(F("version=2.2&origin=plot&platform=arduino&un="));
+    print_(F("version=2.3&origin=plot&platform=arduino&un="));
     print_(username_);
     print_(F("&key="));
     print_(api_key_);
@@ -127,7 +127,7 @@ bool plotly::init(){
 
     if(log_level < 2){
         Serial.println(F("... Sent message, waiting for plotly's response..."));
-    } 
+    }
 
     if(!dry_run){
         while(client.connected()){
@@ -153,7 +153,7 @@ bool plotly::init(){
                 //
                 // Extract the last bit of the URL from the response
                 // The url is in the form http://107.21.214.199/~USERNAME/FID
-                // We'll character-count up through char url[] and through username_, then start 
+                // We'll character-count up through char url[] and through username_, then start
                 // filling in characters into fid
                 //
 
@@ -176,16 +176,16 @@ bool plotly::init(){
                             } else if(fidCnt>0){
                                 fidMatched = true;
                             }
-                            
+
                         }
                     }
                 }
             }
         }
         client.stop();
-    }    
+    }
 
-    if(!dry_run && !proceed && log_level < 4){ 
+    if(!dry_run && !proceed && log_level < 4){
         Serial.println(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
     }
 
@@ -215,20 +215,20 @@ void plotly::openStream() {
         fibonacci_ += fibonacci_;
         delay(min(fibonacci_, 60000));
     }
-    fibonacci_ = 1;    
+    fibonacci_ = 1;
     if(log_level < 3){} Serial.println(F("... Connected to plotly's streaming servers\n... Initializing stream"));
 
     print_(F("POST / HTTP/1.1\r\n"));
-    print_(F("Host: 127.0.0.1\r\n"));
+    print_(F("Host: arduino.plot.ly\r\n"));
     print_(F("User-Agent: Python\r\n"));
     print_(F("Transfer-Encoding: chunked\r\n"));
     print_(F("Connection: close\r\n"));
     if(convertTimestamp){
         print_(F("plotly-convertTimestamp: \""));
         print_(timezone);
-        print_(F("\""));
-    } 
-    print_(F("\r\n\r\n"));
+        print_(F("\"\r\n"));
+    }
+    print_(F("\r\n"));
 
     if(log_level < 3){} Serial.println(F("... Done initializing, ready to stream!"));
 }
@@ -246,7 +246,7 @@ void plotly::reconnectStream(){
 }
 void plotly::jsonStart(int i){
     // Print the length of the message in hex:
-    // 15 char for the json that wraps the data: {"x": , "y": }\n 
+    // 15 char for the json that wraps the data: {"x": , "y": }\n
     // + 23 char for the token: , "token": "abcdefghij"
     // = 38
     if(log_level<2) Serial.print(i+44, HEX);
