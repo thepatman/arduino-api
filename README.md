@@ -143,7 +143,11 @@ void setup() {
   graph.maxpoints = 500;
   graph.fileopt = "extend"; // Remove this if you want the graph to be overwritten
   success = graph.init();
-  if(!success){while(true){}}
+  while(!success){
+    Serial.println(F("Error initializing graph, trying again."));
+    delay(5000);
+    success = graph.init();
+  }
   graph.openStream();
 }
 ```
