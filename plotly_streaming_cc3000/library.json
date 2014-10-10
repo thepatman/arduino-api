@@ -8,7 +8,7 @@
     "url": "https://github.com/plotly/arduino-api.git"
   },
   "include": "plotly_streaming_cc3000",
-  "exclude" "plotly_streaming_cc3000/Adafruit_CC3000",
+  "exclude": "plotly_streaming_cc3000/Adafruit_CC3000",
   "examples": "examples/cc3000/*.ino",
   "dependencies": 
   [
