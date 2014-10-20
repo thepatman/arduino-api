@@ -1,5 +1,5 @@
 {
-  "name": "Plotly-Arduino-CC3000",
+  "name": "Plotly-CC3000",
   "keywords": "logging, data, streaming, wifi, wi-fi",
   "description": "Arduino library for real-time logging and streaming data to online plotly graphs (TI CC3000 Wi-Fi)",
   "repository":
@@ -11,7 +11,10 @@
   "exclude": "plotly_streaming_cc3000/Adafruit_CC3000",
   "examples": "examples/cc3000/*.ino",
   "dependencies": 
-  [
-    "Adafruit-Arduino-CC3000"
-  ]
+  {
+    "name": "Adafruit-CC3000",
+    "frameworks": "arduino"
+  },
+  "frameworks": "arduino",
+  "platforms": "atmelavr"
 }
