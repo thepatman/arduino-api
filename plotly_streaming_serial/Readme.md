@@ -32,10 +32,10 @@ $ npm install plotly
 $ npm install johnny-five
 ```
 
-6 - Download one of our example scripts into your project folder and run it with node:
+6 - Download the [example script](https://raw.githubusercontent.com/plotly/arduino-api/master/plotly_streaming_serial/simple.js) into your project folder and run it with node:
 
 ```bash
-$ node simple_plotly.js
+$ node simple.js
 1399607731073 Device(s) /dev/cu.usbmodem1421 
 1399607734347 Connected /dev/cu.usbmodem1421 
 1399607734347 Repl Initialized 
@@ -44,7 +44,7 @@ $ node simple_plotly.js
 
 or, on Windows it'll look something like:
 ```bash
-C:\...\plotly_node> node simple_plotly.js
+C:\...\plotly_node> node simple.js
 1400090004506 Device(s) COM4
 1400090007789 Connected COM4
 1400090007789 Repl Initialized
