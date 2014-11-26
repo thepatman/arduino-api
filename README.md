@@ -152,6 +152,9 @@ void setup() {
 }
 ```
 
+### Streaming Multiple Traces to Multiple Plots
+Example code is here: [Streaming Multiple Traces to Multiple Plots](https://gist.github.com/chriddyp/11222798). View the comment at the bottom of the example for an explanation of the code.
+
 ### Logging and Debugging
 The parameter `log_level` sets how debugging information is printed out over serial. For troubleshooting, set `log_level` to `0`, i.e. 
 
