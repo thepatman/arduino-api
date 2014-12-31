@@ -98,7 +98,7 @@ By default, plotly assumes that `x` is `millis()` and automatically converts the
   }
 ```
 
-To change the timezone, set `timeZone` to one of the strings in here: [Accepted Timezone Strings.txt](https://github.com/plotly/arduino-api/blob/master/Accepted%20Timezone%20Strings.txt), e.g.
+To change the timezone, set `timezone` to one of the strings in here: [Accepted Timezone Strings.txt](https://github.com/plotly/arduino-api/blob/master/Accepted%20Timezone%20Strings.txt), e.g.
 
 ```Cpp
   plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
