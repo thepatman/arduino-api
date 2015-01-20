@@ -1,6 +1,6 @@
 ## Real-time Graphing and Data Logging
 
-#### The easiest and fastest way to plot and share data on the Arduino. 
+#### The easiest and fastest way to plot and share data on the Arduino.
 [![Real-time Plotting with Arduino and Plotly](http://new.tinygrab.com/c751bc2ee22cd3db5a6d3fccb22458d570efc9ac84.png)](http://vimeo.com/89003132)
 
 Plotly's Arduino libraries connects Arduinos to plotly's beautiful online graphing tool for real-time, interactive data logging and graphing. It's free, open source, and your graphs and data are entirely online.
@@ -11,13 +11,32 @@ Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](ht
 
 ```C
 #include <WiFi.h>
-#include <plotly_wifi_streaming.h>
+#include "plotly_streaming_wifi.h"
 
 #define num_traces 2
 // Sign up to plotly here: https://plot.ly
 // View your API key and stream tokens in your settings: https://plot.ly/settings
-char *streaming_tokens[num_traces] = {"your_plotly_stream_token", "another_plotly_stream_token"};
-plotly graph = plotly("your_plotly_username", "your_plotly_api_key", streaming_tokens, "your_plotly_filename", num_traces);
+char *tokens[num_traces] = {"ztjusdxavr", "m0qcrz4sy7"};
+plotly graph = plotly("plotly_username", "plotly_api_key", tokens, "your_filename", num_traces);
+
+int status = WL_IDLE_STATUS;     // the Wifi radio's status
+char ssid[] = "wifi_network_name"; //  your network SSID (name)
+char pass[] = "wifi_network_password"; // // your network password
+
+void wifi_connect(){
+    // attempt to connect using WPA2 encryption:
+    Serial.println("... Attempting to connect to WPA network...");
+    status = WiFi.begin(ssid, pass);
+    // if you're not connected, stop here:
+    if ( status != WL_CONNECTED) {
+      Serial.println("... Couldn't get a WiFi connection, trying again");
+      wifi_connect();
+    }
+    // if you are connected, print out info about the connection:
+    else {
+      Serial.println("... Connected to network");
+    }
+}
 
 void setup() {
 
@@ -28,7 +47,7 @@ void setup() {
   // Initialize a streaming graph in your plotly account
   graph.init();
   // Initialize plotly's streaming service
-  graph.openStream(); 
+  graph.openStream();
 }
 
 void loop() {
@@ -50,7 +69,7 @@ If you're device isn't internet connected, you can still connect to plotly over 
     ![](http://new.tinygrab.com/c751bc2ee29f2d309e4fd8985685df0a1d83cf115a.png)
 4. Open up the Arduino IDE. If your using WiFi and haven't upgraded your firmware, use the [IDE version 1.0.3](http://arduino.cc/en/Main/OldSoftwareReleases).
 5. Load up one of the [examples](/examples) from this repository. Fill in your plotly username, API key, stream tokens, and filename. You can find your API key and stream tokens here: [https://plot.ly/settings](https://plot.ly/settings). It'll look something like:
-    
+
     ```cpp
     char *tokens[] = {"ab4kf5nfdn","kdf5bn4dbn"};
     plotly graph("anna.lyst","ab4kftunvd", tokens, "arduino graph");
@@ -127,7 +146,7 @@ Everybody who looks at your streaming graph sees the exact same data, at the exa
 By default, the initialization of your graph (`graph.init();`) overwrites the existing graph with your new data. This is the perfect option for development: when you re-run your script, a fresh new graph is created. However, when you run your Arduino for an extended period of time, the Arduino may reset itself, which would in turn reset the graph and remove the existing data. To prevent this from happening, you can use the `fileopt` `"extend"`, which will append your new data to the existing data in the graph.
 
 
-So, for running your Arduino for a very long time, you should add 
+So, for running your Arduino for a very long time, you should add
 ```Cpp
 graph.fileopt = "extend"; // Remove this if you want the graph to be overwritten on initialization
 ```
@@ -156,15 +175,15 @@ void setup() {
 Example code is here: [Streaming Multiple Traces to Multiple Plots](https://gist.github.com/chriddyp/11222798). View the comment at the bottom of the example for an explanation of the code.
 
 ### Logging and Debugging
-The parameter `log_level` sets how debugging information is printed out over serial. For troubleshooting, set `log_level` to `0`, i.e. 
+The parameter `log_level` sets how debugging information is printed out over serial. For troubleshooting, set `log_level` to `0`, i.e.
 
 ```Cpp
 void setup(){
   Serial.begin(9600);
   startEthernet();
-  
+
   graph.log_level = 0;
-  
+
   success = graph.init();
   if(!success){while(true){}}
   graph.openStream();
@@ -182,27 +201,27 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 **Public Member Functions**
 
 - `bool plotly.init()`
-  
+
   Creates an empty graph in your plotly account that will get streamed to. This is done by making an API call to plotly's REST service. Returns `true` if initialization was successful, `false` otherwise.
 - `void plotly.openStream()`
-  
+
   Opens a TCP connection to plotly's streaming service. The stream is uniquely identified by the `stream_tokens`.
 - `void plotly.closeStream()`
-  
+
   Closes the TCP connection to plotly's streaming service.
 - `void plotly.reconnectStream()`
-  
+
   Reopens the connection to plotly's streaming service if not connected.
 - `void plot(unsigned long x, int y, char *token)`
-  
+
   Plots `(x, y)` to the streaming graph.
 - `void plot(unsigned long x, float y, char *token)`
-  
+
   Plots `(x, y)` to the streaming graph.
 
 **Public Member Parameters**
 - `int plotly.log_level` (Default `2`)
-  
+
   Determines which messages are printed over serial. Levels are:
   - `0`: Debugging
   - `1`: Informational
@@ -210,13 +229,13 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
   - `3`: Errors
   - `4`: Quiet
 - `bool plotly.dry_run`
-  
+
   If `True`, then no calls are made to Plotly's servers.
 - `int plotly.maxpoints` (Default `30`)
-  
-  Determines the number of points to plot at a time. Valid from `1` to `200000`. 
+
+  Determines the number of points to plot at a time. Valid from `1` to `200000`.
 - `bool plotly.convertTimestamp` (Default `true`)
-  
+
   If `true`, the Plotly assumes that `x` is milliseconds since program start (`millis()`) and automatically converts these values into a timestamp.
 - `char *plotly.timeZone` (Default: `"America/Montreal"`)
 
@@ -228,15 +247,15 @@ class plotly(char *username, char *api_key, char* stream_tokens[], char *filenam
 
 - `char *plotly.fileopt` (Default `"overwrite"`)
 
-  Either `"extend"` or `"overwrite"`. 
-  
+  Either `"extend"` or `"overwrite"`.
+
   If `"overwrite"`, then when the graph is initialized (during `plotly.init()`), the existing graph is overwritten with a new one. This means that the existing data in the graph will be removed. This option is good for development, when you want a fresh graph to appear everytime you run your script.
-  
+
   If `"extend"`, then the existing data is kept when the graph is initialized (during `plotly.init()`), and the new data is appended onto the existing data. This option is good for when you are running your device for an extended period of time, for if the Arduino resets (which may happen every few hours) then the existing data in the graph is not removed.
 
 ## Projects
 
-- A video of our real-time heart rate monitor (click to view): 
+- A video of our real-time heart rate monitor (click to view):
 [![Real-time Heart Rate Monitor with Plotly and an Arduino Yun](http://new.tinygrab.com/c751bc2ee2533bf46bba1b0b65720764edcfb06c6b.png)](https://vine.co/v/Mq2LQexrbl7)
 
 - A video of an Arduino streaming-data from a mountain edge, in Peachland, BC
