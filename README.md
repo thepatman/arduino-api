@@ -16,8 +16,8 @@ Here is an example of a real-time graph: [http://plot.ly/~streaming-demos/6/](ht
 #define num_traces 2
 // Sign up to plotly here: https://plot.ly
 // View your API key and stream tokens in your settings: https://plot.ly/settings
-char *tokens[num_traces] = {"ztjusdxavr", "m0qcrz4sy7"};
-plotly graph = plotly("plotly_username", "plotly_api_key", tokens, "your_filename", num_traces);
+char *tokens[num_traces] = {"your_plotly_stream_token", "another_plotly_stream_token"};
+plotly graph = plotly("your_plotly_username", "your_plotly_api_key", tokens, "your_filename", num_traces);
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 char ssid[] = "wifi_network_name"; //  your network SSID (name)
