@@ -64,7 +64,17 @@ bool plotly::init(){
     }
     fibonacci_ = 1;
     % else:
-    uint32_t ip = cc3000.IP2U32(107,21,214,199);
+
+    uint32_t ip = 0;
+    Serial.print(F("... Attempting to resolve IP address of plot.ly"));
+    while  (ip  ==  0)  {
+        if  (!  cc3000.getHostByName("www.plot.ly\n", &ip))  {
+          Serial.println(F("Couldn't resolve!"));
+        }
+        delay(500);
+    }
+    cc3000.printIPdotsRev(ip);
+
     // Try looking up the website's IP address
     client = cc3000.connectTCP(ip, 80);
     while ( !client.connected() ) {
@@ -80,8 +90,8 @@ bool plotly::init(){
     if(log_level < 3){} Serial.println(F("... Connected to plotly's REST servers"));
     if(log_level < 3){} Serial.println(F("... Sending HTTP Post to plotly"));
     print_(F("POST /clientresp HTTP/1.1\r\n"));
-    print_(F("Host: 107.21.214.199\r\n"));
-    print_(F("User-Agent: Arduino/0.5.1\r\n"));
+    print_(F("Host: plot.ly:80\r\n"));
+    print_(F("User-Agent: Arduino/0.6.0\r\n"));
 
     print_(F("Content-Length: "));
     int contentLength = 126 + len_(username_) + len_(fileopt) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
@@ -148,10 +158,10 @@ bool plotly::init(){
     // Parse the response for the "All Streams Go!" and proceed to streaming
     // if we find it
     //
+    % if lib!="cc3000":
     char allStreamsGo[] = "All Streams Go!";
-    char error[] = "\"error\": \"";
     int asgCnt = 0; // asg stands for All Streams Go
-    char url[] = "\"url\": \"http://107.21.214.199/~";
+    char url[] = "\"url\": \"http://plot.ly/~";
     char fid[4];
     int fidCnt = 0;
     int urlCnt = 0;
@@ -160,17 +170,21 @@ bool plotly::init(){
     int urlUpper = 0;
     bool proceed = false;
     bool fidMatched = false;
+    % endif
 
     if(log_level < 2){
         Serial.println(F("... Sent message, waiting for plotly's response..."));
     }
-
     if(!dry_run){
+        char c;
         while(client.connected()){
             if(client.available()){
-                char c = client.read();
-                if(log_level < 2) Serial.print(c);
+                c = client.read();
 
+                % if lib=="cc3000":
+                Serial.print(c);
+                % else:
+                if(log_level < 2) Serial.print(c);
                 //
                 // Attempt to read the "All streams go" msg if it exists
                 // by comparing characters as they roll in
@@ -188,7 +202,7 @@ bool plotly::init(){
 
                 //
                 // Extract the last bit of the URL from the response
-                // The url is in the form http://107.21.214.199/~USERNAME/FID
+                // The url is in the form http://plot.ly/~USERNAME/FID
                 // We'll character-count up through char url[] and through username_, then start
                 // filling in characters into fid
                 //
@@ -212,10 +226,10 @@ bool plotly::init(){
                             } else if(fidCnt>0){
                                 fidMatched = true;
                             }
-
                         }
                     }
                 }
+                % endif
             }
         }
         % if lib!="cc3000":
@@ -224,7 +238,7 @@ bool plotly::init(){
         client.close();
         % endif
     }
-
+    % if lib!="cc3000":
     if(!dry_run && !proceed && log_level < 4){
         Serial.println(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
     }
@@ -242,6 +256,10 @@ bool plotly::init(){
         }
     }
     return proceed;
+    % else:
+    return true;
+    % endif
+
 }
 void plotly::openStream() {
     //
@@ -259,8 +277,8 @@ void plotly::openStream() {
     fibonacci_ = 1;
     % else:
 
-    /*
     #define STREAM_SERVER "arduino.plot.ly"
+    Serial.println(F("... Looking up the IP address of arduino.plot.ly"));
     uint32_t stream_ip = 0;
     // Try looking up the website's IP address
     while (stream_ip == 0) {
@@ -268,8 +286,6 @@ void plotly::openStream() {
             if(log_level < 4){} Serial.println(F("Couldn't resolve!"));
         }
     }
-    */
-    uint32_t stream_ip = cc3000.IP2U32(107, 21, 214, 199);
 
     client = cc3000.connectTCP(stream_ip, 80);
     while ( !client.connected() ) {
@@ -284,7 +300,7 @@ void plotly::openStream() {
 
     print_(F("POST / HTTP/1.1\r\n"));
     print_(F("Host: arduino.plot.ly\r\n"));
-    print_(F("User-Agent: Python\r\n"));
+    print_(F("User-Agent: Arduino\r\n"));
     print_(F("Transfer-Encoding: chunked\r\n"));
     print_(F("Connection: close\r\n"));
     if(convertTimestamp){

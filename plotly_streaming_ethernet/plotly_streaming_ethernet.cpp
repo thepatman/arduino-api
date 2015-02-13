@@ -45,8 +45,8 @@ bool plotly::init(){
     if(log_level < 3){} Serial.println(F("... Connected to plotly's REST servers"));
     if(log_level < 3){} Serial.println(F("... Sending HTTP Post to plotly"));
     print_(F("POST /clientresp HTTP/1.1\r\n"));
-    print_(F("Host: 107.21.214.199\r\n"));
-    print_(F("User-Agent: Arduino/0.5.1\r\n"));
+    print_(F("Host: plot.ly:80\r\n"));
+    print_(F("User-Agent: Arduino/0.6.0\r\n"));
 
     print_(F("Content-Length: "));
     int contentLength = 126 + len_(username_) + len_(fileopt) + nTraces_*(87+len_(maxpoints)) + (nTraces_-1)*2 + len_(filename_);
@@ -114,9 +114,8 @@ bool plotly::init(){
     // if we find it
     //
     char allStreamsGo[] = "All Streams Go!";
-    char error[] = "\"error\": \"";
     int asgCnt = 0; // asg stands for All Streams Go
-    char url[] = "\"url\": \"http://107.21.214.199/~";
+    char url[] = "\"url\": \"http://plot.ly/~";
     char fid[4];
     int fidCnt = 0;
     int urlCnt = 0;
@@ -129,13 +128,13 @@ bool plotly::init(){
     if(log_level < 2){
         Serial.println(F("... Sent message, waiting for plotly's response..."));
     }
-
     if(!dry_run){
+        char c;
         while(client.connected()){
             if(client.available()){
-                char c = client.read();
-                if(log_level < 2) Serial.print(c);
+                c = client.read();
 
+                if(log_level < 2) Serial.print(c);
                 //
                 // Attempt to read the "All streams go" msg if it exists
                 // by comparing characters as they roll in
@@ -153,7 +152,7 @@ bool plotly::init(){
 
                 //
                 // Extract the last bit of the URL from the response
-                // The url is in the form http://107.21.214.199/~USERNAME/FID
+                // The url is in the form http://plot.ly/~USERNAME/FID
                 // We'll character-count up through char url[] and through username_, then start
                 // filling in characters into fid
                 //
@@ -177,7 +176,6 @@ bool plotly::init(){
                             } else if(fidCnt>0){
                                 fidMatched = true;
                             }
-
                         }
                     }
                 }
@@ -185,7 +183,6 @@ bool plotly::init(){
         }
         client.stop();
     }
-
     if(!dry_run && !proceed && log_level < 4){
         Serial.println(F("... Error initializing stream, aborting. Try again or get in touch with Chris at chris@plot.ly"));
     }
@@ -203,6 +200,7 @@ bool plotly::init(){
         }
     }
     return proceed;
+
 }
 void plotly::openStream() {
     //
@@ -221,7 +219,7 @@ void plotly::openStream() {
 
     print_(F("POST / HTTP/1.1\r\n"));
     print_(F("Host: arduino.plot.ly\r\n"));
-    print_(F("User-Agent: Python\r\n"));
+    print_(F("User-Agent: Arduino\r\n"));
     print_(F("Transfer-Encoding: chunked\r\n"));
     print_(F("Connection: close\r\n"));
     if(convertTimestamp){
